@@ -58,7 +58,8 @@ export default function TopBar() {
                   rounded='full'
                   minW={300}
                   pr={50} pl={25} py={6} bg='white'
-                  _focus={{ ring: 0, border: 0, outline: 0 }}
+                  border='0px solid #7e8b9f'
+                  _focus={{ ring: 0, border: '0px soild', outline: 0 }}
                   placeholder='Search the community'
                   fontFamily={`'Assistant', sans-serif`}
                 />
