@@ -1,8 +1,33 @@
+import axios from 'axios'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+
+  const [hello, setHello] = useState('')
+
+  useEffect(() => {
+
+    async function getData() {
+      const res = await axios.get('/api', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzIiwidXNlcm5hbWUiOiJVbGxhc2giLCJlbWFpbCI6InVsbGFzaEBnbWFpbC5jb20iLCJpYXQiOjE2NTYwOTg1NTd9.IiqbFix4ej9k2AP1oyom7K1hxtgIILjzo4caE7v6suo'
+        }
+      })
+
+      console.log('Response: ', res.data.user)
+
+      setHello(res.data.user)
+    }
+
+    getData()
+
+
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,6 +40,8 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <p>Hello: {hello?.email}</p>
 
         <p className={styles.description}>
           Get started by editing{' '}

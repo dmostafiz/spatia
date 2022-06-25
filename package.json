@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "nodemon ./server/app.js",
+    "build:prod": "cross-env NODE_ENV=production next build",
+    "start": "npm run build:prod && cross-env NODE_ENV=production node ./server/app.js"
   },
   "dependencies": {
+    "@fastify/jwt": "^6.1.0",
+    "@fastify/nextjs": "^8.0.2",
+    "axios": "^0.27.2",
+    "fastify": "^4.1.0",
+    "fastify-nextjs": "^7.3.0",
     "next": "12.1.6",
+    "nodemon": "^2.0.18",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
