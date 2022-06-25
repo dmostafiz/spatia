@@ -63,7 +63,9 @@ export default function TopBar() {
                   placeholder='Search the community'
                   fontFamily={`'Assistant', sans-serif`}
                 />
-                <InputRightElement py={6} pr={3} children={<FiSearch color='green.500' fontSize={20} />} />
+                <InputRightElement py={6} pr={3} >
+                  <FiSearch color='green.500' fontSize={20} />
+                </InputRightElement>
               </InputGroup>
             </Show>
 

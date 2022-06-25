@@ -9,24 +9,24 @@ const MobileMenuSidebar = () => {
 
     return (
         <>
-            <Button ref={btnRef} 
-            variant='solid' 
-            color='#604a38' 
-            varient='outlined'
-            border='0px solid'
-            borderColor='#604a38'
-            bg='transparent'
-            _hover={{
-                bg: 'transparent',
-                color: 'link.hover',
-                textDecoration: 'none'
-            }}
-            _focus={{
-                bg: 'transparent',
-                color: 'link.hover',
-                textDecoration: 'none'
-            }}
-            onClick={onOpen}>
+            <Button ref={btnRef}
+                variant='solid'
+                color='#604a38'
+                varient='outlined'
+                border='0px solid'
+                borderColor='#604a38'
+                bg='transparent'
+                _hover={{
+                    bg: 'transparent',
+                    color: 'link.hover',
+                    textDecoration: 'none'
+                }}
+                _focus={{
+                    bg: 'transparent',
+                    color: 'link.hover',
+                    textDecoration: 'none'
+                }}
+                onClick={onOpen}>
                 Menu
             </Button>
 
@@ -52,12 +52,10 @@ const MobileMenuSidebar = () => {
                                 placeholder='Search the community'
                                 fontFamily={`'Assistant', sans-serif`}
                             />
-                            <InputRightElement py={6} pr={3} children={<FiSearch color='green.500' fontSize={20} />} />
+                            <InputRightElement py={6} pr={3} >
+                                <FiSearch color='green.500' fontSize={20} />
+                            </InputRightElement>
                         </InputGroup>
-
-                        
-
-
 
                     </DrawerBody>
 
