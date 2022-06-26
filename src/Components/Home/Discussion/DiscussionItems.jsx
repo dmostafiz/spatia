@@ -7,7 +7,7 @@ export default function DiscussionItems() {
 
     return (
         <Box as='section'>
-            <SimpleGrid columns={3} gap={6}>
+            <SimpleGrid columns={{base: 1, md:2, lg:3}} gap={6}>
                 {demoItems.map((item, index) => {
                     return <DiscussionItem item={item} key={index}/>
                 })}
