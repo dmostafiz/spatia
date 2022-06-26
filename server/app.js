@@ -7,12 +7,11 @@ const app = require('fastify')({
 app.register(require('fastify-nextjs'), {
     dev: process.env.NODE_ENV !== 'production',
     noServeAssets: true
-
 }).after(() => {
     app.next('/*')
 })
 
-require('./web/bootstrap')(app)
+require('./app/bootstrap')(app)
 
 app.register(require('./web/router'), { prefix: 'api' })
 

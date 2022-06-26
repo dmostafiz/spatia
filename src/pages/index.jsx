@@ -6,7 +6,7 @@ export default function index() {
 
 
   return (
-    <Layout>
+    <Layout title='Home'>
       <Container maxW='container.xl'>
 
         <div className="w-fit bg-gray-50">

@@ -4,7 +4,7 @@ import { Container } from '@chakra-ui/react';
 
 export default function test() {
   return (
-    <Layout>
+    <Layout title='Test'>
       <Container maxW='container.xl'>
         Hello Test
 
