@@ -4,12 +4,11 @@ import NextLink from 'next/link'
 import MainLogo from '../Common/MainLogo'
 import { Container } from '@chakra-ui/react'
 import { FiSearch } from 'react-icons/fi'
-import { useMediaQuery } from '@chakra-ui/react'
 import MobileMenuSidebar from './MobileMenuSidebar'
 
 export default function TopBar() {
   return (
-    <Box as='nav' bg='#ede7e0' color='#000000' fontSize={18} fontWeight='semibold'>
+    <Box as='nav' position="fixed" w="100%" shadow='md' bg='#ede7e0' color='#000000' fontSize={18} fontWeight='semibold'>
 
       <Container maxW='container.xl' >
 

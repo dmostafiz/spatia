@@ -1,20 +1,26 @@
 import React from 'react'
-import { GridItem, Box, Icon, HStack, Text, VStack } from '@chakra-ui/react';
+import { GridItem, Box, Icon, HStack, Text, VStack, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 export default function DiscussionItem({ item }) {
     return (
         <VStack bg='#f4edde' justify='space-between'>
             <Box w='100%' p={6}>
-                <HStack gap={2}>
-                    <Icon fontSize={52} color='#43464b' as={item.icon} />
-                    <Text
-                        fontSize={28}
-                        color='#43464b'
-                        fontWeight='extrabold'
-                    >
-                        {item.title}
-                    </Text>
-                </HStack>
+                <NextLink href={`/discussion/${item.slug}`}>
+                    <Link href={`/discussion/${item.slug}`}>
+                        <HStack gap={2}>
+                            <Icon fontSize={52} color='#43464b' as={item.icon} />
+                            <Text
+                                fontSize={28}
+                                color='#43464b'
+                                fontWeight='extrabold'
+                                lineHeight={1}
+                            >
+                                {item.title}
+                            </Text>
+                        </HStack>
+                    </Link>
+                </NextLink>
                 <Box py={5}>
                     <Text
                         fontSize={16}

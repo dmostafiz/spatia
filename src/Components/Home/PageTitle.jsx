@@ -7,7 +7,7 @@ export default function PageTitle({ title = 'Page Title', subtitle, navigation =
         <Box as='div' pb={8}>
             <Text
                 as='h1'
-                fontSize={50}
+                fontSize={{base: 32, sm: 40, md: 50, lg:50}}
                 fontWeight='black'
                 color='#000000'
                 fontFamily={`'Montserrat', sans-serif`}
