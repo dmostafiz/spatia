@@ -6,7 +6,7 @@ import { AiOutlineLinkedin } from 'react-icons/ai';
 
 export default function Footer() {
     return (
-        <Box as='footer' py={5} bg='#dfc6b1'>
+        <Box as='footer' py={3} bg='#dfc6b1'>
             <Container maxW='container.xl'>
 
                 <Stack
