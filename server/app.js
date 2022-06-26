@@ -4,12 +4,12 @@ const app = require('fastify')({
 
 // app.decorateRequest('user', 'Getter');
 
-app.register(require('fastify-nextjs'), {
-    dev: process.env.NODE_ENV !== 'production',
-    noServeAssets: true
-}).after(() => {
-    app.next('/*')
-})
+// app.register(require('fastify-nextjs'), {
+//     dev: process.env.NODE_ENV !== 'production',
+//     noServeAssets: true
+// }).after(() => {
+//     app.next('/*')
+// })
 
 require('./app/bootstrap')(app)
 
