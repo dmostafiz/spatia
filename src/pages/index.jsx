@@ -3,6 +3,7 @@ import Layout from '../Components/Home/Layout'
 import { Container } from '@chakra-ui/react';
 import PageTitle from './../Components/Home/PageTitle';
 import TitleNavigation from '../Components/Home/TitleNavigation';
+import DiscussionItems from '../Components/Home/Discussion/DiscussionItems';
 
 export default function index() {
 
@@ -17,9 +18,7 @@ export default function index() {
           navigation={<TitleNavigation />}
         />
 
-        <div className="w-fit bg-gray-50">
-          Hello Home Page
-        </div>
+        <DiscussionItems />
 
       </Container>
 

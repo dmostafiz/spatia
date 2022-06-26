@@ -16,7 +16,7 @@ export default function Layout({ children, title = 'Home' }) {
 
       <TopBar />
 
-      <Box as='div' pt={10}>
+      <Box as='div' py={10}>
         {children}
       </Box>
 
