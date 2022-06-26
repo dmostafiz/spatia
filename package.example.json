@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./server/app.js",
-    "build:prod": "cross-env NODE_ENV=production next build",
-    "start": "npm run build:prod && cross-env NODE_ENV=production node ./server/app.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.1",
