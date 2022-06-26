@@ -27,7 +27,7 @@ export default function PageTitle({ title = 'Page Title', subtitle, navigation =
                 {subtitle}
             </Text>}
 
-            {navigation && <Box pt={subtitle ? 10 : 2}>
+            {navigation && <Box pt={subtitle ? 10 : 5}>
                 {navigation}
             </Box>}
 

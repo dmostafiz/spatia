@@ -5,19 +5,19 @@ export default function DiscussionItem({ item }) {
     return (
         <VStack bg='#f4edde' justify='space-between'>
             <Box w='100%' p={6}>
-                <HStack gap={3}>
-                    <Icon fontSize={48} color='#43464b' as={item.icon} />
+                <HStack gap={2}>
+                    <Icon fontSize={52} color='#43464b' as={item.icon} />
                     <Text
                         fontSize={28}
                         color='#43464b'
-                        fontWeight='black'
+                        fontWeight='extrabold'
                     >
                         {item.title}
                     </Text>
                 </HStack>
                 <Box py={5}>
                     <Text
-                        fontSize={18}
+                        fontSize={16}
                         color='#565854'
                         fontWeight='semibold'
                         fontFamily={`'Montserrat', sans-serif`}
@@ -39,8 +39,9 @@ export default function DiscussionItem({ item }) {
                         Lated Post | {item.post.createdAt}
                     </Text>
                     <Text
-                        color='whiteAlpha.800'
-                        fontFamily={`'Assistant', sans-serif`}
+                        color='whiteAlpha.900'
+                        fontFamily={`'Montserrat', sans-serif`}
+                        fontSize='12px'
                     >
                         {item.title}
                     </Text>
