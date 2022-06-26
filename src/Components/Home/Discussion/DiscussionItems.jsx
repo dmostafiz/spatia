@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, GridItem, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import demoItems from './demoItems'
 import DiscussionItem from './DiscussionItem';
 
