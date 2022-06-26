@@ -18,6 +18,7 @@ export default function PageTitle({ title = 'Page Title', subtitle, navigation =
             </Text>
 
             {subtitle && <Text
+                mt={4}
                 as='h4'
                 fontSize={19}
                 fontWeight='black'

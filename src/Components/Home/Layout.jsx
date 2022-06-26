@@ -17,7 +17,7 @@ export default function Layout({ children, title = 'Home' }) {
 
       <TopBar />
 
-      <Box as='div' minH='88vh' py={{base: 16, sm: 24, md: 24, lg:32}}>
+      <Box as='div' minH='calc(100vh - 70px)' py={{base: 16, sm: 24, md: 24, lg:32}}>
         {children}
       </Box>
 

@@ -14,7 +14,7 @@ export default function index() {
 
         <PageTitle
           title='Welcome to Spatial community'
-          // subtitle='In-depth knowledge, hidden settings, and trivia - dispense it or discover it here'
+          subtitle='In-depth knowledge, hidden settings, and trivia - dispense it or discover it here'
           navigation={<TitleNavigation />}
         />
 

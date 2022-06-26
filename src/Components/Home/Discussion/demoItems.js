@@ -23,7 +23,7 @@ export default [
         icon: HiOutlineSupport,
         slug: 'help_support',
         title: 'Help & Support',
-        description: 'Spatial is run by you: take part in projects and leave us feedbacks',
+        description: 'Have any questions about Spatial? Our expert members are ready to help.',
         post: {
            createdAt: '2 minuts ago',
            title: '1st post title' 
