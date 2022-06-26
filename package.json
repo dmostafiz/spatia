@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./server/app.js",
+    "dev": "nodemon ./server/express.js",
     "build:prod": "cross-env NODE_ENV=production next build",
-    "start": "npm run build:prod && cross-env NODE_ENV=production node ./server/app.js"
+    "start": "npm run build:prod && cross-env NODE_ENV=production node ./server/express.js"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.1",
@@ -15,6 +15,7 @@
     "@fastify/nextjs": "^8.0.2",
     "axios": "^0.27.2",
     "cross-env": "^7.0.3",
+    "express": "^4.18.1",
     "fastify": "^4.1.0",
     "fastify-nextjs": "^7.3.0",
     "framer-motion": "^6.3.15",
