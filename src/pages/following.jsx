@@ -4,11 +4,11 @@ import { Container } from '@chakra-ui/react';
 import PageTitle from './../Components/Home/PageTitle';
 import TitleNavigation from '../Components/Home/TitleNavigation';
 
-export default function index() {
+export default function following() {
 
 
   return (
-    <Layout title='Home'>
+    <Layout title='Following'>
       <Container maxW='container.xl'>
 
         <PageTitle
@@ -18,7 +18,7 @@ export default function index() {
         />
 
         <div className="w-fit bg-gray-50">
-          Hello Home Page
+          Following
         </div>
 
       </Container>

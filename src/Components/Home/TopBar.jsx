@@ -9,7 +9,7 @@ import MobileMenuSidebar from './MobileMenuSidebar'
 
 export default function TopBar() {
   return (
-    <Box as='nav' bg='#ede7e0' color='#000000'>
+    <Box as='nav' bg='#ede7e0' color='#000000' fontSize={18} fontWeight='semibold'>
 
       <Container maxW='container.xl' >
 
@@ -21,7 +21,7 @@ export default function TopBar() {
                 color: 'link.hover',
                 textDecoration: 'none'
               }}>
-                <Box py={5}>
+                <Box>
                   <MainLogo />
                 </Box>
               </Link>

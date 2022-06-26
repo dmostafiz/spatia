@@ -1,8 +1,10 @@
 import React from 'react'
-import { Image } from '@chakra-ui/react'
+import { Box, Center, Image } from '@chakra-ui/react'
 
 export default function MainLogo() {
   return (
-    <Image maxW={['50px', '100px', '200px','300px']} src='/img/logo.png' alt='Spatial Community' />
+    <Center as='div' content='center' height={['50px','70px','80px','90px']} maxW={['300px']}>
+      <Image maxW={'100%'} src='/img/logo.png' alt='Spatial Community' />
+    </Center>
   )
 }

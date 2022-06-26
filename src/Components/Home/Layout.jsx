@@ -4,6 +4,7 @@ import AppContainer from '../AppContainer'
 import Link from 'next/link'
 import TopBar from './TopBar';
 import Head from 'next/head';
+import { Box } from '@chakra-ui/react';
 
 export default function Layout({ children, title = 'Home' }) {
   return (
@@ -15,7 +16,9 @@ export default function Layout({ children, title = 'Home' }) {
 
       <TopBar />
 
-      {children}
+      <Box as='div' pt={10}>
+        {children}
+      </Box>
 
     </AppContainer>
   )
