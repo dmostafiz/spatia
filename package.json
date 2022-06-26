@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon ./server/express.js",
     "build:prod": "cross-env NODE_ENV=production next build",
-    "start": "npm run build:prod && cross-env NODE_ENV=production node ./server/express.js"
+    "start": "npm run build:prod && cross-env NODE_ENV=production node ./server/express.js -p $PORT"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.1",
