@@ -21,7 +21,7 @@ export default function PageTitle({ title = 'Page Title', subtitle, navigation =
                 mt={4}
                 as='h4'
                 fontSize={19}
-                fontWeight='black'
+                fontWeight={{base: 'normal', md:'bold'}}
                 color='#000000'
                 fontFamily={`'Montserrat', sans-serif`}
                 letterSpacing={2}
@@ -29,7 +29,7 @@ export default function PageTitle({ title = 'Page Title', subtitle, navigation =
                 {subtitle}
             </Text>}
 
-            {navigation && <Box pt={subtitle ? 10 : 5}>
+            {navigation && <Box pt={5}>
                 {navigation}
             </Box>}
 

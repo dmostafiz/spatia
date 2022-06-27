@@ -3,7 +3,7 @@ import Layout from '../Components/Home/Layout'
 import { Container } from '@chakra-ui/react';
 import PageTitle from './../Components/Home/PageTitle';
 import TitleNavigation from '../Components/Home/TitleNavigation';
-import DiscussionItems from '../Components/Home/Discussion/DiscussionItems';
+import DiscussionItems from '../Components/Home/Category/DiscussionItems';
 
 export default function index() {
 
@@ -14,7 +14,7 @@ export default function index() {
 
         <PageTitle
           title='Welcome to Spatial community'
-          subtitle='In-depth knowledge, hidden settings, and trivia - dispense it or discover it here'
+          // subtitle='In-depth knowledge, hidden settings, and trivia - dispense it or discover it here'
           navigation={<TitleNavigation />}
         />
 

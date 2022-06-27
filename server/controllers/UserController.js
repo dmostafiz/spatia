@@ -11,7 +11,7 @@ exports.signup = async (request, reply) => {
 }
 
 exports.getUser = async (request, reply) => {
-    reply.send({ user: request?.user || 'No authentication' })
+    reply.send({ user: request?.user || 'Fastify - No authentication' })
 }
 
 exports.protected = async (request, reply) => {

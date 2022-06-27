@@ -15,11 +15,16 @@ export default function Layout({ children, title = 'Home' }) {
         <title>{title} | Spatial Community</title>
       </Head>
 
+
       <TopBar />
 
-      <Box as='div' minH='calc(100vh - 70px)' py={{base: 16, sm: 24, md: 24, lg:32}}>
-        {children}
-      </Box>
+        <Box
+          as='div'
+          minH='calc(100vh - 70px)'
+          py={{ base: 24, sm: 24, md: 28, lg: 32 }}
+        >
+          {children}
+        </Box>
 
       <Footer />
 
