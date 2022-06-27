@@ -1,8 +1,7 @@
 import React from 'react'
 import PageTitle from '../../Components/Home/PageTitle';
 import Layout from '../../Components/Home/Layout';
-import { Container, Stack, Box, Flex, VStack } from '@chakra-ui/react';
-import NavigationInCategory from '../../Components/Home/Category/NavigationInCategory';
+import { Container, Box, Flex, VStack } from '@chakra-ui/react';
 import CategoryLeftSidebar from '../../Components/Home/Category/CategoryLeftSidebar';
 import CategoryRightSidebar from '../../Components/Home/Category/CategoryRightSidebar';
 import CategoryContents from '../../Components/Home/Category/CategoryContents';
@@ -16,16 +15,18 @@ export default function slug() {
         <PageTitle
           title='Discussion Overview'
           subtitle='In-depth knowledge, hidden settings, and trivia - dispense it or discover it here'
-          // navigation={<NavigationInCategory />}
+        // navigation={<NavigationInCategory />}
         />
 
-        <Flex gap={5} direction={{ base: 'column', md: 'row' }}>
+        <Flex gap={5} direction={{ base: 'column', lg: 'row' }}>
 
-          <CategoryLeftSidebar />
+          <Box maxW={{base:'100vw', lg:200}}>
+            <CategoryLeftSidebar />
+          </Box>
 
           <Box flex='1' minH='calc(100vh - 300px)' bg='green.500'>
             <VStack alignItems='flex-start'>
-              <CategoryContentsTopbar />    
+              <CategoryContentsTopbar />
               <CategoryContents />
             </VStack>
           </Box>

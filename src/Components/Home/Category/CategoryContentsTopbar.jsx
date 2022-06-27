@@ -8,7 +8,7 @@ export default function CategoryContentsTopbar() {
     return (
         <Box fontWeight='bold' fontFamily='heading'>
 
-            <Stack direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }} gap={{sm: 2, lg: 5}} alignItems={{sm: 'start', lg: 'center'}} >
+            <Stack direction='row' gap={{sm: 2, lg: 5}} alignItems={{sm: 'start', lg: 'center'}} >
 
                 <NextLink href='/start_discussion'>
                     <Link href='/start_discussion'>

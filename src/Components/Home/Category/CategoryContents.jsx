@@ -1,10 +1,15 @@
 import React from 'react'
-import { Box } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
+import DiscussionThread from '../Discussion/DiscussionThread';
 
 export default function CategoryContents() {
     return (
-        <Box>
+        <VStack gap={3} as='section' w='full' pt={3}>
 
-        </Box>
+           <DiscussionThread />
+           <DiscussionThread />
+           <DiscussionThread />
+
+        </VStack>
     )
 }
