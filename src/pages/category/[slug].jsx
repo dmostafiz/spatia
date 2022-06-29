@@ -14,7 +14,7 @@ import ContentLoader from '../../Components/Home/ContentLoader';
 
 export default function slug() {
 
-  const router = useRouter()
+  const router = useRouter();
   const { query } = router
 
   const [category, setCategory] = useState(null)
