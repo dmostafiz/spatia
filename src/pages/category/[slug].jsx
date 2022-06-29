@@ -15,20 +15,18 @@ import ContentLoader from '../../Components/Home/ContentLoader';
 export default function slug() {
 
   const router = useRouter();
-  const { query } = router
-
-  const [category, setCategory] = useState(null)
+  const [category, setCategory] = useState(null);
 
   useEffect(() => {
 
-    if (query.slug) {
+    if (router.query.slug) {
 
-        const categoryItem = demoItems.find(item => item.slug == query.slug)
+        const categoryItem = demoItems.find(item => item.slug == router.query.slug);
         // console.log('Discussion Item: ', discussionItem)
-        setCategory(categoryItem)
+        setCategory(categoryItem);
     }
 
-  }, [router])
+  }, [router]);
 
   return (
     <Layout title={category?.title}>
