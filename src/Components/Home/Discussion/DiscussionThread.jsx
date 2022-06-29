@@ -1,15 +1,17 @@
 import React from 'react'
 import { Box, Center, HStack, Text, VStack, Icon, Link, Flex } from '@chakra-ui/react';
-import { HiOutlineLightBulb } from 'react-icons/hi'
+import NextLink from 'next/link';
+import { HiOutlineLightBulb, HiReply } from 'react-icons/hi'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes, IoHeartCircle } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
-import NextLink from 'next/link';
+import { CgMailReply } from 'react-icons/cg'
+
 
 export default function DiscussionThread() {
     return (
-        <Box as='div' w='full' p={3} bg='#f6e3d1'>
-            <Box p={3} bg='#ffffff'>
+        <Box as='div' w='full' p={2} bg='#f6e3d1' rounded='sm' shadow>
+            <Box p={3} bg='#fffefd' rounded='sm'>
 
                 <Text
                     as='h1'
@@ -29,16 +31,25 @@ export default function DiscussionThread() {
                     </Box>
                 </HStack>
 
-                <Box pt={2} pb={3}>
-                    <Text>
+                <HStack justify='space-between' pt={2} pb={3}>
+                    <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
                         By <NextLink href='#'>
                             <Link href='#' color='blue.400'>echiam08</Link>
                         </NextLink>
                     </Text>
-                </Box>
 
-                <Box p={3} bg='#f4edde'>
-                    <Text fontSize={12} fontWeight='bold'>
+                    <Flex alignItems='end' gap={1}>
+                        <Icon fontSize={24} as={CgMailReply} />
+                        <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
+                            By <NextLink href='#'>
+                                <Link href='#' color='blue.400'>echiam08</Link>
+                            </NextLink> Replied 12 hours ago
+                        </Text>
+                    </Flex>
+                </HStack>
+
+                <Box p={3} bg='#f4edde' rounded='sm'>
+                    <Text fontSize={14} fontFamily={`'Assistant', sans-serif`} fontWeight='semibold'>
                         After the 4 or 5 year structured programme in Secondary School, many students and parents may feel bewildered when it comes
                         to pre-university education, especially since there are so many pathways available in today’s education landscape.
                         Students may have certain preconceived notions about education in the Junior Colleges and Polytechnics, and may be at a loss as
@@ -48,8 +59,8 @@ export default function DiscussionThread() {
 
                 <Box pt={2}>
                     <HStack justify='space-between'>
-                        <NextLink href='#'>
-                            <Link href='#'>
+                        <NextLink href={`/discussion/4er4f4457ddf346`}>
+                            <Link href={`/discussion/4er4f4457ddf346`}>
                                 <Text
                                     fontSize={14}
                                     fontWeight='bold'

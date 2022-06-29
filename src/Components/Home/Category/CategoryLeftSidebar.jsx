@@ -6,7 +6,8 @@ import { HiOutlineUserCircle } from 'react-icons/hi'
 import demoItems from './demoItems';
 
 
-export default function CategoryLeftSidebar() {
+export default function CategoryLeftSidebar({currentCategory}) {
+
     return (
 
         <VStack alignItems='flex-start' gap={5}>
@@ -22,7 +23,7 @@ export default function CategoryLeftSidebar() {
                 {demoItems.map((item, index) => {
                     return <NextLink key={index} href={`/category/${item.slug}`}>
                         <Link href={`/category/${item.slug}`}>
-                            <HStack alignItems='flex-start'>
+                            <HStack alignItems='flex-start' bg={currentCategory.slug == item.slug ? '#ede7e0' : 'none'} p={currentCategory.slug == item.slug ? 1 : 0}>
                                 <Icon fontSize={{ base: 22, lg: 28 }} as={item.icon} />
                                 <Text fontWeight={{ base: 'normal', lg: '700' }}>{item.title}</Text>
                             </HStack>

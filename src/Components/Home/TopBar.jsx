@@ -16,6 +16,7 @@ export default function TopBar() {
       color='#000000'
       fontSize={18}
       fontWeight='semibold'
+      zIndex={999}
       >
 
       <Container maxW='container.xl' >
