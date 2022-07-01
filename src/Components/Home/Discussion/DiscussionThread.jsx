@@ -41,7 +41,7 @@ export default function DiscussionThread() {
                     <Flex alignItems='end' gap={1}>
                         <Icon fontSize={24} as={CgMailReply} />
                         <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
-                            By <NextLink href='#'>
+                            <NextLink href='#'>
                                 <Link href='#' color='blue.400'>echiam08</Link>
                             </NextLink> Replied 12 hours ago
                         </Text>

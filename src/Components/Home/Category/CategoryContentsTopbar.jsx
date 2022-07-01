@@ -1,7 +1,5 @@
 import React from 'react'
-import { Box, Flex, HStack, Icon, Link, Stack, Text } from '@chakra-ui/react'
-import { BsTagFill, BsChatRightTextFill, BsStarFill } from 'react-icons/bs'
-import { HiOutlineUserCircle } from 'react-icons/hi'
+import { Box, Link, Stack } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
 export default function CategoryContentsTopbar() {

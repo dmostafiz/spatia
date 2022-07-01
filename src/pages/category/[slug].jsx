@@ -11,8 +11,12 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import demoItems from '../../Components/Home/Category/demoItems';
 import ContentLoader from '../../Components/Home/ContentLoader';
+import useClientAuth from '../../Hooks/useClientAuth';
 
 export default function slug() {
+
+
+  const user = useClientAuth()
 
   const router = useRouter();
   const [category, setCategory] = useState(null);

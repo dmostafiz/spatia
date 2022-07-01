@@ -11,9 +11,19 @@ exports.signup = async (request, reply) => {
 }
 
 exports.getUser = async (request, reply) => {
-    reply.send({ user: request?.user || 'Fastify - No authentication' })
+    const token = request.app.jwt.sign({
+        id: '13',
+        username: 'Ullash',
+        email: 'ullash@gmail.com'
+    })
+
+    reply
+        .setCookie('_token', token, {
+            path: '/'
+        })
+        .send({ user: request?.user || 'Fastify - No authentication' })
 }
 
 exports.protected = async (request, reply) => {
-    reply.send({status: 'This is a protected route'})
+    reply.send({ status: 'This is a protected route' })
 }
