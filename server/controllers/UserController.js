@@ -1,8 +1,6 @@
-const tryCatch = require("../../Helpers/tryCatch")
-
 exports.signup = async (request, reply) => {
 
-    await tryCatch(reply, async function () {
+    try {
 
         const user = await request.prisma.user.upsert({
             where: {
@@ -29,7 +27,12 @@ exports.signup = async (request, reply) => {
             })
             .send({ token: token })
 
-    })
+
+    } catch (error) {
+
+        console.log('TryCatch Error ##################### ', error.message)
+
+    }
 
 }
 
