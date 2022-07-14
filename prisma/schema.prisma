@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String       @id @default(auto()) @map("_id") @db.ObjectId
+  email String       @unique
+  name  String?
+  posts Discussion[] @relation("posts")
+
+  privatePostIds String[]     @db.ObjectId
+  privatePosts   Discussion[] @relation(name: "privatePosts", fields: [privatePostIds], references: [id])
+
+  Reply Reply[]
+}
+
+model Category {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  icon        String
+  slug        String
+  title       String
+  description String
+
+  discussions Discussion[]
+
+  createdAt DateTime @default(now())
+}
+
+model Discussion {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  content String
+
+  replies Reply[]
+
+  author   User   @relation(name: "posts", fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+
+  privateMemberIds String[] @db.ObjectId
+  privateMembers   User[]   @relation(name: "privatePosts", fields: [privateMemberIds], references: [id])
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @db.ObjectId
+
+  createdAt DateTime @default(now())
+}
+
+model Reply {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  content String
+
+  discssion    Discussion @relation(fields: [discussionId], references: [id])
+  discussionId String     @db.ObjectId
+
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+  
+  createdAt DateTime @default(now())
+}

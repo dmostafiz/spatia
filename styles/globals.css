@@ -1,0 +1,24 @@
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
+
+/* font-family: 'Assistant', sans-serif;
+font-family: 'Josefin Sans', sans-serif;
+font-family: 'Lato', sans-serif;
+font-family: 'Montserrat', sans-serif; */
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Josefin+Sans:wght@400;500;600;700&family=Lato:wght@900&family=Montserrat:wght@500;600;700;800;900&display=swap');
+
+.ck.ck-editor__main > .ck-editor__editable{
+    height: 180px !important;
+    border-color: #c4c4c452 !important;
+}
+
+.ck.ck-toolbar {
+    background: #e2dddd;
+    border: 1px solid #c4c4c452 !important;
+}
+
+.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+    box-shadow: none !important;
+}   
+
