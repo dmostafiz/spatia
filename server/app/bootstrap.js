@@ -1,17 +1,28 @@
-const prismaPlugin = require('./plugins/prisma')
+const { PrismaClient } = require('@prisma/client')
+// const { FastifyPluginAsync } = require('fastify')
+// const prismaPlugin = require('./plugins/prisma')
 
-const bootstrap = (app) => {
+const bootstrap = async (app) => {
     
-    app.register(require('@fastify/cors'), {
-        // put your options here
+    // app.register(require('@fastify/cors'), {
+    //     // put your options here
+    // })
+
+    const prisma = new PrismaClient({
+        log: ['error', 'warn'],
     })
 
-    app.register(prismaPlugin)
+
+    await prisma.$connect()
+
+    console.log('Mongo DB and prisma connected')
+    // Make Prisma Client available through the fastify server instance: server.prisma
+    server.decorate('prisma', prisma)
 
 
     app.addHook('onRequest', (req, reply, done) => {
 
-        req.prisma = app.prisma
+        req.prisma = prisma
 
         done()
     })
