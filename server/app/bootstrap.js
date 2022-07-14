@@ -26,7 +26,7 @@ const bootstrap = (app) => {
         secret: 'supersecret'
     })
 
-    app.addHook('onRequest', async (req, reply, done) => {
+    app.addHook('onRequest', (req, reply, done) => {
         // console.log('Request #########################: ', req.ip)
         req.app = app
 
