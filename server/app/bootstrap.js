@@ -21,25 +21,24 @@ const bootstrap = async (app) => {
 
         console.log('Mongo DB and prisma connected')
 
-        app.decorate('prisma', prisma)
-
-        app.addHook('onRequest', (req, reply, done) => {
-            req.prisma = prisma
-
-            done()
-        })
-
-        app.addHook('onClose', async (server) => {
-            server.log.info('disconnecting Prisma from DB')
-            await server.prisma.$disconnect()
-        })
-
     }
 
     catch (error) {
         console.log('MongoDB Error ################## ', error.message)
     }
 
+    app.decorate('prisma', prisma)
+
+    app.addHook('onRequest', (req, reply, done) => {
+        req.prisma = prisma
+
+        done()
+    })
+
+    app.addHook('onClose', async (server) => {
+        server.log.info('disconnecting Prisma from DB')
+        await server.prisma.$disconnect()
+    })
     // Mongo DB Connecttion Prisma
 
 
