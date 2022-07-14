@@ -1,11 +1,14 @@
+const prismaPlugin = require('./app/plugins/prisma')
+
 const app = require('fastify')({
     logger: true
 })
 
-// app.register(require('@fastify/cors'), {
-//     origin: '*',
-//     method: ['POST', 'GET', 'PUT', 'DELETE']
-// })
+app.register(require('@fastify/cors'), {
+    origin: '*'
+})
+
+app.register(prismaPlugin)
 
 // app.decorateRequest('user', 'Getter');
 

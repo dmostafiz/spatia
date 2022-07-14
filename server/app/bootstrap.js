@@ -1,5 +1,5 @@
-const prismaPlugin = require('./plugins/prisma')
 const { PrismaClient } = require('@prisma/client')
+// const prismaPlugin = require('./plugins/prisma')
 
 const bootstrap = async (app) => {
 
@@ -11,26 +11,26 @@ const bootstrap = async (app) => {
 
 
     // Mongo DB Connecttion Prisma
-    const prisma = new PrismaClient({
-        log: ['error', 'warn'],
-    })
+    // const prisma = new PrismaClient({
+    //     log: ['error', 'warn'],
+    // })
 
-    await prisma.$connect()
+    // await prisma.$connect()
 
-    console.log('Mongo DB and prisma connected')
+    // console.log('Mongo DB and prisma connected')
 
-    app.decorate('prisma', prisma)
+    // app.decorate('prisma', prisma)
 
-    app.addHook('onRequest', (req, reply, done) => {
-        req.prisma = prisma
+    // app.addHook('onRequest', (req, reply, done) => {
+    //     req.prisma = prisma
 
-        done()
-    })
+    //     done()
+    // })
 
-    app.addHook('onClose', async (server) => {
-        server.log.info('disconnecting Prisma from DB')
-        await server.prisma.$disconnect()
-    })
+    // app.addHook('onClose', async (server) => {
+    //     server.log.info('disconnecting Prisma from DB')
+    //     await server.prisma.$disconnect()
+    // })
     // Mongo DB Connecttion Prisma
 
 
