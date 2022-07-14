@@ -4,7 +4,7 @@ const { storeDiscussion, getOneDiscussion } = require('../controllers/Discussion
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
-async function router(app) {
+async function router(app, opt, done) {
 
     app.get('/signup', UserController.signup )
 
@@ -17,6 +17,10 @@ async function router(app) {
 
     app.get('/discussion/:discussionId', getOneDiscussion)
     app.post('/discussion/store', {onRequest: app.auth}, storeDiscussion)
+
+
+
+    await done()
 
 }
 
