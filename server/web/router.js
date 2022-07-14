@@ -20,7 +20,7 @@ async function router(app, opt, done) {
 
 
 
-    await done()
+    done()
 
 }
 

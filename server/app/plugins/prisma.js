@@ -2,7 +2,7 @@ const fp = require('fastify-plugin')
 const { FastifyPluginAsync } = require('fastify')
 const { PrismaClient } = require('@prisma/client')
 
-const prismaPlugin = fp(async (server, options, done) => {
+const prismaPlugin = async (server, options, done) => {
 
     const prisma = new PrismaClient({
         log: ['error', 'warn'],
@@ -23,8 +23,8 @@ const prismaPlugin = fp(async (server, options, done) => {
     })
 
 
-    await done()
+    done()
 
-})
+}
 
 module.exports = prismaPlugin
