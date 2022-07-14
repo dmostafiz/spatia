@@ -2,6 +2,10 @@ const app = require('fastify')({
     logger: true
 })
 
+app.register(require('@fastify/cors'), {
+    origin: '*',
+    method: ['POST', 'GET', 'PUT', 'DELETE']
+})
 
 // app.decorateRequest('user', 'Getter');
 
@@ -17,7 +21,6 @@ app.register(require('fastify-nextjs'), {
     app.next('/*')
 })
 
-app.register(require('@fastify/cors'), { origin: '*' })
 
 app.register(require('@fastify/cookie'), {
     secret: "4rgfdg234qwfr243rt34243rt344", // for cookies signature
