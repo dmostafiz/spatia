@@ -15,17 +15,9 @@ const bootstrap = async (app) => {
         log: ['error', 'warn'],
     })
 
-    try {
+    await prisma.$connect()
 
-        await prisma.$connect()
-
-        console.log('Mongo DB and prisma connected')
-
-    }
-
-    catch (error) {
-        console.log('MongoDB Error ################## ', error.message)
-    }
+    console.log('Mongo DB and prisma connected')
 
     app.decorate('prisma', prisma)
 
