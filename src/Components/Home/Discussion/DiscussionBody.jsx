@@ -4,7 +4,6 @@ import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
-import renderHTML from 'react-render-html';
 
 export default function DiscussionBody({ discussion }) {
     return (
