@@ -18,7 +18,6 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   axios.defaults.baseURL = process.env.ENVIRONMENT == 'development' ? 'http://localhost:3000/api' : 'https://dashboard.heroku.com/api'
-
   axios.defaults.headers.common['Authorization'] = useToken();
   axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 

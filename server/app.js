@@ -2,6 +2,7 @@ const app = require('fastify')({
     logger: true
 })
 
+
 // app.decorateRequest('user', 'Getter');
 
 const PORT = process.env.PORT || 3000
@@ -15,6 +16,8 @@ app.register(require('fastify-nextjs'), {
 }).after(() => {
     app.next('/*')
 })
+
+app.register(require('@fastify/cors'), { origin: '*' })
 
 app.register(require('@fastify/cookie'), {
     secret: "4rgfdg234qwfr243rt34243rt344", // for cookies signature
