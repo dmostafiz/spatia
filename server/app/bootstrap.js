@@ -9,14 +9,14 @@ const bootstrap = (app) => {
     app.register(prismaPlugin)
 
 
-    server.addHook('onRequest', (req, reply, done) => {
+    app.addHook('onRequest', (req, reply, done) => {
 
         req.prisma = app.prisma
 
         done()
     })
 
-    server.addHook('onClose', async (server) => {
+    app.addHook('onClose', async (server) => {
         server.log.info('disconnecting Prisma from DB')
         await server.prisma.$disconnect()
     })
