@@ -1,26 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Link, Stack, HStack, Icon, Text, SimpleGrid, VStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { BsTagFill, BsChatRightTextFill, BsStarFill } from 'react-icons/bs'
 import { HiOutlineUserCircle } from 'react-icons/hi'
 import demoItems from './demoItems';
+import dynamic from 'next/dynamic'
+import getCategories from '../../../Hooks/getCategories';
+
+const StartDiscussionModal = dynamic(() => import('../../Common/StartDiscussionModal'), {
+    ssr: false
+})
 
 
 export default function CategoryLeftSidebar({currentCategory}) {
 
+    const categories = getCategories()
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+
+        if (categories.length) {
+            setLoading(false)
+        }
+
+    }, [categories])
+
     return (
 
         <VStack alignItems='flex-start' gap={5}>
-            <NextLink href='/start_discussion'>
-                <Link href='/start_discussion'>
-                    <Box px={3} py={1} bg='#e6caaf' maxW={200} textAlign='center'>
-                        Start Discussion
-                    </Box>
-                </Link>
-            </NextLink>
+
+            <StartDiscussionModal />
+
             <SimpleGrid columns={{ base: 2, sm:2, md: 5, lg: 1 }} gap={{ base: 3, lg: 6 }} >
 
-                {demoItems.map((item, index) => {
+                {categories.map((item, index) => {
                     return <NextLink key={index} href={`/category/${item.slug}`}>
                         <Link href={`/category/${item.slug}`}>
                             <HStack alignItems='flex-start' bg={currentCategory.slug == item.slug ? '#ede7e0' : 'none'} p={currentCategory.slug == item.slug ? 1 : 0}>
@@ -31,8 +44,6 @@ export default function CategoryLeftSidebar({currentCategory}) {
                     </NextLink>
 
                 })}
-
-
 
 
             </SimpleGrid>

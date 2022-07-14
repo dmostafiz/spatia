@@ -3,20 +3,21 @@ import React from 'react'
 import { BsTagFill, BsChatRightTextFill, BsStarFill } from 'react-icons/bs'
 import { HiOutlineUserCircle } from 'react-icons/hi'
 import NextLink from 'next/link'
+// import StartDiscussionModal from '../Common/StartDiscussionModal'
+import dynamic from 'next/dynamic'
+
+const StartDiscussionModal = dynamic(() => import('../Common/StartDiscussionModal'), {
+    ssr: false,
+  })
 
 export default function TitleNavigation() {
     return (
         <Box fontWeight='bold' fontFamily='heading'>
 
-            <Stack direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }} gap={{sm: 2, lg: 5}} alignItems={{sm: 'start', lg: 'center'}} >
+            <Stack direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }} gap={{ sm: 2, lg: 5 }} alignItems={{ sm: 'start', lg: 'center' }} >
 
-                <NextLink href='/start_discussion'>
-                    <Link href='/start_discussion'>
-                        <Box px={3} py={1} bg='#e6caaf' maxW={200} textAlign='center'>
-                            Start Discussion
-                        </Box>
-                    </Link>
-                </NextLink>
+                <StartDiscussionModal /> 
+
 
                 <NextLink href='/all_discussions'>
                     <Link href='/all_discussions'>

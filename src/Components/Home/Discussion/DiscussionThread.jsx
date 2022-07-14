@@ -6,9 +6,10 @@ import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes, IoHeartCircle } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import { CgMailReply } from 'react-icons/cg'
+import truncate from 'truncate-html';
 
 
-export default function DiscussionThread() {
+export default function DiscussionThread({ discussion }) {
     return (
         <Box as='div' w='full' p={2} bg='#f6e3d1' rounded='sm' shadow>
             <Box p={3} bg='#fffefd' rounded='sm'>
@@ -19,7 +20,7 @@ export default function DiscussionThread() {
                     fontWeight='black'
                     lineHeight={1}
                 >
-                    Here's 5 productivity tips to boost your mood while working from home.
+                    {discussion.title}
                 </Text>
 
                 <HStack pt={2}>
@@ -34,7 +35,7 @@ export default function DiscussionThread() {
                 <HStack justify='space-between' pt={2} pb={3}>
                     <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
                         By <NextLink href='#'>
-                            <Link href='#' color='blue.400'>echiam08</Link>
+                            <Link href='#' color='blue.400'>{discussion?.author?.name}</Link>
                         </NextLink>
                     </Text>
 
@@ -49,18 +50,16 @@ export default function DiscussionThread() {
                 </HStack>
 
                 <Box p={3} bg='#f4edde' rounded='sm'>
-                    <Text fontSize={14} fontFamily={`'Assistant', sans-serif`} fontWeight='semibold'>
-                        After the 4 or 5 year structured programme in Secondary School, many students and parents may feel bewildered when it comes
-                        to pre-university education, especially since there are so many pathways available in today’s education landscape.
-                        Students may have certain preconceived notions about education in the Junior Colleges and Polytechnics, and may be at a loss as
-                        to how to make...
-                    </Text>
+                    <Text fontSize={14} fontFamily={`'Assistant', sans-serif`} fontWeight='semibold' dangerouslySetInnerHTML={{
+                        __html: truncate(discussion.content, 400)
+                    }}
+                    />
                 </Box>
 
                 <Box pt={2}>
                     <HStack justify='space-between'>
-                        <NextLink href={`/discussion/4er4f4457ddf346`}>
-                            <Link href={`/discussion/4er4f4457ddf346`}>
+                        <NextLink href={`/discussion/${discussion.id}`}>
+                            <Link href={`/discussion/${discussion.id}`}>
                                 <Text
                                     fontSize={14}
                                     fontWeight='bold'

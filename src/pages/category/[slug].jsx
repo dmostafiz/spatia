@@ -12,6 +12,8 @@ import { useRouter } from 'next/router';
 import demoItems from '../../Components/Home/Category/demoItems';
 import ContentLoader from '../../Components/Home/ContentLoader';
 import useClientAuth from '../../Hooks/useClientAuth';
+import axios from 'axios'
+import BigSpinner from './../../Components/Common/BigSpinner';
 
 export default function slug() {
 
@@ -20,14 +22,25 @@ export default function slug() {
 
   const router = useRouter();
   const [category, setCategory] = useState(null);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
 
+
     if (router.query.slug) {
 
-        const categoryItem = demoItems.find(item => item.slug == router.query.slug);
-        // console.log('Discussion Item: ', discussionItem)
-        setCategory(categoryItem);
+      async function getCatrgory() {
+
+        const res = await axios.get(`/category/${router.query.slug}`)
+
+        console.log('Category: ', res.data)
+        setCategory(res.data)
+
+        setLoading(false)
+      }
+
+      getCatrgory()
+
     }
 
   }, [router]);
@@ -63,7 +76,7 @@ export default function slug() {
                 <CategoryContentsTopbar />
 
                 {/* Contents Of Category */}
-                <CategoryContents /> 
+                {loading ? <BigSpinner /> : <CategoryContents discussions={category?.discussions} />}
 
               </VStack>
             </Box>

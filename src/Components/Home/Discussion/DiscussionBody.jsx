@@ -4,8 +4,9 @@ import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
+import renderHTML from 'react-render-html';
 
-export default function DiscussionBody() {
+export default function DiscussionBody({ discussion }) {
     return (
         <Box mb={4} px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
@@ -28,13 +29,15 @@ export default function DiscussionBody() {
 
                     <Box>
                         <Text
+                            as='div'
                             fontSize='14px'
                             fontFamily={`'Montserrat', sans-serif;`}
                             mb={4}
+                            dangerouslySetInnerHTML={{
+                                __html: discussion.content
+                            }}
                         >
-                            1. Set goals on a daily basis
-                            “Know what significant goals you want to work towards every day. I list a small number of high-value tasks or goals for the day.” –
-                            Rachel Haurwitz, CEO of Caribou Biosciences
+                            {/* {discussion.content} */}
                         </Text>
 
                         <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' gap={3}>

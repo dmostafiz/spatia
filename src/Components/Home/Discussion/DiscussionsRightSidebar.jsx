@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack } from '@chakra-ui/react';
 
-const CategoryRightSidebar = () => {
+const DiscussionsRightSidebar = () => {
   const [sliderValue, setSliderValue] = useState(50)
 
   const labelStyles = {
@@ -56,4 +56,4 @@ const CategoryRightSidebar = () => {
   )
 }
 
-export default CategoryRightSidebar
+export default DiscussionsRightSidebar

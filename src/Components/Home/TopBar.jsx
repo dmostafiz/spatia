@@ -35,28 +35,6 @@ export default function TopBar() {
               </Link>
             </NextLink>
 
-            <Show above='lg'>
-              <HStack gap={2} breakpoint={['xl']}>
-                <NextLink href='/'>
-                  <Link _hover={{
-                    color: 'link.hover',
-                    textDecoration: 'none'
-                  }}>
-                    Home
-                  </Link>
-                </NextLink>
-
-                <NextLink href='/test'>
-                  <Link _hover={{
-                    color: 'link.hover',
-                    textDecoration: 'none'
-                  }}>
-                    Test
-                  </Link>
-                </NextLink>
-              </HStack>
-            </Show>
-
           </HStack>
 
           <HStack gap={2}>

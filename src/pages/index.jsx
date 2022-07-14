@@ -10,6 +10,7 @@ export default function index() {
 
   return (
     <Layout title='Home'>
+      
       <Container maxW='container.xl'>
 
         <PageTitle

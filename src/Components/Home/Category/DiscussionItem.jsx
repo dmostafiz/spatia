@@ -1,6 +1,7 @@
 import React from 'react'
 import { GridItem, Box, Icon, HStack, Text, VStack, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import moment from 'moment';
 
 export default function DiscussionItem({ item }) {
     return (
@@ -43,14 +44,14 @@ export default function DiscussionItem({ item }) {
                             fontFamily={`'Assistant', sans-serif`}
                             letterSpacing={2}
                         >
-                            Lated Post | {item.post.createdAt}
+                            Lated Post | {moment(item.discussions?.[0]?.createdAt).calendar() }
                         </Text>
                         <Text
                             color='whiteAlpha.900'
                             fontFamily={`'Montserrat', sans-serif`}
                             fontSize='12px'
                         >
-                            {item.title}
+                            {item.discussions?.[0]?.title}
                         </Text>
                     </Box>
                 </Box>
