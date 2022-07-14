@@ -11,17 +11,16 @@ const prismaPlugin = async (server, options, done) => {
 
     console.log('Mongo DB and prisma connected')
     // Make Prisma Client available through the fastify server instance: server.prisma
-    await server.decorate('prisma', prisma)
+    server.decorate('prisma', prisma)
 
-    await server.addHook('onRequest', async (req, reply) => {
+    server.addHook('onRequest', async (req, reply) => {
         req.prisma = prisma
     })
 
     server.addHook('onClose', async (server) => {
         server.log.info('disconnecting Prisma from DB')
-        await server.prisma.$disconnect()
+        await prisma.$disconnect()
     })
-
 
     done()
 
