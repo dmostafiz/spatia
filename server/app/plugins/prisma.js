@@ -13,8 +13,10 @@ const prismaPlugin = async (server, options, done) => {
     // Make Prisma Client available through the fastify server instance: server.prisma
     server.decorate('prisma', prisma)
 
-    server.addHook('onRequest', async (req, reply) => {
+    server.addHook('onRequest', (req, reply, done) => {
         req.prisma = prisma
+
+        done()
     })
 
     server.addHook('onClose', async (server) => {
