@@ -9,6 +9,19 @@ const bootstrap = (app) => {
     app.register(prismaPlugin)
 
 
+    server.addHook('onRequest', (req, reply, done) => {
+
+        req.prisma = app.prisma
+
+        done()
+    })
+
+    server.addHook('onClose', async (server) => {
+        server.log.info('disconnecting Prisma from DB')
+        await server.prisma.$disconnect()
+    })
+
+
     app.register(require('@fastify/jwt'), {
         secret: 'supersecret'
     })
