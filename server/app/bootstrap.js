@@ -13,9 +13,11 @@ const bootstrap = (app) => {
         secret: 'supersecret'
     })
 
-    app.addHook('onRequest', async (req, reply) => {
+    app.addHook('onRequest', async (req, reply, done) => {
         // console.log('Request #########################: ', req.ip)
         req.app = app
+
+        done()
     })
 
     app.decorate('auth', async (req, reply) => {
