@@ -1,7 +1,7 @@
 import React from 'react'
 import PageTitle from '../../Components/Home/PageTitle';
 import Layout from '../../Components/Home/Layout';
-import { Container, Box, Flex, VStack, Show } from '@chakra-ui/react';
+import { Container, Box, Flex, VStack, Stack, Show, Skeleton } from '@chakra-ui/react';
 import CategoryLeftSidebar from '../../Components/Home/Category/CategoryLeftSidebar';
 import CategoryRightSidebar from '../../Components/Home/Category/CategoryRightSidebar';
 import CategoryContents from '../../Components/Home/Category/CategoryContents';
@@ -49,7 +49,12 @@ export default function slug() {
           title={category.data.title}
           subtitle={category.data.description}
         // navigation={<NavigationIndata />}
-        /> : <Box h={117}></Box>}
+        /> : <Stack pb={5}>
+        <Skeleton height='50px' maxW='500px'/>
+        <Skeleton height='20px' />
+        <Skeleton height='20px' maxW='230px' />
+
+      </Stack>}
 
 
         <Flex gap={5} direction={{ base: 'column', lg: 'row' }}>
