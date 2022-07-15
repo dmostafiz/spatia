@@ -38,7 +38,7 @@ export default function DiscussionItem({ item }) {
                     <Box>
                         <Text
                             color='#c8783f'
-                            fontSize={16}
+                            fontSize='14px'
                             fontWeight='semibold'
                             textTransform='uppercase'
                             fontFamily={`'Assistant', sans-serif`}

@@ -9,15 +9,13 @@ import { BiNetworkChart } from 'react-icons/bi'
 import { SiMusicbrainz } from 'react-icons/si'
 import { TbMessages } from 'react-icons/tb'
 import useSWR from 'swr'
+import swrFetcher from './swrFetcher'
 
 export default function getCategories() {
 
     const [categories, seCategories] = useState([])
 
-    const {data, error} = useSWR('/category/get', async () => {
-        const ress = await axios.get('/category/get')
-        return ress.data
-    })
+    const {data, error} = useSWR('/category/get', swrFetcher)
 
     // console.log('SWR category data: ', data)
     // console.log('SWR category error: ', error)

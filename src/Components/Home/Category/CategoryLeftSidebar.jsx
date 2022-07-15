@@ -3,15 +3,22 @@ import { Link, HStack, Icon, Text, SimpleGrid, VStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import dynamic from 'next/dynamic'
 import getCategories from '../../../Hooks/getCategories';
+import { BsTagFill, BsChatRightTextFill, BsStarFill } from 'react-icons/bs'
+import { HiOutlineUserCircle } from 'react-icons/hi'
+import { useRouter } from 'next/router'
 
 const StartDiscussionModal = dynamic(() => import('../../Common/StartDiscussionModal'), {
     ssr: false
 })
 
-export default function CategoryLeftSidebar({currentCategory}) {
+export default function CategoryLeftSidebar({ currentCategory }) {
+
+    const router = useRouter()
 
     const categories = getCategories()
     const [loading, setLoading] = useState(true)
+
+    // console.log('router ', router)
 
     useEffect(() => {
 
@@ -27,7 +34,8 @@ export default function CategoryLeftSidebar({currentCategory}) {
 
             <StartDiscussionModal />
 
-            <SimpleGrid columns={{ base: 2, sm:2, md: 5, lg: 1 }} gap={{ base: 3, lg: 6 }} >
+            <SimpleGrid columns={{ base: 2, sm: 2, md: 5, lg: 1 }} gap={{ base: 3, lg: 6 }} >
+
 
                 {categories.map((item, index) => {
                     return <NextLink key={index} href={`/category/${item.slug}`}>

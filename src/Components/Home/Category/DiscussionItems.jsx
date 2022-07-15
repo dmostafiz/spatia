@@ -28,9 +28,7 @@ export default function DiscussionItems() {
                         return item.discussions.length ? <DiscussionItem item={item} key={index} /> : ''
                     })}
                 </SimpleGrid>
-
             }
-
 
         </Box>
     )

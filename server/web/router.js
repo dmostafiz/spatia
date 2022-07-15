@@ -1,10 +1,10 @@
 const UserController = require('../controllers/UserController')
-const {getCategories, getOneCategory} = require('../controllers/CategoryController')
+const {getCategories, getOneCategory, getCategoryDiscussions} = require('../controllers/CategoryController')
 const { storeDiscussion, getOneDiscussion } = require('../controllers/DiscussionController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
-async function router(app, opt, done) {
+async function router(app) {
 
     app.get('/signup', UserController.signup )
 
@@ -14,13 +14,10 @@ async function router(app, opt, done) {
 
     app.get('/category/get', getCategories)
     app.get('/category/:slug', getOneCategory)
+    app.get('/category/discussions/:slug', getCategoryDiscussions)
 
     app.get('/discussion/:discussionId', getOneDiscussion)
     app.post('/discussion/store', {onRequest: app.auth}, storeDiscussion)
-
-
-
-    done()
 
 }
 

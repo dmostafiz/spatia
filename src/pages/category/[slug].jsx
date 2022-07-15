@@ -13,32 +13,44 @@ import useClientAuth from '../../Hooks/useClientAuth';
 import axios from 'axios'
 import BigSpinner from './../../Components/Common/BigSpinner';
 import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite'
+import swrFetcher from '../../Hooks/swrFetcher';
+import { data } from 'autoprefixer';
+
+
+// const getKey = (pageIndex, previousPageData) => {
+//   if (previousPageData && !previousPageData.length) return null // reached the end
+//   return `/category/${router.query?.slug}?page=${pageIndex}&limit=10`  // SWR key
+// }
 
 export default function slug() {
 
 
-  const user = useClientAuth()
+  // const user = useClientAuth()
 
   const router = useRouter();
 
-  const { data, error } = useSWR(`/category/${router.query?.slug}`, async () => {
-    const res = await axios.get(`/category/${router.query?.slug}`)
-    // setLoading(false)
-    return res.data
-  })
+  // const [prevCat, setPrevCat] = useState()
+
+  const category = useSWR(`/category/${router.query?.slug}`, swrFetcher)
+  const discussions = useSWR(`/category/discussions/${router.query?.slug}`, swrFetcher)
+  // const { data, size, setSize } = useSWRInfinite(getKey, swrFetcher)
+
+  // console.log('Just ategory: ', data)
+  // console.log('Discussions from category: ', discussions)
 
 
   return (
-    <Layout title={data?.title}>
+    <Layout title={category.data?.title}>
 
       <Container maxW='container.xl'>
 
-
-        <PageTitle
-          title={data?.title}
-          subtitle={data?.description}
+        { category.data ? <PageTitle
+          title={category.data.title}
+          subtitle={category.data.description}
         // navigation={<NavigationIndata />}
-        />
+        /> : <Box h={117}></Box>}
+
 
         <Flex gap={5} direction={{ base: 'column', lg: 'row' }}>
 
@@ -46,7 +58,7 @@ export default function slug() {
             <StickyBox offsetTop={110}>
 
               {/* Category left sidebar */}
-              <CategoryLeftSidebar currentCategory={data} />
+              <CategoryLeftSidebar currentCategory={category.data} />
 
             </StickyBox>
           </Box>
@@ -58,7 +70,9 @@ export default function slug() {
               <CategoryContentsTopbar />
 
               {/* Contents Of Category */}
-              {!data ? <BigSpinner /> : <CategoryContents discussions={data?.discussions} />}
+              {!discussions.data && <BigSpinner />}
+
+              {discussions.data && <CategoryContents discussions={discussions.data} /> }
 
             </VStack>
           </Box>
@@ -69,7 +83,7 @@ export default function slug() {
               <StickyBox offsetTop={250}>
 
                 {/* Right sidebar (Scroll navigator) */}
-                {data && <CategoryRightSidebar />}
+                {discussions.data?.length ? <CategoryRightSidebar /> : <></>}
 
               </StickyBox>
             </Box>
