@@ -34,11 +34,16 @@ model Category {
   createdAt DateTime @default(now())
 }
 
+type Tags {
+  name String
+}
+
 model Discussion {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   content String
 
+  tags Tags[]
   replies Reply[]
 
   author   User   @relation(name: "posts", fields: [authorId], references: [id])

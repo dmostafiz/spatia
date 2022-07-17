@@ -8,6 +8,7 @@ import StickyBox from 'react-sticky-box';
 import DiscussionsRightSidebar from '../../Components/Home/Discussion/DiscussionsRightSidebar';
 import DiscussionReplyForm from '../../Components/Home/Discussion/DiscussionReplyForm';
 import axios from 'axios'
+import { HiOutlineLightBulb } from 'react-icons/hi';
 
 function Discussion({ discussion }) {
 
@@ -25,9 +26,16 @@ function Discussion({ discussion }) {
                             <Box p={4} bg='#fffefd' rounded='sm'>
 
                                 {/* Tags */}
-                                <Box pb={4} fontFamily='heading'>
-                                    <DiscussionTags />
-                                </Box>
+                                {discussion.tags.length ? <HStack pb={4} fontFamily='heading'>
+                                    {discussion.tags.map((tag, index) => {
+                                        return <Box key={index} as='button' bg='#f4edde' px={2} py={1}>
+                                            <HStack>
+                                                <Icon as={HiOutlineLightBulb} />
+                                                <Text fontSize={10} fontWeight='bold'>{tag.name}</Text>
+                                            </HStack>
+                                        </Box>
+                                    })}
+                                </HStack> : <></>}
 
                                 {/* Title */}
                                 <Text as='h1' fontSize={{ base: '20px', sm: '24px', md: '50px' }} fontWeight='bold' lineHeight='1' color='#000000'>

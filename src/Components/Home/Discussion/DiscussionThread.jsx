@@ -12,7 +12,7 @@ import truncate from 'truncate-html';
 export default function DiscussionThread({ discussion }) {
     return (
         <Box as='div' w='full' p={2} bg='#f6e3d1' rounded='sm' shadow>
-            <Box p={3} bg='#fffefd' rounded='sm'>
+            <Box w='full' p={3} bg='#fffefd' rounded='sm'>
 
                 <Text
                     as='h1'
@@ -23,14 +23,17 @@ export default function DiscussionThread({ discussion }) {
                     {discussion.title}
                 </Text>
 
-                <HStack pt={2}>
-                    <Box as='button' bg='#f4edde' px={2} py={1}>
-                        <HStack>
-                            <Icon as={HiOutlineLightBulb} />
-                            <Text fontSize={10} fontWeight='bold'>Productivity Tips</Text>
-                        </HStack>
-                    </Box>
-                </HStack>
+                {discussion.tags?.length ? <HStack pt={2}>
+                    {discussion.tags.map((tag, index) => {
+                        return <Box key={index} as='button' bg='#f4edde' px={2} py={1}>
+                            <HStack>
+                                <Icon as={HiOutlineLightBulb} />
+                                <Text fontSize={10} fontWeight='bold'>{tag.name}</Text>
+                            </HStack>
+                        </Box>
+                    })}
+                </HStack> : <></>}
+
 
                 <HStack justify='space-between' pt={2} pb={3}>
                     <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
@@ -49,9 +52,12 @@ export default function DiscussionThread({ discussion }) {
                     </Flex>
                 </HStack>
 
-                <Box p={3} bg='#f4edde' rounded='sm'>
-                    <Text fontSize={14} fontFamily={`'Assistant', sans-serif`} fontWeight='semibold' dangerouslySetInnerHTML={{
-                        __html: truncate(discussion.content, 400)
+                <Box w='full' p={3} bg='#f4edde' rounded='sm'>
+                    <Text as='div' w='full' fontSize={14} fontFamily={`'Assistant', sans-serif`} fontWeight='semibold' dangerouslySetInnerHTML={{
+                        __html: truncate(discussion.content, 400, {
+                            keepWhitespaces: true,
+                            stripTags: true
+                        })
                     }}
                     />
                 </Box>

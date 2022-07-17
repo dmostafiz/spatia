@@ -7,6 +7,8 @@ import useToken from './../Hooks/useToken';
 // import { useEffect } from 'react';
 import NextNProgress from "nextjs-progressbar";
 
+import { MantineProvider } from '@mantine/core';
+
 import {
   useQuery,
   useMutation,
@@ -32,22 +34,35 @@ function MyApp({ Component, pageProps }) {
   axios.defaults.headers.common['Authorization'] = useToken();
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-  return <ChakraProvider theme={appTheme}>
-    <NextNProgress
-      color="#604a38"
-      startPosition={0.3}
-      stopDelayMs={200}
-      height={4}
-      showOnShallow={true}
-      options={{
-        showSpinner: false
-      }}
-    />
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-    </QueryClientProvider>
-  </ChakraProvider>
+  return <MantineProvider
+    withGlobalStyles
+    withNormalizeCSS
+    theme={{
+      /** Put your mantine theme override here */
+      colorScheme: 'light',
+      fontFamily: 'Josefin Sans, sans-serif',
+      headings: { fontFamily: 'Josefin Sans, sans-serif', },
+      body: { fontFamily: 'Josefin Sans, sans-serif', },
+    }}
+  >
+    <ChakraProvider theme={appTheme}>
+      <NextNProgress
+        color="#604a38"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={4}
+        showOnShallow={true}
+        options={{
+          showSpinner: false
+        }}
+      />
+      <QueryClientProvider client={queryClient}>
+
+        <Component {...pageProps} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      </QueryClientProvider>
+    </ChakraProvider>
+  </MantineProvider>
 }
 
 export default MyApp

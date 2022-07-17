@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
-const {getCategories, getOneCategory, getCategoryDiscussions} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion } = require('../controllers/DiscussionController')
+const {getCategories, getOneCategory} = require('../controllers/CategoryController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions } = require('../controllers/DiscussionController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 

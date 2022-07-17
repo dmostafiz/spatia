@@ -2,17 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon } from '@chakra-ui/react';
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
+import { Button, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
 import SelectCategoryModal from './SelectCategoryModal';
 import { useToast } from '@chakra-ui/react'
 import useToken from '../../Hooks/useToken';
 import axios from 'axios'
 import { useRouter } from 'next/router';
+import { MultiSelect } from '@mantine/core';
+import { Modal, Group } from '@mantine/core';
+import { RichTextEditor } from '@mantine/rte';
+import { ActionIcon } from '@mantine/core';
+import { X } from 'tabler-icons-react';
 
 export default function StartDiscussionModal() {
 
     const router = useRouter()
     const toast = useToast()
+    const [opened, setOpened] = useState(false);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [title, setTitle] = useState('')
@@ -20,6 +26,8 @@ export default function StartDiscussionModal() {
     const [category, setCategory] = useState(null)
 
     const [loading, setLoading] = useState(false)
+
+    const [tags, setTags] = useState([]);
     // const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
@@ -29,14 +37,14 @@ export default function StartDiscussionModal() {
 
             async function getCategory() {
                 const res = await axios.get(`/category/${router.query.slug}`)
-                if(res.data){
+                if (res.data) {
                     setCategory(res.data)
                 }
             }
 
             getCategory()
         }
-    
+
 
     }, [router.query.slug])
 
@@ -58,8 +66,11 @@ export default function StartDiscussionModal() {
         const data = {
             title: title,
             content: content,
-            categoryId: category.id
+            categoryId: category.id,
+            tags
         }
+
+ 
 
         // console.log('Coooooooooooooooookie: ', useCookie())
 
@@ -95,98 +106,117 @@ export default function StartDiscussionModal() {
             })
         }
 
-
         setLoading(false)
-
     }
 
     return (
         <>
-            <Button onClick={onOpen} bg='#e6caaf' rounded='none'>
+            <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='none'>
                 Start Discussion
             </Button>
 
             <Modal
-                closeOnOverlayClick={false}
-                size='3xl'
-                isOpen={isOpen}
-                onClose={onClose}
-                isCentered
+                overlayColor='black'
+                closeOnEscape={true}
+                overlayBlur={3}
+                overlayOpacity={.5}
+                closeOnClickOutside={false}
+                withCloseButton={false}
+                opened={opened}
+                onClose={() => setOpened(false)}
+                // title={<Text fontWeight='bold' fontSize={20}>Write your discussion content</Text>}
+                size='xl'
+                centered
+                radius={0}
+                zIndex={999}
             >
+                {/* Modal content */}
+                <ActionIcon
+                    style={{
+                        position: 'absolute',
+                        top: -22,
+                        right: -22
+                    }}
+                    variant="transparent"
+                    onClick={() => setOpened(false)}
+                >
+                    <X size={18} color='#f4edde' />
+                </ActionIcon>
 
-                <ModalOverlay
-                    bg='blackAlpha.700'
-                    backdropFilter='blur(5px)'
+                <Flex w='100%' gap={2} mb={2}>
+                    <Box flex='1' >
+                        <Input
+                            data-autofocus
+                            flex='1'
+                            _focus={{
+                                border: '1px solid #c4c4c452',
+                                ring: '0px'
+                            }}
+                            placeholder='Discussion Title' rounded='none'
+                            onChange={e => setTitle(e.target.value)}
+                            value={title}
+                        />
+                    </Box>
+                    <Box>
+                        <SelectCategoryModal setCategory={setCategory} />
+                    </Box>
+                </Flex>
+
+
+                {category && <Box py={2}>
+                    <Flex direction='row' gap={1} alignItems='center'>
+                        <Icon fontSize='22px' as={category.icon} />
+                        <Text>{category.title}</Text>
+                    </Flex>
+                </Box>}
+
+                <RichTextEditor
+                    stickyOffset={-50}
+                    style={{ minHeight: 300 }}
+                    radius={0}
+                    value={content}
+                    onChange={setContent}
+                    placeholder='Start your discussion...'
                 />
 
-                <ModalContent rounded='none'>
-                    <ModalHeader py={6}>
+                {/* <CKEditor
+                    zIndex={99999}
+                    config={{
+                        minHeight: '400px',
+                        placeholder: "Start your discussion...",
+                    }}
+                    style={{ height: '300px' }}
+                    editor={ClassicEditor}
+                    data={content}
+                    onReady={editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log('Editor is ready to use!', editor);
+                    }}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setContent(data)
+                        console.log({ event, editor, data });
+                    }}
 
-                        <Text>Start Discussion</Text>
-
-                    </ModalHeader>
-
-                    <ModalCloseButton rounded='full' />
-                    {/* <ModalCloseButton /> */}
-                    <ModalBody py={0}>
-
-                        <Flex w='100%' gap={2} mb={2}>
-                            <Box flex='1' >
-                                <Input
-                                    flex='1'
-                                    _focus={{
-                                        border: '1px solid #c4c4c452',
-                                        ring: '0px'
-                                    }}
-                                    placeholder='Discussion Title' rounded='none'
-                                    onChange={e => setTitle(e.target.value)}
-                                    value={title}
-                                />
-                            </Box>
-                            <Box>
-                                <SelectCategoryModal setCategory={setCategory} />
-                            </Box>
-                        </Flex>
-
-
-                        {category && <Box py={2}>
-                            <Flex direction='row' gap={1} alignItems='center'>
-                                <Icon fontSize='22px' as={category.icon} />
-                                <Text>{category.title}</Text>
-                            </Flex>
-                        </Box>}
-
-
-                        <CKEditor
-                            config={{
-                                minHeight: '400px',
-                                placeholder: "Start your discussion..."
-                            }}
-                            style={{ height: '300px' }}
-                            editor={ClassicEditor}
-                            data={content}
-                            onReady={editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log('Editor is ready to use!', editor);
-                            }}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                setContent(data)
-                                console.log({ event, editor, data });
-                            }}
-                        // onBlur={(event, editor) => {
-                        //     console.log('Blur.', editor);
-                        // }}
-                        // onFocus={(event, editor) => {
-                        //     console.log('Focus.', editor);
-                        // }}
-                        />
-
-
-
-                    </ModalBody>
-
-                    <ModalFooter as='flex' w='100%' gap={2}>
+                /> */}
+                <Box pt={3}>
+                    <Text fontSize='12px' fontFamily=''>You can add 4 tags maximum</Text>
+                    <Flex gap={2}>
+                        <Box flex='1'>
+                            <MultiSelect
+                                limit={4}
+                                zIndex={99999}
+                                // radius='xl'
+                                padding={5}
+                                data={tags}
+                                placeholder="Discussion tags"
+                                searchable
+                                creatable
+                                maxSelectedValues={4}
+                                getCreateLabel={(query) => `+ Create ${query}`}
+                                onCreate={(query) => setTags((current) => [...current, query])}
+                            />
+                        </Box>
 
                         <Button
                             isLoading={loading}
@@ -199,12 +229,10 @@ export default function StartDiscussionModal() {
                         >
                             Post Discussion
                         </Button>
+                    </Flex>
+                </Box>
 
-                    </ModalFooter>
-                </ModalContent>
             </Modal>
-
-
         </>
     )
 }
