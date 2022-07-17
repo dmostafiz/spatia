@@ -109,20 +109,27 @@ export default function private_discussion() {
               </VStack>
 
 
-              <Box w='full'>
+              <Box w='full' pt={2}>
 
                 {hasNextPage &&
-                  <div ref={ref}></div>
+                  <Box ref={ref} h='10px'></Box>
                 }
 
                 <Box w='full'>
-                  {isFetchingNextPage ? <Stack pb={5}>
-                    <Skeleton height='100px' />
-                    <Skeleton height='100px' />
-                  </Stack> : <></>}
+                  {isFetchingNextPage ? <Box w='full' p={1}>
+                    <Skeleton height='15px' mb={2} />
+                    <Skeleton height='15px' mb={2} />
+                    <Skeleton height='15px' mb={2} />
+                    <Skeleton height='15px' mb={2} />
+                    <Skeleton height='15px' mb={2} />
+                    <Skeleton height='15px' mb={2} />
+                    <Skeleton height='15px' mb={2} />
+                  </Box> : <></>}
                 </Box>
 
               </Box>
+
+
             </VStack>
           </Box>
 
