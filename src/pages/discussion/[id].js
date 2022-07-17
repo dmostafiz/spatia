@@ -1,16 +1,22 @@
 import { Avatar, Box, Container, Flex, HStack, Icon, Link, Show, Spacer, Stack, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Layout from '../../Components/Home/Layout'
-import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
+// import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
 import DiscussionBody from '../../Components/Home/Discussion/DiscussionBody';
 import DiscussionReplyThread from '../../Components/Home/Discussion/DiscussionReplyThread';
-import StickyBox from 'react-sticky-box';
-import DiscussionsRightSidebar from '../../Components/Home/Discussion/DiscussionsRightSidebar';
+// import StickyBox from 'react-sticky-box';
+// import DiscussionsRightSidebar from '../../Components/Home/Discussion/DiscussionsRightSidebar';
 import DiscussionReplyForm from '../../Components/Home/Discussion/DiscussionReplyForm';
 import axios from 'axios'
 import { HiOutlineLightBulb } from 'react-icons/hi';
 
 function Discussion({ discussion }) {
+
+    const [reply, setReply] = useState('')
+
+    useEffect(() => {
+        console.log('Reply Content: ', reply)
+    }, [reply])
 
     // console.log('Single Discussion: ', discussion)
     return (
@@ -53,25 +59,25 @@ function Discussion({ discussion }) {
                         <VStack>
 
                             <DiscussionReplyThread data={{ name: 'Ali Ahamed' }} />
-                            <DiscussionReplyThread data={{ name: 'Robiul Sardar' }} />
+                            {/* <DiscussionReplyThread data={{ name: 'Robiul Sardar' }} />
                             <DiscussionReplyThread data={{ name: 'Habib Molla' }} />
                             <DiscussionReplyThread data={{ name: 'Helal Haoladar' }} />
                             <DiscussionReplyThread data={{ name: 'Mostafiz Rahaman' }} />
                             <DiscussionReplyThread data={{ name: 'Mofiz Mia' }} />
-                            <DiscussionReplyThread data={{ name: 'Rai Saaaaaa' }} />
+                            <DiscussionReplyThread data={{ name: 'Rai Saaaaaa' }} /> */}
 
                             <Spacer />
                             <Spacer />
 
 
-                            <DiscussionReplyForm data={{ name: 'Card Reply' }} />
+                            <DiscussionReplyForm reply={reply} setReply={setReply} data={{ name: 'Card Reply' }} />
 
 
                         </VStack>
 
                     </Box>
 
-                    <Show above='md'>
+                    {/* <Show above='md'>
                         <Box w={200} minH='100vh' overflowWrap='hidden'>
                             <StickyBox offsetTop={250}>
 
@@ -79,7 +85,7 @@ function Discussion({ discussion }) {
 
                             </StickyBox>
                         </Box>
-                    </Show>
+                    </Show> */}
 
                 </Flex>
 

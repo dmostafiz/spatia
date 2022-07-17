@@ -201,12 +201,12 @@ export default function StartDiscussionModal() {
                 /> */}
                 <Box pt={3}>
                     <Text fontSize='12px' fontFamily=''>You can add 4 tags maximum</Text>
-                    <Flex gap={2}>
+                    <Flex gap={5}>
                         <Box flex='1'>
                             <MultiSelect
                                 limit={4}
                                 zIndex={99999}
-                                // radius='xl'
+                                radius='xl'
                                 padding={5}
                                 data={tags}
                                 placeholder="Discussion tags"
