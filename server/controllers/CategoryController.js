@@ -52,7 +52,7 @@ exports.getCategoryDiscussions = async (req, reply) => {
 
     try {
 
-        console.log('Category Discussions start ################################# ')
+        console.log('Category Discussions query string ################################# ', req.query.cursor)
 
 
         const whereQuery = req.params.slug == 'all' 
@@ -65,19 +65,29 @@ exports.getCategoryDiscussions = async (req, reply) => {
             }
         }
 
+
+        const limit = 1
+        const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
+        
         const discussions = await req.prisma.discussion.findMany({
             where: {
                 ...whereQuery
             },
-            // skip: 0,
-            // take: parseInt(req.params.page),
+            skip: cursor,
+            take: limit,
+            // cursor: cursorObj,
             orderBy: { id: 'desc' },
             include: {
                 category: true
             }
         })
 
-        console.log('Category Discussions end ################################# ', discussions)
+
+        // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
+
+        // console.log('Category Discussions end ################################# ', discussions)
+        // console.log('Discussion Cursor last ################################# ',nextCursor)
+        
         return reply.send(discussions)
 
     } catch (error) {

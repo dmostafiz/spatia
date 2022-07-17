@@ -7,6 +7,17 @@ import useToken from './../Hooks/useToken';
 // import { useEffect } from 'react';
 import NextNProgress from "nextjs-progressbar";
 
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+const queryClient = new QueryClient()
+
 function MyApp({ Component, pageProps }) {
 
 
@@ -32,7 +43,10 @@ function MyApp({ Component, pageProps }) {
         showSpinner: false
       }}
     />
-    <Component {...pageProps} />
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
   </ChakraProvider>
 }
 

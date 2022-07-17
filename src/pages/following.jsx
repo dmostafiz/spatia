@@ -1,43 +1,60 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PageTitle from '../Components/Home/PageTitle';
 import Layout from '../Components/Home/Layout';
-import { Container, Box, Flex, VStack, Show } from '@chakra-ui/react';
+import { Container, Box, Flex, VStack, Stack, Skeleton, Text, Center } from '@chakra-ui/react';
 import CategoryLeftSidebar from '../Components/Home/Category/CategoryLeftSidebar';
-import CategoryRightSidebar from '../Components/Home/Category/CategoryRightSidebar';
-import CategoryContents from '../Components/Home/Category/CategoryContents';
 import CategoryContentsTopbar from '../Components/Home/Category/CategoryContentsTopbar';
 import StickyBox from "react-sticky-box"
 import { useRouter } from 'next/router';
-import ContentLoader from '../Components/Home/ContentLoader';
-import useClientAuth from '../Hooks/useClientAuth';
 import axios from 'axios'
 import BigSpinner from '../Components/Common/BigSpinner';
-import useSWR from 'swr';
-import useSWRInfinite from 'swr/infinite'
-import swrFetcher from '../Hooks/swrFetcher';
-import { data } from 'autoprefixer';
+import { useInView } from 'react-intersection-observer';
+import DiscussionThread from './../Components/Home/Discussion/DiscussionThread';
+import dynamic from 'next/dynamic'
+import { useInfiniteQuery } from 'react-query';
 
-
-// const getKey = (pageIndex, previousPageData) => {
-//   if (previousPageData && !previousPageData.length) return null // reached the end
-//   return `/category/${router.query?.slug}?page=${pageIndex}&limit=10`  // SWR key
-// }
+const StartDiscussionModal = dynamic(() => import('./../Components/Common/StartDiscussionModal'), {
+  ssr: false
+})
 
 export default function following() {
 
-
-  // const user = useClientAuth()
-
   const router = useRouter();
 
-  // const [prevCat, setPrevCat] = useState()
+  const { ref, inView } = useInView();
 
-//   const category = useSWR(`/category/all`, swrFetcher)
-  const discussions = useSWR(`/category/discussions/all`, swrFetcher)
-  // const { data, size, setSize } = useSWRInfinite(getKey, swrFetcher)
+  // const discussions = useSWR(`/category/discussions/all`, swrFetcher)
 
-  // console.log('Just ategory: ', data)
-  // console.log('Discussions from category: ', discussions)
+  const {
+    isLoading,
+    isError,
+    data,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage
+  } = useInfiniteQuery(['discussions', router], async (params) => {
+
+    const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
+    const res = await axios.get(`/category/discussions/all?cursor=${passCursor}`)
+    return res.data
+
+  },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+
+        return lastPage.length > 0 ? allPages.flat().length : false
+      }
+    }
+  )
+
+  useEffect(() => {
+
+    if (hasNextPage) {
+      console.log('loading more')
+      fetchNextPage(data?.pages.flat().length)
+    }
+
+  }, [inView])
 
 
   return (
@@ -45,8 +62,8 @@ export default function following() {
 
       <Container maxW='container.xl'>
 
-         <PageTitle
-          title="Following"
+        <PageTitle
+          title="All Discussions"
         //   subtitle={category.data.description}
         // navigation={<NavigationIndata />}
         />
@@ -70,24 +87,56 @@ export default function following() {
               <CategoryContentsTopbar />
 
               {/* Contents Of Category */}
-              {!discussions.data && <BigSpinner />}
+              {isLoading && <BigSpinner />}
 
-              {discussions.data && <CategoryContents discussions={discussions.data} /> }
+              {/* {discussions.data && <CategoryContents discussions={discussions.data} />} */}
 
+              <VStack gap={3} as='section' w='full' pt={3}>
+
+                {(!isError && data?.pages?.flat().length) ? data?.pages?.flat()?.map((discussion, index) => {
+                  return <DiscussionThread key={index} discussion={discussion} />
+                }) :
+
+                  !isLoading &&
+                  <Center w='full' height='300px'>
+                    <VStack>
+                      <Text fontSize='22px'>No discussions found.</Text>
+                      <StartDiscussionModal />
+                    </VStack>
+                  </Center>
+
+                }
+              </VStack>
+
+
+              <Box w='full'>
+
+                {hasNextPage &&
+                  <div ref={ref}></div>
+                }
+
+                <Box w='full'>
+                  {isFetchingNextPage ? <Stack pb={5}>
+                    <Skeleton height='100px' />
+                    <Skeleton height='100px' />
+                  </Stack> : <></>}
+                </Box>
+
+              </Box>
             </VStack>
           </Box>
 
 
-          <Show above='md'>
+
+          {/* <Show above='md'>
             <Box w={200} minH='100vh' overflowWrap='hidden'>
               <StickyBox offsetTop={250}>
 
-                {/* Right sidebar (Scroll navigator) */}
                 {discussions.data?.length ? <CategoryRightSidebar /> : <></>}
 
               </StickyBox>
             </Box>
-          </Show>
+          </Show> */}
 
         </Flex>
 

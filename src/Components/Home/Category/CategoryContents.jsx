@@ -25,23 +25,13 @@ export default function CategoryContents({ discussions }) {
 
     return (
 
-        <VStack gap={3} as='section' w='full' pt={3}>
-
-
-            {discussions.length
-
-                ? discussions.map((discussion, index) => {
+        <>
+            {
+                discussions.map((discussion, index) => {
                     return <DiscussionThread key={index} discussion={discussion} />
                 })
-
-                : <Center w='full' height='300px'>
-                    <VStack>
-                        <Text fontSize='22px'>No discussions found in this category.</Text>
-                        <StartDiscussionModal />
-                    </VStack>
-                </Center>
             }
 
-        </VStack>
+        </>
     )
 }
