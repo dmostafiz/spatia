@@ -66,7 +66,7 @@ exports.getCategoryDiscussions = async (req, reply) => {
         }
 
 
-        const limit = 1
+        const limit = 2
         const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
         
         const discussions = await req.prisma.discussion.findMany({
