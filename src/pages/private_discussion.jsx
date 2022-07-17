@@ -49,10 +49,9 @@ export default function private_discussion() {
 
   useEffect(() => {
 
-    if (hasNextPage) {
-      console.log('loading more')
-      fetchNextPage(data?.pages.flat().length)
-    }
+
+    fetchNextPage(data?.pages.flat().length)
+
 
   }, [inView])
 
@@ -111,16 +110,8 @@ export default function private_discussion() {
 
               <Box w='full' pt={2}>
 
-                {hasNextPage &&
-                  <Box ref={ref} h='10px'></Box>
-                }
-
                 <Box w='full'>
-                  {isFetchingNextPage ? <Box w='full' p={1}>
-                    <Skeleton height='15px' mb={2} />
-                    <Skeleton height='15px' mb={2} />
-                    <Skeleton height='15px' mb={2} />
-                    <Skeleton height='15px' mb={2} />
+                  {isFetchingNextPage ? <Box w='full'>
                     <Skeleton height='15px' mb={2} />
                     <Skeleton height='15px' mb={2} />
                     <Skeleton height='15px' mb={2} />
@@ -129,8 +120,12 @@ export default function private_discussion() {
 
               </Box>
 
-
             </VStack>
+
+            {hasNextPage &&
+              <Box ref={ref} h='10px'></Box>
+            }
+
           </Box>
 
 

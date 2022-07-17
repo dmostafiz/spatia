@@ -115,19 +115,10 @@ export default function slug() {
                 }
               </VStack>
 
-
               <Box w='full' pt={2}>
 
-                {hasNextPage &&
-                  <Box ref={ref} h='10px'></Box>
-                }
-
                 <Box w='full'>
-                  {isFetchingNextPage ? <Box w='full' p={1}>
-                    <Skeleton height='15px' mb={2} />
-                    <Skeleton height='15px' mb={2} />
-                    <Skeleton height='15px' mb={2} />
-                    <Skeleton height='15px' mb={2} />
+                  {isFetchingNextPage ? <Box w='full'>
                     <Skeleton height='15px' mb={2} />
                     <Skeleton height='15px' mb={2} />
                     <Skeleton height='15px' mb={2} />
@@ -136,8 +127,12 @@ export default function slug() {
 
               </Box>
 
-
             </VStack>
+
+            {hasNextPage &&
+              <Box ref={ref} h='10px'></Box>
+            }
+
           </Box>
 
 
