@@ -70,7 +70,7 @@ export default function StartDiscussionModal() {
             tags
         }
 
- 
+
 
         // console.log('Coooooooooooooooookie: ', useCookie())
 
@@ -177,6 +177,12 @@ export default function StartDiscussionModal() {
                     value={content}
                     onChange={setContent}
                     placeholder='Start your discussion...'
+                    controls={[
+                        ['bold', 'italic', 'underline', 'link'],
+                        ['h1', 'h2', 'h3'],
+                        ['alignLeft', 'alignCenter', 'alignRight'], 
+                        ['code'],
+                    ]}
                 />
 
                 {/* <CKEditor

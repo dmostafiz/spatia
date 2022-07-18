@@ -12,16 +12,94 @@ import { HiOutlineLightBulb } from 'react-icons/hi';
 import CategoryLeftSidebar from './../../Components/Home/Category/CategoryLeftSidebar';
 import ReactStickyBox from 'react-sticky-box';
 import CategoryContentsTopbar from './../../Components/Home/Category/CategoryContentsTopbar';
+import { useScrollIntoView } from '@mantine/hooks';
+import { useToast } from '@chakra-ui/react'
+import { useInfiniteQuery } from 'react-query';
+import { useRouter } from 'next/router';
 
 function Discussion({ discussion }) {
 
+    const router = useRouter()
+    const toast = useToast()
     const [reply, setReply] = useState('')
+    const [replySubmited, setReplySubmitted] = useState(false)
+    
+
+    const { scrollIntoView, targetRef } = useScrollIntoView({ offset: 60 })
+
 
     useEffect(() => {
-        console.log('Reply Content: ', reply)
-    }, [reply])
+        setReplySubmitted(false)
+    }, [replySubmited])
 
-    // console.log('Single Discussion: ', discussion)
+    const onSubmitReply = async () => {
+    
+        if (reply == '' || reply == '<p><br></p>') {
+
+            return toast({
+                title: 'Error',
+                description: 'Please write a reply!',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
+        const data = {
+            reply,
+            discussionId: discussion.id
+        }
+
+        const res = await axios.post('/reply/store', data)
+
+        if (res.data.status == 'success') {
+
+            setReply('')
+            setReplySubmitted(true)
+
+            return toast({
+                title: 'Success',
+                description: 'Reply submitted successfully!',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
+    }
+
+    const handleClickReply = (id) => {
+
+        console.log('handleClickReply ', id)
+        scrollIntoView({ alignment: 'center' })
+    }
+
+    const {
+        isLoading,
+        isError,
+        data,
+        isFetchingNextPage,
+        fetchNextPage,
+        hasNextPage
+    } = useInfiniteQuery(['replies', replySubmited], async (params) => {
+
+        const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
+        const res = await axios.get(`/replies/${router.query?.id}?cursor=${passCursor}`)
+        return res.data
+
+    },
+        {
+            getNextPageParam: (lastPage, allPages) => {
+
+                return lastPage.length > 0 ? allPages.flat().length : false
+            }
+        }
+    )
+
+
+
+    console.log('Response Discussions: ', data)
+
     return (
         <Layout>
             <Container maxW='container.xl'>
@@ -68,29 +146,26 @@ function Discussion({ discussion }) {
                         </Box>
 
                         {/* Discussion Body */}
-                        <DiscussionBody discussion={discussion} />
+                        <DiscussionBody handleClickReply={handleClickReply} discussion={discussion} />
 
 
                         {/* Discussion Replies */}
                         <VStack>
 
-                            <DiscussionReplyThread data={{ name: 'Ali Ahamed' }} />
-                            {/* <DiscussionReplyThread data={{ name: 'Robiul Sardar' }} />
-                            <DiscussionReplyThread data={{ name: 'Habib Molla' }} />
-                            <DiscussionReplyThread data={{ name: 'Helal Haoladar' }} />
-                            <DiscussionReplyThread data={{ name: 'Mostafiz Rahaman' }} />
-                            <DiscussionReplyThread data={{ name: 'Mofiz Mia' }} />
-                            <DiscussionReplyThread data={{ name: 'Rai Saaaaaa' }} /> */}
+                            {(!isError && data?.pages?.flat().length) ? data?.pages?.flat()?.map((reply, index) => {
+                                return <DiscussionReplyThread key={index} reply={reply} />
+                            }) :
+                                <></>
+                            }
 
                             <Spacer />
                             <Spacer />
 
-
-                            <DiscussionReplyForm reply={reply} setReply={setReply} data={{ name: 'Card Reply' }} />
-
+                            <Box w='full' ref={targetRef}>
+                                <DiscussionReplyForm key={replySubmited} onSubmitReply={onSubmitReply} reply={reply} setReply={setReply} data={{ name: 'Card Reply' }} />
+                            </Box>
 
                         </VStack>
-
                     </Box>
 
                     {/* <Show above='md'>

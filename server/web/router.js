@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions } = require('../controllers/DiscussionController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies } = require('../controllers/DiscussionController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -20,6 +20,10 @@ async function router(app) {
     app.get('/discussions/:categorySlug', getCategoryDiscussions)
     app.get('/discussion/:discussionId', getOneDiscussion)
     app.post('/discussion/store', {onRequest: app.auth}, storeDiscussion)
+
+    //Reply
+    app.post('/reply/store', {onRequest: app.auth}, storeReply)
+    app.get('/replies/:discussionId', getDiscussionReplies)
 
 }
 

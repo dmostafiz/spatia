@@ -43,7 +43,7 @@ model Discussion {
   title   String
   content String
 
-  tags Tags[]
+  tags    Tags[]
   replies Reply[]
 
   author   User   @relation(name: "posts", fields: [authorId], references: [id])
@@ -59,6 +59,7 @@ model Discussion {
 }
 
 model Reply {
+
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   content String
@@ -66,8 +67,13 @@ model Reply {
   discssion    Discussion @relation(fields: [discussionId], references: [id])
   discussionId String     @db.ObjectId
 
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @db.ObjectId
-  
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+
+  parentId String? @db.ObjectId
+  parent   Reply?  @relation("parent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  childs Reply[] @relation("parent")
+
   createdAt DateTime @default(now())
 }

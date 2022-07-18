@@ -15,7 +15,10 @@ const RichTextEditor = dynamic(() => import('@mantine/rte'), {
     loading: () => null,
 });
 
-export default function DiscussionReplyForm({ reply, setReply, data }) {
+export default function DiscussionReplyForm({ onSubmitReply, reply, setReply, data }) {
+
+   
+
     return (
         <Box w='full' px={8} py={4} bg='#f4edde'>
             <Box pb={3}>
@@ -29,12 +32,18 @@ export default function DiscussionReplyForm({ reply, setReply, data }) {
 
                     <RichTextEditor
                         stickyOffset={92}
-                        style={{ minHeight: 250 }}
-                        resizeable
+                        // style={{ minHeight: 250 }}
                         radius={0}
+                        initialValue=''
                         value={reply}
                         onChange={setReply}
-                        placeholder='Start your discussion...'
+                        placeholder='Write your comment...'
+                        controls={[
+                            ['bold', 'italic', 'underline', 'link'],
+                            ['h1', 'h2', 'h3'],
+                            ['alignLeft', 'alignCenter', 'alignRight'], 
+                            ['code'],
+                        ]}
                     />
 
                     <Flex justify='flex-end'>
@@ -42,7 +51,7 @@ export default function DiscussionReplyForm({ reply, setReply, data }) {
                             mt={5}
                             // isLoading={loading}
                             loadingText='Submitting'
-                            // onClick={handleSubmitDiscussion}
+                            onClick={onSubmitReply}
                             rounded='full'
                             bg='#fcc31e'
                             border='2px solid'
