@@ -23,9 +23,14 @@ function Discussion({ discussion }) {
     const toast = useToast()
     const [reply, setReply] = useState('')
     const [replySubmited, setReplySubmitted] = useState(false)
-    
-
     const { scrollIntoView, targetRef } = useScrollIntoView({ offset: 60 })
+    const [parentId, setParentId] = useState(null)
+    
+    const handleClickReply = (id) => {
+        console.log('handleClickReply ', id)
+        setParentId(id)
+        scrollIntoView({ alignment: 'center' })
+    }
 
 
     useEffect(() => {
@@ -47,7 +52,8 @@ function Discussion({ discussion }) {
 
         const data = {
             reply,
-            discussionId: discussion.id
+            discussionId: discussion.id,
+            parentId: parentId
         }
 
         const res = await axios.post('/reply/store', data)
@@ -68,11 +74,6 @@ function Discussion({ discussion }) {
 
     }
 
-    const handleClickReply = (id) => {
-
-        console.log('handleClickReply ', id)
-        scrollIntoView({ alignment: 'center' })
-    }
 
     const {
         isLoading,
@@ -153,7 +154,7 @@ function Discussion({ discussion }) {
                         <VStack>
 
                             {(!isError && data?.pages?.flat().length) ? data?.pages?.flat()?.map((reply, index) => {
-                                return <DiscussionReplyThread key={index} reply={reply} />
+                                return <DiscussionReplyThread handleClickReply={handleClickReply} key={index} reply={reply} />
                             }) :
                                 <></>
                             }

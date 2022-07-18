@@ -70,10 +70,10 @@ model Reply {
   author   User   @relation(fields: [authorId], references: [id])
   authorId String @db.ObjectId
 
+  parent   Reply?  @relation("childs", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   parentId String? @db.ObjectId
-  parent   Reply?  @relation("parent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  childs Reply[] @relation("parent")
+  childs Reply[] @relation("childs")
 
   createdAt DateTime @default(now())
 }

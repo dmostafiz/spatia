@@ -143,8 +143,19 @@ exports.storeReply = async (req, reply) => {
             data: {
                 content: body.reply,
                 discussionId: body.discussionId,
-                authorId: user.id
+                authorId: user.id,
+                parentId: body.parentId
+                // parent: {
+                //     connect:{id: body.parentId}
+                // }
+            },
+
+            include: {
+                author: true,
+                parent: true,
+                childs: true
             }
+
         })
 
         // const discussion = await req.prisma.discussion.findFirst({
@@ -162,7 +173,7 @@ exports.storeReply = async (req, reply) => {
         // })
 
         // console.log('Reply Created: ', comment)
-        // console.log('Discussion updated: ', discussion)
+        console.log('Reply updated: ', comment)
 
         return reply.send({ status: 'success', msg: 'Reply created successfully!' })
 
@@ -183,20 +194,26 @@ exports.getDiscussionReplies = async (req, reply) => {
         console.log('Category Discussions query string ################################# ', req.query.cursor)
 
 
-        const limit = 5
+        const limit = -5
         const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
 
         const replies = await req.prisma.reply.findMany({
             where: {
                 discussionId: req.params.discussionId
             },
+
+            orderBy: { id: 'asc' },
+
             skip: cursor,
             take: limit,
             // cursor: cursorObj,
-            orderBy: { id: 'asc' },
+            
             include: {
-                author: true
-            }
+                author: true,
+                parent: true,
+                childs: true
+            },
+
         })
 
 

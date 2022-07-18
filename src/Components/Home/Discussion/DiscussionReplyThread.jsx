@@ -5,7 +5,7 @@ import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 
-export default function DiscussionReplyThread({ reply }) {
+export default function DiscussionReplyThread({ handleClickReply, reply }) {
     return (
         <Box w='full' px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
@@ -59,7 +59,7 @@ export default function DiscussionReplyThread({ reply }) {
                                 </Flex>
 
                                 <Flex alignItems='center' gap={1}>
-                                    <Text>Reply</Text>
+                                    <Text cursor='pointer' onClick={() => handleClickReply(reply?.id)}>Reply</Text>
                                 </Flex>
                             </HStack>
                         </Flex>
