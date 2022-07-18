@@ -12,10 +12,12 @@ async function router(app) {
     
     app.get('/protected', {onRequest: app.auth}, UserController.protected) 
 
+    //Category
     app.get('/category/get', getCategories)
     app.get('/category/:slug', getOneCategory)
-    app.get('/category/discussions/:slug', getCategoryDiscussions)
-
+    
+    //Discussions
+    app.get('/discussions/:categorySlug', getCategoryDiscussions)
     app.get('/discussion/:discussionId', getOneDiscussion)
     app.post('/discussion/store', {onRequest: app.auth}, storeDiscussion)
 

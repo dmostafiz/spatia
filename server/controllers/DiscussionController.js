@@ -33,7 +33,7 @@ exports.storeDiscussion = async (req, reply) => {
         })
 
 
-        console.log('Discussion created ##################### ', discussion)
+        // console.log('Discussion created ##################### ', discussion)
         reply.send({ status: 'success', body: discussion })
 
         // })
@@ -55,13 +55,13 @@ exports.getCategoryDiscussions = async (req, reply) => {
         console.log('Category Discussions query string ################################# ', req.query.cursor)
 
 
-        const whereQuery = req.params.slug == 'all' 
+        const whereQuery = req.params.categorySlug == 'all' 
 
         ? {}
 
         : {
             category: {
-                slug: req.params.slug
+                slug: req.params.categorySlug
             }
         }
 
@@ -119,7 +119,7 @@ exports.getOneDiscussion = async (req, reply) => {
 
         })
 
-        console.log('Discussion: ################################## ', discussion)
+        // console.log('Discussion: ################################## ', discussion)
 
         reply.send(discussion)
 

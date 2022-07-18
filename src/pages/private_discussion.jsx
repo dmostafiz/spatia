@@ -35,7 +35,7 @@ export default function private_discussion() {
   } = useInfiniteQuery(['discussions', router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
-    const res = await axios.get(`/category/discussions/all?cursor=${passCursor}`)
+    const res = await axios.get(`/discussions/all?cursor=${passCursor}`)
     return res.data
 
   },

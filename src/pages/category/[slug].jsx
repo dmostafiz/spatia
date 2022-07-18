@@ -37,7 +37,7 @@ export default function slug() {
   } = useInfiniteQuery(['discussions', router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
-    const res = await axios.get(`/category/discussions/${router.query?.slug}?cursor=${passCursor}`)
+    const res = await axios.get(`/discussions/${router.query?.slug}?cursor=${passCursor}`)
     return res.data
 
   },

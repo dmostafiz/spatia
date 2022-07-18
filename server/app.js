@@ -1,7 +1,8 @@
 const prismaPlugin = require('./app/plugins/prisma')
 
 const app = require('fastify')({
-    logger: true
+    logger: false, 
+    pluginTimeout: 30000
 })
 
 app.register(require('@fastify/cors'), {

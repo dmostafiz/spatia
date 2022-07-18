@@ -1,5 +1,5 @@
 import { Avatar, Box, Container, Flex, HStack, Icon, Link, Show, Spacer, Stack, Text, VStack } from '@chakra-ui/react'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../Components/Home/Layout'
 // import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
 import DiscussionBody from '../../Components/Home/Discussion/DiscussionBody';
@@ -9,6 +9,9 @@ import DiscussionReplyThread from '../../Components/Home/Discussion/DiscussionRe
 import DiscussionReplyForm from '../../Components/Home/Discussion/DiscussionReplyForm';
 import axios from 'axios'
 import { HiOutlineLightBulb } from 'react-icons/hi';
+import CategoryLeftSidebar from './../../Components/Home/Category/CategoryLeftSidebar';
+import ReactStickyBox from 'react-sticky-box';
+import CategoryContentsTopbar from './../../Components/Home/Category/CategoryContentsTopbar';
 
 function Discussion({ discussion }) {
 
@@ -25,7 +28,20 @@ function Discussion({ discussion }) {
 
                 <Flex gap={3} direction={{ base: 'column', lg: 'row' }}>
 
+                    <Box maxW={{ base: '100vw', lg: 200 }}>
+                        <ReactStickyBox offsetTop={110}>
+
+                            {/* Category left sidebar */}
+                            <CategoryLeftSidebar currentCategory={null} />
+
+                        </ReactStickyBox>
+                    </Box>
+
+
                     <Box flex='1' minH='calc(100vh - 300px)'>
+                        <Box pb={5}>
+                            <CategoryContentsTopbar />
+                        </Box>
 
                         {/* Discussion Head / Title */}
                         <Box as='div' w='full' p={3} mb={4} bg='#f6e3d1' rounded='sm' shadow>
