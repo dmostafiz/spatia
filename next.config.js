@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    ENVIRONMENT: 'development',
+    ENVIRONMENT: 'production',
   }
 }
 
