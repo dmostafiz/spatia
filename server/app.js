@@ -3,7 +3,7 @@ const prismaPlugin = require('./app/plugins/prisma')
 
 const app = require('fastify')({
     logger: false, 
-    pluginTimeout: 20000
+    pluginTimeout: 20000,
 })
 
 app.register(require('@fastify/cors'), {
@@ -44,9 +44,8 @@ const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
 
 app.register(require('fastify-nextjs'), {
-
     dev: process.env.NODE_ENV !== 'production',
-    noServeAssets: true,
+    noServeAssets: false,
     hostname: HOST,
     port: PORT
 
