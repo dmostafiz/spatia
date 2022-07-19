@@ -42,7 +42,7 @@ const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
 
 app.register(require('fastify-nextjs'), {
-    dev: process.env.ENVIRONMENT !== 'production',
+    dev: process.env.NODE_ENV !== 'production',
     noServeAssets: false,
     hostname: HOST,
     port: PORT
