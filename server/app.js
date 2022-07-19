@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client')
-// const prismaPlugin = require('./app/plugins/prisma')
+// const { PrismaClient } = require('@prisma/client')
+const prismaPlugin = require('./app/plugins/prisma')
 
 const app = require('fastify')({
     logger: false, 
@@ -10,31 +10,33 @@ app.register(require('@fastify/cors'), {
     origin: '*'
 })
 
+app.register(prismaPlugin)
 
-async function connectPrisma(){
 
-    const prisma = new PrismaClient()
-    
-    await prisma.$connect()
-    
-    console.log('Mongo DB and prisma connected')
-    // Make Prisma Client available through the fastify server instance: server.prisma
-    app.decorate('prisma', prisma)
-    
-    app.addHook('onRequest', (req, reply, done) => {
-        req.prisma = prisma
-    
-        done()
-    })
-    
-    
-    app.addHook('onClose', async (server) => {
-        server.log.info('disconnecting Prisma from DB ###############################')
-        await server.prisma.$disconnect()
-    })
-}
+// async function connectPrisma(){
 
-connectPrisma()
+//     const prisma = new PrismaClient()
+    
+//     await prisma.$connect()
+    
+//     console.log('Mongo DB and prisma connected')
+//     // Make Prisma Client available through the fastify server instance: server.prisma
+//     app.decorate('prisma', prisma)
+    
+//     app.addHook('onRequest', (req, reply, done) => {
+//         req.prisma = prisma
+    
+//         done()
+//     })
+    
+    
+//     app.addHook('onClose', async (server) => {
+//         server.log.info('disconnecting Prisma from DB ###############################')
+//         await server.prisma.$disconnect()
+//     })
+// }
+
+// connectPrisma()
 
 // app.decorateRequest('user', 'Getter');
 
@@ -42,10 +44,12 @@ const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
 
 app.register(require('fastify-nextjs'), {
+
     dev: process.env.NODE_ENV !== 'production',
     noServeAssets: true,
     hostname: HOST,
     port: PORT
+
 }).after(() => {
     app.next('/*')
 })

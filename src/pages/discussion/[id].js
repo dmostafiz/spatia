@@ -17,6 +17,7 @@ import { useToast } from '@chakra-ui/react'
 import { useInfiniteQuery } from 'react-query';
 import { useRouter } from 'next/router';
 
+
 function Discussion({ discussion }) {
 
     const router = useRouter()

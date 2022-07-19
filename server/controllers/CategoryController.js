@@ -1,19 +1,26 @@
 
 exports.getCategories = async (req, reply) => {
 
-    const categories = await req.prisma.category.findMany({
-        orderBy: [
-            {
-                createdAt: 'asc'
+    try {
+        const categories = await req.prisma.category.findMany({
+            orderBy: [
+                {
+                    createdAt: 'asc'
+                }
+            ],
+    
+            include: {
+                discussions: true
             }
-        ],
+        })
+    
+        return reply.send(categories)
 
-        include: {
-            discussions: true
-        }
-    })
+    } catch (error) {
+        console.log('Category Error ############## ', error.message)
+        reply.send({status: 'error', msg: error.message})
+    }
 
-    return reply.send(categories)
 }
 
 

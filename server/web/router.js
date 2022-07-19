@@ -9,13 +9,13 @@ async function router(app) {
     app.get('/signup', UserController.signup )
 
     app.get('/', {onRequest: app.auth}, UserController.getUser )
-    
+
     app.get('/protected', {onRequest: app.auth}, UserController.protected) 
 
     //Category
     app.get('/category/get', getCategories)
     app.get('/category/:slug', getOneCategory)
-    
+ 
     //Discussions
     app.get('/discussions/:categorySlug', getCategoryDiscussions)
     app.get('/discussion/:discussionId', getOneDiscussion)
