@@ -1,4 +1,4 @@
-import { Avatar, Box, Container, Flex, HStack, Icon, Link, Show, Spacer, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Container, Flex, HStack, Icon, Center, Show, Spacer, Button, Text, VStack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Components/Home/Layout'
 // import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
@@ -16,6 +16,8 @@ import { useScrollIntoView } from '@mantine/hooks';
 import { useToast } from '@chakra-ui/react'
 import { useInfiniteQuery } from 'react-query';
 import { useRouter } from 'next/router';
+import BeatLoader from "react-spinners/BeatLoader";
+import BigSpinner from '../../Components/Common/BigSpinner';
 
 
 function Discussion({ discussion }) {
@@ -26,7 +28,7 @@ function Discussion({ discussion }) {
     const [replySubmited, setReplySubmitted] = useState(false)
     const { scrollIntoView, targetRef } = useScrollIntoView({ offset: 60 })
     const [parentId, setParentId] = useState(null)
-    
+
     const handleClickReply = (id) => {
         console.log('handleClickReply ', id)
         setParentId(id)
@@ -38,8 +40,12 @@ function Discussion({ discussion }) {
         setReplySubmitted(false)
     }, [replySubmited])
 
+    useEffect(() => {
+       axios.post(`/discussion/views/${router.query?.id}`) 
+    }, [])
+
     const onSubmitReply = async () => {
-    
+
         if (reply == '' || reply == '<p><br></p>') {
 
             return toast({
@@ -83,7 +89,7 @@ function Discussion({ discussion }) {
         isFetchingNextPage,
         fetchNextPage,
         hasNextPage
-    } = useInfiniteQuery(['replies', replySubmited], async (params) => {
+    } = useInfiniteQuery(['replies', replySubmited, router], async (params) => {
 
         const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
         const res = await axios.get(`/replies/${router.query?.id}?cursor=${passCursor}`)
@@ -102,8 +108,9 @@ function Discussion({ discussion }) {
 
     console.log('Response Discussions: ', data)
 
+
     return (
-        <Layout>
+        <Layout title={discussion.title} error={discussion == null && 404}>
             <Container maxW='container.xl'>
 
                 <Flex gap={3} direction={{ base: 'column', lg: 'row' }}>
@@ -128,7 +135,7 @@ function Discussion({ discussion }) {
                             <Box p={4} bg='#fffefd' rounded='sm'>
 
                                 {/* Tags */}
-                                {discussion.tags.length ? <HStack pb={4} fontFamily='heading'>
+                                {discussion?.tags?.length ? <HStack pb={4} fontFamily='heading'>
                                     {discussion.tags.map((tag, index) => {
                                         return <Box key={index} as='button' bg='#f4edde' px={2} py={1}>
                                             <HStack>
@@ -141,60 +148,96 @@ function Discussion({ discussion }) {
 
                                 {/* Title */}
                                 <Text as='h1' fontSize={{ base: '20px', sm: '24px', md: '50px' }} fontWeight='bold' lineHeight='1' color='#000000'>
-                                    {discussion.title}
+                                    {discussion?.title}
                                 </Text>
 
                             </Box>
                         </Box>
 
                         {/* Discussion Body */}
-                        <DiscussionBody handleClickReply={handleClickReply} discussion={discussion} />
+                        {discussion && <DiscussionBody handleClickReply={handleClickReply} discussion={discussion} />}
+
 
 
                         {/* Discussion Replies */}
-                        <VStack>
+                        {(!isError && data?.pages?.flat().length) ?
+                            <>
+                                <Box pt={5} pb={3}>
+                                    <Text fontSize='20px' fontFamily='sans-serif'>Replies</Text>
+                                </Box>
 
-                            {(!isError && data?.pages?.flat().length) ? data?.pages?.flat()?.map((reply, index) => {
-                                return <DiscussionReplyThread handleClickReply={handleClickReply} key={index} reply={reply} />
-                            }) :
-                                <></>
-                            }
+                                <VStack>
 
+                                    {data?.pages?.flat()?.map((reply, index) => {
+                                        return <DiscussionReplyThread handleClickReply={handleClickReply} key={index} reply={reply} />
+                                    })}
+                                </VStack>
+
+                                {hasNextPage && <Box py={2}>
+                                    <Button
+                                        onClick={fetchNextPage}
+                                        isLoading={isFetchingNextPage}
+                                        colorScheme='yellow'
+                                        variant='outline'
+                                        spinner={<BeatLoader size={8} color='black' />}
+                                    >Load More</Button>
+                                </Box>}
+
+                            </>
+                            : !isLoading ? <Box py={5}>
+                                <Text>No replies found</Text>
+                            </Box> : <Center w='full' height={20}>
+                                <BigSpinner />
+                            </Center>}
+
+                        <Box w='full' ref={targetRef}>
                             <Spacer />
-                            <Spacer />
-
-                            <Box w='full' ref={targetRef}>
-                                <DiscussionReplyForm key={replySubmited} onSubmitReply={onSubmitReply} reply={reply} setReply={setReply} data={{ name: 'Card Reply' }} />
-                            </Box>
-
-                        </VStack>
+                            <DiscussionReplyForm key={replySubmited} onSubmitReply={onSubmitReply} reply={reply} setReply={setReply} data={{ name: 'Card Reply' }} />
+                        </Box>
                     </Box>
 
-                    {/* <Show above='md'>
+                    <Show above='md'>
                         <Box w={200} minH='100vh' overflowWrap='hidden'>
-                            <StickyBox offsetTop={250}>
-
-                                <DiscussionsRightSidebar />
-
-                            </StickyBox>
+                            {/* <StickyBox offsetTop={250}>
+        
+                                        <DiscussionsRightSidebar />
+        
+                                    </StickyBox> */}
                         </Box>
-                    </Show> */}
+                    </Show>
 
                 </Flex>
 
             </Container>
         </Layout>
     )
+
 }
 
-Discussion.getInitialProps = async (context) => {
 
-    const res = await axios.get(`/discussion/${context.query.id}`);
 
-    // console.log('###########################################', res.data)
+
+
+export async function getServerSideProps(context) {
+
+    let data
+
+    try {
+
+        axios.defaults.baseURL = process.env.ENVIRONMENT == 'development' ? 'http://localhost:3000/api' : 'https://spacom.herokuapp.com/api'
+
+        const res = await axios.get(`/discussion/${context.query.id}`);
+
+        data = res.data
+
+    } catch (error) {
+
+        console.log('Single discussion error ################', error.message)
+    }
+
 
     return {
-        discussion: res?.data, // will be passed to the page component as props
+        props: { discussion: data || null } // will be passed to the page component as props
     }
 
 }

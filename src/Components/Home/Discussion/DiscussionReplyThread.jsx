@@ -4,6 +4,7 @@ import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
+import moment from 'moment'
 
 export default function DiscussionReplyThread({ handleClickReply, reply }) {
     return (
@@ -22,14 +23,14 @@ export default function DiscussionReplyThread({ handleClickReply, reply }) {
                         <Text
                             color='#7a7f85'
                         >
-                            4 hours ago
+                            {moment(reply.cereatedAt).calendar()}
                         </Text>
                     </HStack>
 
                     <Flex gap={1} mb={2}>
                         <Icon fontSize='18px' as={CgMailReply} />
                         <Text color='' fontSize='14px' fontWeight='semibold' fontFamily={`'Montserrat', sans-serif;`}  >
-                            {reply?.author?.name}
+                            {reply?.parent ? reply?.parent?.author?.name : reply?.discussion?.author?.name}
                         </Text>
                     </Flex>
 

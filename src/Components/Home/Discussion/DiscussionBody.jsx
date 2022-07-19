@@ -50,14 +50,20 @@ export default function DiscussionBody({handleClickReply, discussion }) {
                             <HStack gap={4}>
                                 <Flex alignItems='center' gap={1}>
                                     <Icon fontSize={24} as={AiOutlineEye} />
-                                    <Text>25</Text>
+                                    <Text>{discussion.views ?? 0}</Text>
                                 </Flex>
+
 
                                 <Flex alignItems='center' gap={1}>
                                     <Icon fontSize={24} color='#f55064' as={RiHeart2Fill} />
-                                    <Text>7</Text>
+                                    <Text>{discussion.replies?.length}</Text>
                                 </Flex>
 
+                                <Flex alignItems='center' gap={1}>
+                                    <Icon fontSize={24} color='#3367b1' as={IoMdChatboxes} />
+                                    <Text>{discussion.replies?.length}</Text>
+                                </Flex>
+                                
                                 <Flex alignItems='center' gap={1}>
                                     <Text cursor='pointer' onClick={() => handleClickReply(null)}>Reply</Text>
                                 </Flex>

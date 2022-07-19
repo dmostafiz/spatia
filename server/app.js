@@ -10,8 +10,6 @@ app.register(require('@fastify/cors'), {
     origin: '*'
 })
 
-app.register(prismaPlugin)
-
 
 // async function connectPrisma(){
 
@@ -44,7 +42,7 @@ const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
 
 app.register(require('fastify-nextjs'), {
-    dev: process.env.NODE_ENV !== 'production',
+    dev: process.env.ENVIRONMENT !== 'production',
     noServeAssets: false,
     hostname: HOST,
     port: PORT
@@ -52,6 +50,8 @@ app.register(require('fastify-nextjs'), {
 }).after(() => {
     app.next('/*')
 })
+
+app.register(prismaPlugin)
 
 
 app.register(require('@fastify/cookie'), {

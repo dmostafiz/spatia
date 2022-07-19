@@ -20,21 +20,21 @@ export default function DiscussionReplyForm({ onSubmitReply, reply, setReply, da
    
 
     return (
-        <Box w='full' px={8} py={4} bg='#f4edde'>
-            <Box pb={3}>
-                <Text fontWeight='semibold'>Reply to the discussion</Text>
+        <Box w='full'>
+            <Box pb={2} pt={8}>
+                <Text fontWeight='' fontSize='20px' fontFamily='sans-serif'>Reply to the discussion</Text>
             </Box>
             <HStack alignItems='flex-start' gap={2}>
-                <Box w={50}>
+                {/* <Box w={50}>
                     <Avatar src='' name={data.name} />
-                </Box>
+                </Box> */}
                 <Box w='full'>
 
                     <RichTextEditor
                         stickyOffset={92}
                         // style={{ minHeight: 250 }}
+                        data-autofocus={true}
                         radius={0}
-                        initialValue=''
                         value={reply}
                         onChange={setReply}
                         placeholder='Write your comment...'

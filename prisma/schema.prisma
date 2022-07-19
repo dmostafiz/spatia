@@ -46,6 +46,8 @@ model Discussion {
   tags    Tags[]
   replies Reply[]
 
+  views Int @default(0)
+
   author   User   @relation(name: "posts", fields: [authorId], references: [id])
   authorId String @db.ObjectId
 
@@ -64,7 +66,7 @@ model Reply {
 
   content String
 
-  discssion    Discussion @relation(fields: [discussionId], references: [id])
+  discussion    Discussion @relation(fields: [discussionId], references: [id])
   discussionId String     @db.ObjectId
 
   author   User   @relation(fields: [authorId], references: [id])

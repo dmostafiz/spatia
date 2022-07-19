@@ -8,23 +8,27 @@ import { Box } from '@chakra-ui/react';
 import Footer from './Footer';
 
 export default function Layout({ children, title = 'Home' }) {
+
+  const titleHead = `${title} | Spatial Community`
+
   return (
     <AppContainer>
 
       <Head>
-        <title>{title} | Spatial Community</title>
+        <title>{titleHead}</title>
       </Head>
 
 
       <TopBar />
 
-        <Box
-          as='div'
-          minH='calc(100vh - 70px)'
-          py={{ base: 24, sm: 24, md: 28, lg: 32 }}
-        >
-          {children}
-        </Box>
+      <Box
+        as='div'
+        minH='calc(100vh - 70px)'
+        py={{ base: 24, sm: 24, md: 28, lg: 32 }}
+      >
+        { children }
+
+      </Box>
 
       <Footer />
 

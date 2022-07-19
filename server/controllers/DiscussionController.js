@@ -80,7 +80,8 @@ exports.getCategoryDiscussions = async (req, reply) => {
             include: {
                 category: true,
                 author: true,
-                tags: true
+                tags: true,
+                replies: true
             }
         })
 
@@ -114,7 +115,8 @@ exports.getOneDiscussion = async (req, reply) => {
             include: {
                 category: true,
                 author: true,
-                tags: true
+                tags: true,
+                replies: true
             }
 
         })
@@ -129,6 +131,28 @@ exports.getOneDiscussion = async (req, reply) => {
         reply.send({ status: 'error', msg: error.message })
     }
 
+}
+
+exports.increasDiscussionViews = async (req, reply) => {
+
+    try {
+        const discussion = await req.prisma.discussion.update({
+            where:{
+                id: req.params.id
+            }, 
+
+            data: {
+                views: {
+                    increment: 1
+                }
+            }
+        })
+        
+        console.log('Discussion views updated ############ ', discussion)
+
+    } catch (error) {
+        console.log('Discussion views error ############ ', error.message)
+    }
 }
 
 exports.storeReply = async (req, reply) => {
@@ -210,8 +234,20 @@ exports.getDiscussionReplies = async (req, reply) => {
             
             include: {
                 author: true,
-                parent: true,
-                childs: true
+
+                parent: {
+                    include:{
+                        author: true
+                    }
+                },
+
+                childs: true,
+
+                discussion: {
+                    include: {
+                        author: true
+                    }
+                }
             },
 
         })
@@ -219,7 +255,7 @@ exports.getDiscussionReplies = async (req, reply) => {
 
         // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
 
-        console.log('Replies ################################# ', replies)
+        // console.log('Replies ################################# ', replies)
         // console.log('Discussion Cursor last ################################# ',nextCursor)
 
         return reply.send(replies)
