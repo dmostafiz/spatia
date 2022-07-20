@@ -18,6 +18,7 @@ import { useInfiniteQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import BeatLoader from "react-spinners/BeatLoader";
 import BigSpinner from '../../Components/Common/BigSpinner';
+import useToken from '../../Hooks/useToken';
 
 
 function Discussion({ discussion }) {
@@ -41,7 +42,9 @@ function Discussion({ discussion }) {
     }, [replySubmited])
 
     useEffect(() => {
-       axios.post(`/discussion/views/${router.query?.id}`) 
+        if (discussion != null) {
+            axios.post(`/discussion/views/${router.query?.id}`)
+        }
     }, [])
 
     const onSubmitReply = async () => {
@@ -106,8 +109,12 @@ function Discussion({ discussion }) {
 
 
 
-    console.log('Response Discussions: ', data)
+    console.log('Response Discussions: ', discussion)
 
+
+    if(discussion == null){
+        return {notFound: true}
+    }
 
     return (
         <Layout title={discussion.title} error={discussion == null && 404}>
@@ -157,8 +164,6 @@ function Discussion({ discussion }) {
                         {/* Discussion Body */}
                         {discussion && <DiscussionBody handleClickReply={handleClickReply} discussion={discussion} />}
 
-
-
                         {/* Discussion Replies */}
                         {(!isError && data?.pages?.flat().length) ?
                             <>
@@ -175,12 +180,13 @@ function Discussion({ discussion }) {
 
                                 {hasNextPage && <Box py={2}>
                                     <Button
+                                        rounded={0}
                                         onClick={fetchNextPage}
                                         isLoading={isFetchingNextPage}
                                         colorScheme='yellow'
                                         variant='outline'
                                         spinner={<BeatLoader size={8} color='black' />}
-                                    >Load More</Button>
+                                    >Load more</Button>
                                 </Box>}
 
                             </>
@@ -220,13 +226,22 @@ function Discussion({ discussion }) {
 
 export async function getServerSideProps(context) {
 
-    let data
+    let data = null
 
     try {
 
         axios.defaults.baseURL = process.env.ENVIRONMENT == 'development' ? 'http://localhost:3000/api' : 'https://spacom.herokuapp.com/api'
+        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.req.cookies?.token;
 
-        const res = await axios.get(`/discussion/${context.query.id}`);
+        const res = await axios.get(`/discussion/${context.query.id}`, {
+            headers: {
+                Authorization: 'Bearer ' + context.req.cookies?._token
+            }
+        });
+
+        if(res.data.status == 'error'){
+            return {notFound: true}
+        }
 
         data = res.data
 

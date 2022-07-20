@@ -79,7 +79,7 @@ export default function DiscussionThread({ discussion }) {
                             <HStack gap={4}>
                                 <Flex alignItems='center' gap={1}>
                                     <Icon fontSize={24} as={AiOutlineEye} />
-                                    <Text>25</Text>
+                                    <Text>{discussion.views}</Text>
                                 </Flex>
 
                                 <Flex alignItems='center' gap={1}>

@@ -46,16 +46,18 @@ model Discussion {
   tags    Tags[]
   replies Reply[]
 
-  views Int @default(0)
+  views Int? @default(0)
 
   author   User   @relation(name: "posts", fields: [authorId], references: [id])
   authorId String @db.ObjectId
 
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?   @db.ObjectId
+
+  isPrivate Boolean? @default(false)
+  
   privateMemberIds String[] @db.ObjectId
   privateMembers   User[]   @relation(name: "privatePosts", fields: [privateMemberIds], references: [id])
-
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String   @db.ObjectId
 
   createdAt DateTime @default(now())
 }

@@ -11,7 +11,11 @@ const StartDiscussionModal = dynamic(() => import('../../Common/StartDiscussionM
     ssr: false
 })
 
-export default function CategoryLeftSidebar({ currentCategory }) {
+const StartPrivateDiscussionModal = dynamic(() => import('../../Common/StartPrivateDiscussionModal'), {
+    ssr: false
+})
+
+export default function CategoryLeftSidebar({ currentCategory, privateDiscussion = false }) {
 
     const router = useRouter()
 
@@ -32,7 +36,7 @@ export default function CategoryLeftSidebar({ currentCategory }) {
 
         <VStack alignItems='flex-start' gap={5}>
 
-            <StartDiscussionModal />
+            {privateDiscussion ? <StartPrivateDiscussionModal /> : <StartDiscussionModal />}
 
             <SimpleGrid columns={{ base: 2, sm: 2, md: 5, lg: 1 }} gap={{ base: 3, lg: 6 }} >
 

@@ -2,15 +2,21 @@ exports.signup = async (request, reply) => {
 
     try {
 
-        const user = await request.prisma.user.upsert({
+        // const user = await request.prisma.user.upsert({
+        //     where: {
+        //         email: 'test@gmail.com',
+        //     },
+        //     update: {},
+        //     create: {
+        //         email: 'test@gmail.com',
+        //         name: 'Test User'
+        //     },
+        // })
+
+        const user = await request.prisma.user.findFirst({
             where: {
-                email: 'test@gmail.com',
-            },
-            update: {},
-            create: {
-                email: 'test@gmail.com',
-                name: 'Test User'
-            },
+                email: 'test5@gmail.com',
+            }
         })
 
         const token = request.app.jwt.sign({
@@ -52,4 +58,34 @@ exports.getUser = async (request, reply) => {
 
 exports.protected = async (request, reply) => {
     reply.send({ status: 'This is a protected route' })
+}
+
+exports.getMembers = async (request, reply) => {
+
+    try {
+
+        const query = request.query.q
+
+        // const whereQuer = query != null ? { name: query } : {}
+
+        const users = await request.prisma.user.findMany({
+            where: {
+                name: {
+                    contains: query,
+                    mode: 'insensitive'
+                }
+            }
+        })
+
+        // console.log('Member searched ########### ', users)
+        reply.send({ users })
+
+
+    } catch (error) {
+
+        console.log('Search Error ########### ', error.message)
+
+    }
+
+
 }

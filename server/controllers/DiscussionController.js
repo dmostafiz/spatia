@@ -44,7 +44,60 @@ exports.storeDiscussion = async (req, reply) => {
         reply.send({ status: 'error', msg: error.message })
     }
 
+}
 
+exports.storePrivateDiscussion = async (req, reply) => {
+
+    try {
+
+        const body = req.body
+
+        // console.log(body.members)
+        // return reply.send({status: 'success', discussion: body})
+
+        const discussion = await req.prisma.discussion.create({
+
+            data: {
+                title: body.title,
+                content: body.content,
+
+                tags: body.tags.map(tag => {
+                    return { name: tag }
+                }),
+
+                author: {
+                    connect: { id: req.user.id }
+                },
+
+                isPrivate: true,
+
+                privateMembers: {
+                    connect: body.users.map(member => {
+                        return {
+                            id: member.id
+                        }
+                    })
+                }
+            },
+
+            include: {
+                author: true,
+                privateMembers: true
+            }
+
+        })
+
+
+        // console.log('Discussion created ##################### ', discussion)
+        reply.send({ status: 'success', body: discussion })
+
+        // })
+
+    } catch (error) {
+        // return error
+        console.log('TryCatch Error: ###################### ', error.message)
+        reply.send({ status: 'error', msg: error.message })
+    }
 
 }
 
@@ -71,7 +124,8 @@ exports.getCategoryDiscussions = async (req, reply) => {
 
         const discussions = await req.prisma.discussion.findMany({
             where: {
-                ...whereQuery
+                ...whereQuery,
+                isPrivate: false
             },
             skip: cursor,
             take: limit,
@@ -82,6 +136,59 @@ exports.getCategoryDiscussions = async (req, reply) => {
                 author: true,
                 tags: true,
                 replies: true
+            }
+        })
+
+
+        // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
+
+        // console.log('Category Discussions end ################################# ', discussions)
+        // console.log('Discussion Cursor last ################################# ',nextCursor)
+
+        return reply.send(discussions)
+
+    } catch (error) {
+        console.log('Category Discussions Error ################################# ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+}
+
+exports.getPrivateDiscussions = async (req, reply) => {
+
+    try {
+
+        console.log('Category Discussions query string ################################# ', req.query.cursor)
+
+
+
+        const limit = 5
+        const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
+
+        const discussions = await req.prisma.discussion.findMany({
+
+            where: {
+                isPrivate: true,
+                OR: [
+                    {
+                        authorId: req.user.id
+                    },
+                    {
+                        privateMemberIds: { has: req.user.id }
+                    }
+                    // { email: { endsWith: 'gmail.com' } },
+                ],
+            },
+            skip: cursor,
+            take: limit,
+            // cursor: cursorObj,
+            orderBy: { id: 'desc' },
+            include: {
+                category: true,
+                author: true,
+                tags: true,
+                replies: true
+
             }
         })
 
@@ -121,6 +228,10 @@ exports.getOneDiscussion = async (req, reply) => {
 
         })
 
+        if (discussion.isPrivate == true && (!discussion.privateMemberIds.includes(req.user.id) && discussion.authorId != req.user.id) ) {
+            return reply.send({ status: 'error', msg: 'you are not authorized to view this discussion!' })
+        }
+
         // console.log('Discussion: ################################## ', discussion)
 
         reply.send(discussion)
@@ -137,9 +248,9 @@ exports.increasDiscussionViews = async (req, reply) => {
 
     try {
         const discussion = await req.prisma.discussion.update({
-            where:{
+            where: {
                 id: req.params.id
-            }, 
+            },
 
             data: {
                 views: {
@@ -147,8 +258,8 @@ exports.increasDiscussionViews = async (req, reply) => {
                 }
             }
         })
-        
-        console.log('Discussion views updated ############ ', discussion)
+
+        console.log('Discussion views updated ############ ', discussion.views)
 
     } catch (error) {
         console.log('Discussion views error ############ ', error.message)
@@ -197,7 +308,7 @@ exports.storeReply = async (req, reply) => {
         // })
 
         // console.log('Reply Created: ', comment)
-        console.log('Reply updated: ', comment)
+        // console.log('Reply updated: ', comment)
 
         return reply.send({ status: 'success', msg: 'Reply created successfully!' })
 
@@ -231,12 +342,12 @@ exports.getDiscussionReplies = async (req, reply) => {
             skip: cursor,
             take: limit,
             // cursor: cursorObj,
-            
+
             include: {
                 author: true,
 
                 parent: {
-                    include:{
+                    include: {
                         author: true
                     }
                 },

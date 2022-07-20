@@ -13,6 +13,7 @@ const bootstrap = async (app) => {
 
     app.decorate('auth', async (req, reply) => {
 
+        console.log('____Token ### ', req.headers)
         try {
             await req.jwtVerify(function (err, decoded) {
                 // console.log('Auth Response %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%: ', err || decoded)

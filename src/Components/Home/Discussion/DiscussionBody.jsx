@@ -4,6 +4,7 @@ import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
+import moment from 'moment'
 
 export default function DiscussionBody({handleClickReply, discussion }) {
     return (
@@ -17,12 +18,12 @@ export default function DiscussionBody({handleClickReply, discussion }) {
                         <Text
                             fontWeight='bold'
                             fontFamily={`'Montserrat', sans-serif;`}>
-                            echiam08
+                            {discussion?.author?.name}
                         </Text>
                         <Text
                             color='#7a7f85'
                         >
-                            4 hours ago
+                            {moment(discussion.createdAt).calendar()}
                         </Text>
                     </HStack>
 
