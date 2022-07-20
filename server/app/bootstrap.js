@@ -27,7 +27,7 @@ const bootstrap = async (app) => {
 
         } catch (error) {
             console.log('*******Auth try catch error********* ', error.message)
-            return reply.send({ status: 'error', msg: 'Authentication failed' })
+            // return reply.send({ status: 'error', msg: 'Authentication failed' })
         }
         // console.log('Authentication################################### :', verify)
     })
