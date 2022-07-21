@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions } = require('../controllers/DiscussionController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction } = require('../controllers/DiscussionController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -13,7 +13,9 @@ async function router(app) {
     app.get('/protected', {onRequest: app.auth}, UserController.protected) 
 
     //People
+    app.get('/user/:id', UserController.getUserInfo)
     app.get('/members', UserController.getMembers)
+
 
     //Category
     app.get('/category/get', getCategories)
@@ -30,6 +32,13 @@ async function router(app) {
     //Reply
     app.post('/reply/store', {onRequest: app.auth}, storeReply)
     app.get('/replies/:discussionId', getDiscussionReplies)
+
+    //Reaction
+    app.get('/reaction/get/:discussionId', getReaction)
+    app.get('/reply/reaction/get/:replyId', getReplyReaction)
+    app.post('/reaction/store', {onRequest: app.auth}, storeReaction)
+    app.post('/reply/reaction/store', {onRequest: app.auth}, storeReplyReaction)
+
 
 }
 

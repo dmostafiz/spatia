@@ -45,7 +45,6 @@ export default function StartDiscussionModal() {
             getCategory()
         }
 
-
     }, [router.query.slug])
 
     const handleSubmitDiscussion = async () => {
@@ -70,8 +69,7 @@ export default function StartDiscussionModal() {
             tags
         }
 
-
-
+        
         // console.log('Coooooooooooooooookie: ', useCookie())
 
         const res = await axios.post('/discussion/store', data)

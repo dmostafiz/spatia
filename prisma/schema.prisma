@@ -11,15 +11,22 @@ datasource db {
 }
 
 model User {
-  id    String       @id @default(auto()) @map("_id") @db.ObjectId
-  email String       @unique
-  name  String?
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  username String?
+  name     String?
+  avatar   String?
+
   posts Discussion[] @relation("posts")
 
   privatePostIds String[]     @db.ObjectId
   privatePosts   Discussion[] @relation(name: "privatePosts", fields: [privatePostIds], references: [id])
 
-  Reply Reply[]
+  replies         Reply[]
+  reactions       Reaction[]
+  reply_reactions Replyreaction[]
+
+  createdAt DateTime? @default(now())
 }
 
 model Category {
@@ -55,20 +62,21 @@ model Discussion {
   categoryId String?   @db.ObjectId
 
   isPrivate Boolean? @default(false)
-  
+
   privateMemberIds String[] @db.ObjectId
   privateMembers   User[]   @relation(name: "privatePosts", fields: [privateMemberIds], references: [id])
+
+  reactions Reaction[]
 
   createdAt DateTime @default(now())
 }
 
 model Reply {
-
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   content String
 
-  discussion    Discussion @relation(fields: [discussionId], references: [id])
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
   discussionId String     @db.ObjectId
 
   author   User   @relation(fields: [authorId], references: [id])
@@ -79,5 +87,39 @@ model Reply {
 
   childs Reply[] @relation("childs")
 
+  reaction Replyreaction[]
+
   createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  reaction String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+  discussionId String     @db.ObjectId
+
+  createdAt DateTime @default(now())
+
+  @@unique(fields: [userId, discussionId], name: "user_discussion")
+}
+
+model Replyreaction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  reaction String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+
+  reply   Reply  @relation(fields: [replyId], references: [id])
+  replyId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+
+  @@unique(fields: [userId, replyId], name: "user_reply")
 }

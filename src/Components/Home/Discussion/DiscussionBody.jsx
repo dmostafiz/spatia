@@ -5,8 +5,9 @@ import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import moment from 'moment'
+import ReactionsReact from '../ReactionsReact'
 
-export default function DiscussionBody({handleClickReply, discussion }) {
+export default function DiscussionBody({ handleClickReply, discussion }) {
     return (
         <Box mb={4} px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
@@ -41,34 +42,44 @@ export default function DiscussionBody({handleClickReply, discussion }) {
                         </Text>
 
                         <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' gap={3}>
-                            <HStack>
+                            <HStack maxW='350px' alignItems='flex-start'>
                                 <Icon fontSize='18px' as={CgMailReply} />
-                                <Text color='#2c53a8' fontSize='12px' fontFamily={`'Montserrat', sans-serif;`}  >
-                                    mrpootis, peterpan098 and mage9876 replied to this
+                                <Text color='#2c53a8' fontSize='12px' fontFamily={`'Montserrat', sans-serif;`} >
+                                    {discussion.replies.length ?
+                                        <>
+                                            {discussion.replies.map((reply, index) => {
+                                                return <Text key={index} as='span'>
+                                                    <Text as='span' fontWeight='bold'>{reply.author.name}</Text> {index == discussion.replies.length - 2 && 'and '} {index < discussion.replies.length - 2 && ', '}
+                                                </Text>
+                                            })}
+                                        </>
+                                        : <Text as='span'>No one </Text>}
+
+                                    <Text as='span'>replied to this</Text>
+
                                 </Text>
+
                             </HStack>
 
-                            <HStack gap={4}>
-                                <Flex alignItems='center' gap={1}>
-                                    <Icon fontSize={24} as={AiOutlineEye} />
-                                    <Text>{discussion.views ?? 0}</Text>
-                                </Flex>
+                            <Flex flex={1} justify='flex-end'>
+                                <HStack gap={3}>
+                                    <Flex alignItems='center' gap={1}>
+                                        <Icon fontSize={24} as={AiOutlineEye} />
+                                        <Text>{discussion.views ?? 0}</Text>
+                                    </Flex>
 
+                                    <ReactionsReact discussionId={discussion.id} />
 
-                                <Flex alignItems='center' gap={1}>
-                                    <Icon fontSize={24} color='#f55064' as={RiHeart2Fill} />
-                                    <Text>{discussion.replies?.length}</Text>
-                                </Flex>
+                                    <Flex alignItems='center' gap={1}>
+                                        <Icon fontSize={24} color='#3367b1' as={IoMdChatboxes} />
+                                        <Text>{discussion.replies?.length}</Text>
+                                    </Flex>
 
-                                <Flex alignItems='center' gap={1}>
-                                    <Icon fontSize={24} color='#3367b1' as={IoMdChatboxes} />
-                                    <Text>{discussion.replies?.length}</Text>
-                                </Flex>
-                                
-                                <Flex alignItems='center' gap={1}>
-                                    <Text cursor='pointer' onClick={() => handleClickReply(null)}>Reply</Text>
-                                </Flex>
-                            </HStack>
+                                    <Flex alignItems='center' gap={1}>
+                                        <Text cursor='pointer' onClick={() => handleClickReply(null)}>Reply</Text>
+                                    </Flex>
+                                </HStack>
+                            </Flex>
                         </Flex>
                     </Box>
                 </Box>

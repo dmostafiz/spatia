@@ -5,13 +5,14 @@ import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import moment from 'moment'
+import ReplyReaction from '../ReplyReaction'
 
 export default function DiscussionReplyThread({ handleClickReply, reply }) {
     return (
         <Box w='full' px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
                 <Box w={50}>
-                    <Avatar src='' name={reply?.author?.name} />
+                    <Avatar src={reply?.author?.avatar} name={reply?.author?.name} />
                 </Box>
                 <Box w='full'>
                     <HStack fontSize='14px' gap={2} mb={2}>
@@ -54,10 +55,7 @@ export default function DiscussionReplyThread({ handleClickReply, reply }) {
                                     <Text>25</Text>
                                 </Flex> */}
 
-                                <Flex alignItems='center' gap={1}>
-                                    <Icon fontSize={24} color='#f55064' as={RiHeart2Fill} />
-                                    <Text>7</Text>
-                                </Flex>
+                                <ReplyReaction replyId={reply?.id} />
 
                                 <Flex alignItems='center' gap={1}>
                                     <Text cursor='pointer' onClick={() => handleClickReply(reply?.id)}>Reply</Text>

@@ -15,7 +15,7 @@ exports.signup = async (request, reply) => {
 
         const user = await request.prisma.user.findFirst({
             where: {
-                email: 'test@gmail.com',
+                email: 'test4@gmail.com',
             }
         })
 
@@ -54,6 +54,30 @@ exports.getUser = async (request, reply) => {
             path: '/'
         })
         .send({ user: request?.user || 'Fastify - No authentication' })
+}
+
+exports.getUserInfo = async (request, reply) => {
+
+    try {
+
+        const userWhere = request.params?.id ?  {id: request.params.id } : {}
+
+        console.log('USer ID: ################ ', userWhere)
+    
+        const user = await request.prisma.user.findFirst({
+            where:{
+                ...userWhere
+            }
+        })
+        
+        reply.send(user)
+
+    } catch (error) {
+
+        console.log('User getting error ############## ', error.message)
+        reply.send({status: 'error', msg: error.message})
+
+    }
 }
 
 exports.protected = async (request, reply) => {

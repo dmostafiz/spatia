@@ -1,4 +1,3 @@
-const tryCatch = require("../../Helpers/tryCatch")
 
 exports.storeDiscussion = async (req, reply) => {
 
@@ -46,6 +45,7 @@ exports.storeDiscussion = async (req, reply) => {
 
 }
 
+// Store private discussion
 exports.storePrivateDiscussion = async (req, reply) => {
 
     try {
@@ -101,6 +101,7 @@ exports.storePrivateDiscussion = async (req, reply) => {
 
 }
 
+//Get all discussions by category ID
 exports.getCategoryDiscussions = async (req, reply) => {
 
     try {
@@ -135,7 +136,9 @@ exports.getCategoryDiscussions = async (req, reply) => {
                 category: true,
                 author: true,
                 tags: true,
-                replies: true
+                replies: {
+                    include: { author: true }
+                }
             }
         })
 
@@ -154,6 +157,7 @@ exports.getCategoryDiscussions = async (req, reply) => {
     }
 }
 
+//Get All private discussions
 exports.getPrivateDiscussions = async (req, reply) => {
 
     try {
@@ -171,10 +175,10 @@ exports.getPrivateDiscussions = async (req, reply) => {
                 isPrivate: true,
                 OR: [
                     {
-                        authorId: req.user.id
+                        authorId: req.user?.id || null
                     },
                     {
-                        privateMemberIds: { has: req.user.id }
+                        privateMemberIds: { has: req.user?.id || null }
                     }
                     // { email: { endsWith: 'gmail.com' } },
                 ],
@@ -187,8 +191,9 @@ exports.getPrivateDiscussions = async (req, reply) => {
                 category: true,
                 author: true,
                 tags: true,
-                replies: true
-
+                replies: {
+                    include: { author: true }
+                }
             }
         })
 
@@ -207,6 +212,7 @@ exports.getPrivateDiscussions = async (req, reply) => {
     }
 }
 
+//Get a single discussion details
 exports.getOneDiscussion = async (req, reply) => {
 
     try {
@@ -223,12 +229,17 @@ exports.getOneDiscussion = async (req, reply) => {
                 category: true,
                 author: true,
                 tags: true,
-                replies: true
+                replies: {
+                    take: 3,
+                    orderBy: { id: 'desc' },
+                    include: { author: true },
+                    distinct: ['authorId']
+                }
             }
 
         })
 
-        if (discussion.isPrivate == true && (!discussion.privateMemberIds.includes(req.user.id) && discussion.authorId != req.user.id) ) {
+        if (discussion.isPrivate == true && (!discussion.privateMemberIds.includes(req.user.id) && discussion.authorId != req.user.id)) {
             return reply.send({ status: 'error', msg: 'you are not authorized to view this discussion!' })
         }
 
@@ -244,6 +255,7 @@ exports.getOneDiscussion = async (req, reply) => {
 
 }
 
+//Increase discussion views 
 exports.increasDiscussionViews = async (req, reply) => {
 
     try {
@@ -259,13 +271,14 @@ exports.increasDiscussionViews = async (req, reply) => {
             }
         })
 
-        console.log('Discussion views updated ############ ', discussion.views)
+        // console.log('Discussion views updated ############ ', discussion.views)
 
     } catch (error) {
         console.log('Discussion views error ############ ', error.message)
     }
 }
 
+//Store a reply for a discussion
 exports.storeReply = async (req, reply) => {
 
     try {
@@ -323,10 +336,11 @@ exports.storeReply = async (req, reply) => {
 
 }
 
+//Get replies of a discussion with infinite scroll pagination
 exports.getDiscussionReplies = async (req, reply) => {
     try {
 
-        console.log('Category Discussions query string ################################# ', req.query.cursor)
+        // console.log('Category Discussions query string ################################# ', req.query.cursor)
 
 
         const limit = -5
@@ -377,3 +391,175 @@ exports.getDiscussionReplies = async (req, reply) => {
 
     }
 }
+
+//Store reaction emoji for discussions
+exports.storeReaction = async (req, reply) => {
+
+    if (!req.user) {
+
+        console.log('No unauthenticated reaction ############################')
+        return reply.send({ status: 'error', msg: 'You are not authenticated to react on any discussion!' })
+    }
+
+    try {
+
+        const user = req.user
+        const body = req.body
+
+
+        const reaction = await req.prisma.reaction.upsert({
+            where: {
+                user_discussion: { userId: user.id, discussionId: body.discussionId },
+            },
+            update: {
+                reaction: body.reaction,
+            },
+
+            create: {
+                userId: user.id,
+                discussionId: body.discussionId,
+                reaction: body.reaction,
+            }
+        })
+
+
+        // console.log('Reaction ################## ', reaction)
+
+        return reply.send({ status: 'success', msg: 'Reaction updated successfully!' })
+
+    } catch (error) {
+
+        console.log('Reaction Error #######: ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+
+
+
+}
+
+//Store reaction emoji for replies
+exports.storeReplyReaction = async (req, reply) => {
+
+    if (!req.user) {
+
+        console.log('No unauthenticated reaction ############################')
+        return reply.send({ status: 'error', msg: 'You are not authenticated to react on any discussion!' })
+    }
+
+    try {
+
+        const user = req.user
+        const body = req.body
+
+
+        const reaction = await req.prisma.replyreaction.upsert({
+            where: {
+                user_reply: { userId: user.id, replyId: body.replyId },
+            },
+            update: {
+                reaction: body.reaction,
+            },
+
+            create: {
+                userId: user.id,
+                replyId: body.replyId,
+                reaction: body.reaction,
+            }
+        })
+
+
+        // console.log('Reaction ################## ', reaction)
+
+        return reply.send({ status: 'success', msg: 'Reaction updated successfully!' })
+
+    } catch (error) {
+
+        console.log('Reaction Error #######: ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+
+
+
+}
+
+//Get discussion reactions
+exports.getReaction = async (req, reply) => {
+
+    try {
+
+        const reactions = await req.prisma.reaction.findMany({
+            where: {
+                discussionId: req.params.discussionId
+            },
+
+            include: {
+
+                user: true
+            }
+        })
+
+
+        // const images = [
+        //     { emoji: 'like', by: 'you' },
+        //     { emoji: 'like', by: 'Mostafiz' },
+        //     { emoji: 'love', by: 'Ullash' },
+        //     { emoji: 'haha', by: 'Limon' },
+        // ];
+
+        const finalReactionData = reactions.map(reaction => {
+            return { emoji: reaction.reaction, by: reaction.user.name }
+        })
+
+
+        // console.log('Reactions ################# ', finalReactionData)
+
+        reply.send({ reactions: finalReactionData })
+
+    } catch (error) {
+
+        console.log('Reaction getting error ######################### '.error.message)
+    }
+}
+
+//Get reply reactions
+exports.getReplyReaction = async (req, reply) => {
+
+    try {
+
+        const reactions = await req.prisma.replyreaction.findMany({
+            where: {
+                replyId: req.params.replyId
+            },
+
+            include: {
+                user: true
+            }
+        })
+
+
+        // const images = [
+        //     { emoji: 'like', by: 'you' },
+        //     { emoji: 'like', by: 'Mostafiz' },
+        //     { emoji: 'love', by: 'Ullash' },
+        //     { emoji: 'haha', by: 'Limon' },
+        // ];
+
+        const finalReactionData = reactions.map(reaction => {
+            return { emoji: reaction.reaction, by: reaction.user.name }
+        })
+
+
+        // console.log('Reactions ################# ', finalReactionData)
+
+        reply.send({ reactions: finalReactionData })
+
+    } catch (error) {
+
+        console.log('Reaction getting error ######################### '.error.message)
+    }
+}
+
+
+

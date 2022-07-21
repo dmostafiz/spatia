@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Center, HStack, Text, VStack, Icon, Link, Flex } from '@chakra-ui/react';
+import { Box, Center, HStack, Text, VStack, Icon, Link, Flex, Tooltip } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { HiOutlineLightBulb, HiReply } from 'react-icons/hi'
 import { AiOutlineEye } from 'react-icons/ai'
@@ -7,6 +7,11 @@ import { IoMdChatboxes, IoHeartCircle } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import { CgMailReply } from 'react-icons/cg'
 import truncate from 'truncate-html';
+import ReactionsReact from '../ReactionsReact';
+import { FacebookSelector, FacebookCounter } from '@charkour/react-reactions';
+import moment from 'moment';
+
+// import ReactionsReact from '../ReactionsReact';
 
 
 export default function DiscussionThread({ discussion }) {
@@ -38,19 +43,22 @@ export default function DiscussionThread({ discussion }) {
 
                     <HStack justify='space-between' pt={2} pb={3}>
                         <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
-                            By <NextLink href='#'>
-                                <Link href='#' color='blue.400'>{discussion?.author?.name}</Link>
+                            By <NextLink href={`/user/${discussion?.author?.id}`}>
+                                <Link href={`/user/${discussion?.author?.id}`} color='blue.400'>{discussion?.author?.name}</Link>
                             </NextLink>
                         </Text>
 
-                        <Flex alignItems='end' gap={1}>
-                            <Icon fontSize={24} as={CgMailReply} />
-                            <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
-                                <NextLink href='#'>
-                                    <Link href='#' color='blue.400'>echiam08</Link>
-                                </NextLink> Replied 12 hours ago
-                            </Text>
-                        </Flex>
+                        {discussion.replies.length ?
+                            <Flex alignItems='end' gap={1}>
+                                <Icon fontSize={24} as={CgMailReply} />
+                                <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
+                                    <NextLink href='#'>
+                                        <Link href='#' color='blue.400'>{discussion.replies[discussion.replies.length - 1].author.name}</Link>
+                                    </NextLink> {moment(discussion.replies[discussion.replies.length - 1].createdAt).calendar()}
+                                </Text>
+                            </Flex>
+                            : <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>No replies yet</Text>}
+
                     </HStack>
 
                     <Box w='full' p={3} bg='#f4edde' rounded='sm'>
@@ -77,20 +85,19 @@ export default function DiscussionThread({ discussion }) {
                             </NextLink>
 
                             <HStack gap={4}>
+
                                 <Flex alignItems='center' gap={1}>
                                     <Icon fontSize={24} as={AiOutlineEye} />
                                     <Text>{discussion.views}</Text>
                                 </Flex>
 
-                                <Flex alignItems='center' gap={1}>
-                                    <Icon fontSize={24} color='#f55064' as={RiHeart2Fill} />
-                                    <Text>7</Text>
-                                </Flex>
+                                <ReactionsReact discussionId={discussion.id} />
 
                                 <Flex alignItems='center' gap={1}>
                                     <Icon fontSize={20} as={IoMdChatboxes} />
                                     <Text>{discussion.replies?.length}</Text>
                                 </Flex>
+
                             </HStack>
                         </HStack>
 

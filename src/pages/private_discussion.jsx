@@ -55,6 +55,10 @@ export default function private_discussion() {
 
   }, [inView])
 
+  useEffect(() => {
+    console.log('hello hello : ', data)
+  }, [data])
+
 
   return (
     <Layout title="All Discussions">
