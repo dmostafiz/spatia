@@ -54,15 +54,23 @@ export default function LeftSidebar({ user }) {
                 </Link>
             </NextLink>
 
-            <HStack alignItems='flex-start'>
-                <Icon fontSize={{ base: 22, lg: 24 }} as={BiBlock} />
-                <Text fontWeight={{ base: 'normal' }}>Ignored Users</Text>
-            </HStack>
+            <NextLink href={`/profile/ignored_users`}>
+                <Link href={`/profile/ignored_users`} color='black'>
+                    <HStack alignItems='flex-start' bg={router.pathname == `/profile/ignored_users` ? '#ede7e0' : 'none'} p={router.pathname == `/profile/ignored_users` ? 2 : 0}>
+                        <Icon fontSize={{ base: 22, lg: 24 }} as={BiBlock} />
+                        <Text fontWeight={{ base: 'normal' }}>Ignored Users</Text>
+                    </HStack>
+                </Link>
+            </NextLink>
 
-            <HStack alignItems='flex-start'>
-                <Icon fontSize={{ base: 22, lg: 24 }} as={FaCog} />
-                <Text fontWeight={{ base: 'normal' }}>Settings</Text>
-            </HStack>
+            <NextLink href={`/profile/settings`}>
+                <Link href={`/profile/settings`} color='black'>
+                    <HStack alignItems='flex-start' bg={router.pathname == `/profile/settings` ? '#ede7e0' : 'none'} p={router.pathname == `/profile/settings` ? 2 : 0}>
+                        <Icon fontSize={{ base: 22, lg: 24 }} as={FaCog} />
+                        <Text fontWeight={{ base: 'normal' }}>Settings</Text>
+                    </HStack>
+                </Link>
+            </NextLink>
 
             <HStack alignItems='flex-start'>
                 <Icon fontSize={{ base: 22, lg: 24 }} as={AiOutlineUser} />

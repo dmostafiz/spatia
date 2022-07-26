@@ -72,7 +72,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
 
                                     <Flex alignItems='center' gap={1}>
                                         <Icon fontSize={24} color='#3367b1' as={IoMdChatboxes} />
-                                        <Text>{discussion.replies?.length}</Text>
+                                        <Text>{discussion.replyCount}</Text>
                                     </Flex>
 
                                     <Flex alignItems='center' gap={1}>

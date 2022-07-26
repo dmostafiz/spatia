@@ -26,6 +26,18 @@ model User {
   reactions       Reaction[]
   reply_reactions Replyreaction[]
 
+  followerIds String[] @db.ObjectId
+  followers   User[]   @relation(name: "followers", fields: [followerIds], references: [id])
+
+  followingIds String[] @db.ObjectId
+  followings   User[]   @relation(name: "followers", fields: [followingIds], references: [id])
+
+  haterIds String[] @db.ObjectId
+  haters   User[]   @relation(name: "haters", fields: [haterIds], references: [id])
+
+  hatingIds String[] @db.ObjectId
+  hatings   User[]   @relation(name: "haters", fields: [hatingIds], references: [id])
+
   notifications Notification[]
 
   createdAt DateTime? @default(now())
@@ -69,10 +81,9 @@ model Discussion {
   Mentions Mentions[]
 
   recentReplyAt DateTime? @db.Timestamp()
-  
+
   createdAt DateTime @default(now())
 }
-
 
 model Reply {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -130,13 +141,18 @@ model Replyreaction {
 }
 
 model Notification {
-  
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String 
-  user User @relation(fields: [userId], references: [id])
-  text String?
-  link String?
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  user   User    @relation(fields: [userId], references: [id])
+  text   String?
+  link   String?
+
+  senderAvatar String?
+  senderName String?
+
   status Boolean @default(false)
+
+  createdAt DateTime @default(now())
 }
 
 type Tags {

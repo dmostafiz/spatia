@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, HStack, Input, InputGroup, InputLeftElement, InputRightElement, Link, Show } from '@chakra-ui/react'
-import React, { useMemo } from 'react'
+import { Avatar, Box, Button, Center, HStack, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Link, Show } from '@chakra-ui/react'
+import React, { useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
 import MainLogo from '../Common/MainLogo'
 import { Container } from '@chakra-ui/react'
@@ -8,19 +8,52 @@ import MobileMenuSidebar from './MobileMenuSidebar'
 import authUser from '../../Hooks/authUser'
 import { Menu, MenuButton, MenuList, MenuItem, Flex, Text } from '@chakra-ui/react'
 
-import { ArrowDown, UserCheck, UserCircle } from 'tabler-icons-react'
-import { RiChatPrivateLine, RiSettings4Line, RiLogoutCircleRLine } from 'react-icons/ri'
+import { ArrowDown, BellRinging, Notification, UserCheck, UserCircle } from 'tabler-icons-react'
+import { RiChatPrivateLine, RiSettings4Line, RiLogoutCircleRLine, RiHistoryFill } from 'react-icons/ri'
 import { Divider } from '@mantine/core'
 import logoutMe from '../../Hooks/logoutMe'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+import moment from 'moment'
 
 export default function TopBar() {
+
+  const router = useRouter()
 
   const user = authUser()
 
   // useMemo(() => {
   // console.log('Authenticated user done ', user)
+  const [notifications, setNotifications] = useState([])
 
   // }, [authUser])
+  useEffect(() => {
+
+    async function getUnreadNotifications() {
+      const res = await axios.get('/user/notifications/unread')
+      console.log('Notifications got ', res.data)
+      setNotifications(res.data)
+    }
+
+    if (user.data?.id) {
+      getUnreadNotifications()
+    }
+  }, [user.data?.id, router])
+
+  const handleNotificationClick = (notify) => {
+
+    async function makeNotificationAsRead() {
+      const res = await axios.post('/user/notification/make_read', { notifyId: notify.id })
+    }
+
+    makeNotificationAsRead()
+
+    if (notify.link) {
+      router.push(notify.link)
+    } else {
+      alert(notify.text)
+    }
+  }
 
 
   return (
@@ -112,6 +145,61 @@ export default function TopBar() {
             </Show>}
 
             {user.data && <Show above='md'>
+
+              <Box position='relative'>
+                <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    rounded='full'
+                    icon={<BellRinging size={28} />}
+                    _hover={{
+                      bg: 'white'
+                    }}
+                    _active={{
+                      bg: 'white'
+                    }}
+                    variant='ghost'
+                  />
+                  <MenuList w={350} pt={0} shadow='md'>
+
+                    <Box p={3} bg='#e6caaf'>
+                      <Text>Unread Notifications ({notifications?.length})</Text>
+                    </Box>
+
+                    <Box w='full' maxH='200px' overflowY='auto'>
+
+                      {!notifications?.length
+                        ? <Center w='full' h='100px'>
+                          <Text>No unread notifications</Text>
+                        </Center>
+                        : <>
+                          {notifications?.map((notify, index) => {
+                            return <MenuItem onClick={() => handleNotificationClick(notify)} key={index} icon={<RiHistoryFill size={20} />}>
+                              <Box w='full' py={2}>
+                                <Text as='span' fontSize='13px' fontWeight='thin' fontFamily='sans-serif'>
+                                  {notify.senderName && <Text as='span' fontWeight='bold'>{notify.senderName} </Text>} {notify.text}
+                                </Text>
+                                <Flex justify='flex-start'>
+                                  <Text fontSize='11px' color='gray.400'>{moment(notify.createdAt).calendar()}</Text>
+                                </Flex>
+                              </Box>
+                            </MenuItem>
+                          })}
+
+                        </>}
+
+                    </Box>
+
+                  </MenuList>
+                </Menu>
+
+                {notifications?.length > 0 && <Center position='absolute' top='-2px' right='-2px' h='20px' w='20px' rounded='full' bg='#993695'>
+                  <Text fontSize='12px' color='white'>{notifications.length}</Text>
+                </Center>}
+
+
+              </Box>
+
               <Menu matchWidth={true}>
                 <Box
                   as={MenuButton}
@@ -128,21 +216,22 @@ export default function TopBar() {
                 // rightIcon={<ArrowDown />}
                 >
                   <Flex gap={1} alignItems='center'>
-                    <Avatar size='sm' src='' name='Test USer' />
-
+                    <Avatar size='sm' src='' name={user.data.name} />
                     <Text flex={1} fontWeight='bold' fontSize='14px' wordBreak='keep-all'>{user.data.name}</Text>
-
                     {/* <IoIosArrowDown /> */}
                   </Flex>
-
                 </Box>
 
                 <MenuList rounded='none'>
                   <NextLink href='/profile'>
                     <MenuItem py={3} icon={<UserCircle />}>Profile</MenuItem>
                   </NextLink>
-                  <MenuItem py={3} icon={<RiChatPrivateLine fontSize='24px' />}>Private Discussions</MenuItem>
-                  <MenuItem py={3} icon={<RiSettings4Line fontSize='24px' />}>Settings</MenuItem>
+                  <NextLink href='/profile/private_discussions'>
+                    <MenuItem py={3} icon={<RiChatPrivateLine fontSize='24px' />}>Private Discussions</MenuItem>
+                  </NextLink>
+                  <NextLink href='/profile/settings'>
+                    <MenuItem py={3} icon={<RiSettings4Line fontSize='24px' />}>Settings</MenuItem>
+                  </NextLink>
                   <Divider h={5} />
                   <MenuItem py={3} icon={<RiLogoutCircleRLine fontSize='24px' />} onClick={() => logoutMe()}>Logout</MenuItem>
                 </MenuList>

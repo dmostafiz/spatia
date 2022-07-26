@@ -2,20 +2,9 @@ exports.signup = async (request, reply) => {
 
     try {
 
-        // const user = await request.prisma.user.upsert({
-        //     where: {
-        //         email: 'test@gmail.com',
-        //     },
-        //     update: {},
-        //     create: {
-        //         email: 'test@gmail.com',
-        //         name: 'Test User'
-        //     },
-        // })
-
         const user = await request.prisma.user.findFirst({
             where: {
-                email: 'test1@gmail.com',
+                email: 'test@gmail.com',
             }
         })
 
@@ -78,7 +67,7 @@ exports.getUserInfo = async (request, reply) => {
                 isPrivate: true,
                 OR: [
                     {
-                        authorId:  request.params.id
+                        authorId: request.params.id
                     },
                     {
                         privateMemberIds: { has: request.params.id }
@@ -160,4 +149,49 @@ exports.getAllMembers = async (request, reply) => {
     }
 
 
+}
+
+exports.getUnreadNotifications = async (req, reply) => {
+
+    try {
+        const notifications = await req.prisma.notification.findMany({
+            where: {
+                userId: req.user.id,
+                status: false
+            }
+        })
+
+        console.log('Unread Notifications ###################### ', notifications)
+
+        return reply.send(notifications)
+
+    } catch (error) {
+        console.log('Notification error ###################### ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+    }
+}
+
+
+exports.makeNotificationUnread = async (req, reply) => {
+
+    try {
+        const notification = await req.prisma.notification.update({
+
+            where: {
+                id: req.body.notifyId,
+            },
+
+            data: {
+                status: true
+            }
+        })
+
+        console.log('Unread Notification Update ###################### ', notification)
+
+        return reply.send({ status: 'success', msg: 'Notification updated as read' })
+
+    } catch (error) {
+        console.log('Notification error ###################### ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+    }
 }

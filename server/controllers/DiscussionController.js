@@ -430,29 +430,29 @@ exports.getPrivateDiscussions = async (req, reply) => {
         // console.log('Category Discussions query string ################################# ', req.query.cursor)
 
         const orderBy = req.query.sortBy == 'Newest'
-        ? {
-            id: 'desc'
-        }
-
-        : req.query.sortBy == 'Newest'
             ? {
-                id: 'asc'
+                id: 'desc'
             }
 
-            : req.query.sortBy == 'Most Viewed'
+            : req.query.sortBy == 'Newest'
                 ? {
-                    views: 'desc'
+                    id: 'asc'
                 }
 
-                : req.query.sortBy == 'Most Replied'
+                : req.query.sortBy == 'Most Viewed'
                     ? {
-                        replies: {
-
-                            _count: 'desc'
-                        }
+                        views: 'desc'
                     }
 
-                    : undefined
+                    : req.query.sortBy == 'Most Replied'
+                        ? {
+                            replies: {
+
+                                _count: 'desc'
+                            }
+                        }
+
+                        : undefined
 
         const limit = 5
         const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
@@ -527,11 +527,21 @@ exports.getOneDiscussion = async (req, reply) => {
 
         })
 
+        const replyCount = await req.prisma.reply.count({
+
+            where: {
+                discussionId: req.params.discussionId
+            },
+
+        })
+
         if (discussion.isPrivate == true && (!discussion.privateMemberIds.includes(req.user.id) && discussion.authorId != req.user.id)) {
             return reply.send({ status: 'error', msg: 'you are not authorized to view this discussion!' })
         }
 
-        // console.log('Discussion: ################################## ', discussion)
+        console.log('Reply Count: ################################## ', replyCount)
+
+        discussion.replyCount = replyCount
 
         reply.send(discussion)
 
@@ -586,7 +596,6 @@ exports.storeReply = async (req, reply) => {
                 mentions: body.mentions.map(mention => {
                     return { userId: mention }
                 })
-
             },
 
             include: {
@@ -594,20 +603,36 @@ exports.storeReply = async (req, reply) => {
                 parent: true,
                 childs: true
             }
-
         })
 
         body.mentions.forEach(async (mention) => {
-
             await req.prisma.notification.create({
                 data: {
                     userId: mention,
-                    text: `${req.user.name} has mentioned you in a discussion reply.`,
-                    link: ''
+                    text: `mentioned you in a discussion reply.`,
+                    link: `/discussion/${comment.discussionId}`,
+                    senderName: req.user.name
                 }
             })
-
         })
+
+
+        const discussion = await req.prisma.discussion.findFirst({
+            where: {
+                id: comment.discussionId
+            }
+        })
+
+        if (req.user.id != discussion.authorId) {
+            await req.prisma.notification.create({
+                data: {
+                    userId: discussion.authorId,
+                    text: `replied on your discussion.`,
+                    link: `/discussion/${comment.discussionId}`,
+                    senderName: req.user.name
+                }
+            })
+        }
 
         // const discussion = await req.prisma.discussion.findFirst({
         //     where:{

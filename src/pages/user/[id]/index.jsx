@@ -13,7 +13,8 @@ export default function user() {
     
     return (
         <UserLayout>
-            User Index
+     
+     
         </UserLayout>
     )
 }

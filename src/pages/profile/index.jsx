@@ -36,9 +36,7 @@ export default function profile() {
 
     return (
         <ProfileLayout title='Profile'>
-
-            Profile Index
-
+            
         </ProfileLayout>
     )
 }

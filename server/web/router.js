@@ -16,8 +16,9 @@ async function router(app) {
     app.get('/user/posts/:userId', getUserPosts)
     app.get('/user/discussions/:userId', getUserDiscussions)
     app.get('/user/mentions/:userId', getUserMentions)
-
-
+    app.get('/user/notifications/unread', {onRequest: app.auth}, UserController.getUnreadNotifications)
+    app.post('/user/notification/make_read', {onRequest: app.auth}, UserController.makeNotificationUnread)
+    
     //Category
     app.get('/category/get', getCategories)
     app.get('/category/:slug', getOneCategory)
