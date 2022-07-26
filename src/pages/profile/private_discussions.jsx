@@ -13,6 +13,7 @@ import authUser from '../../Hooks/authUser'
 export default function private_discussions() {
 
   const user = authUser()
+  const router = useRouter()
 
   const { ref, inView } = useInView();
 
@@ -25,7 +26,7 @@ export default function private_discussions() {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useInfiniteQuery(['userDiscussions', sortBy, user.data], async (params) => {
+  } = useInfiniteQuery(['userDiscussions', sortBy, user.data, router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
     const res = await axios.get(`/discussions/private?cursor=${passCursor}&sortBy=${sortBy}`)
