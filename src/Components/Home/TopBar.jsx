@@ -11,7 +11,7 @@ import { Menu, MenuButton, MenuList, MenuItem, Flex, Text } from '@chakra-ui/rea
 import { ArrowDown, UserCheck, UserCircle } from 'tabler-icons-react'
 import { RiChatPrivateLine, RiSettings4Line, RiLogoutCircleRLine } from 'react-icons/ri'
 import { Divider } from '@mantine/core'
-import logoutMe from '../../Hooks/LogoutMe'
+import logoutMe from '../../Hooks/logoutMe'
 
 export default function TopBar() {
 
