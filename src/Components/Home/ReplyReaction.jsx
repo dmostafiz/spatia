@@ -8,8 +8,11 @@ import axios from 'axios'
 import useSWR from 'swr'
 import swrFetcher from '../../Hooks/swrFetcher';
 import {BiLike} from 'react-icons/bi'
+import authUser from '../../Hooks/authUser';
 
 export default function ReplyReaction({ replyId }) {
+
+    const user = authUser()
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -57,7 +60,7 @@ export default function ReplyReaction({ replyId }) {
                 </Box>
 
                 {(reactions.data && reactions.data.reactions.length) 
-                ?  <FacebookCounter user='' counters={reactions.data.reactions} showReactsOnly={true} />
+                ?  <FacebookCounter user={user.data?.name} counters={reactions.data.reactions} showReactsOnly={true} />
                 : 
                 <Flex alignItems='center' gap={1}>
                     <Icon fontSize='19px' as={BiLike}/>

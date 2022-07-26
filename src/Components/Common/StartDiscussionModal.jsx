@@ -13,8 +13,11 @@ import { Modal, Group } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
 import { ActionIcon } from '@mantine/core';
 import { X } from 'tabler-icons-react';
+import authUser from '../../Hooks/authUser';
 
 export default function StartDiscussionModal() {
+
+    const user = authUser()
 
     const router = useRouter()
     const toast = useToast()
@@ -59,6 +62,27 @@ export default function StartDiscussionModal() {
             })
         }
 
+        if (!title) {
+            return toast({
+                title: 'Title is empty',
+                description: "Please write a title of the discussion.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
+        if (content.replace(/<[^>]+>/g, '').replace(/\s+/g, '') == '' || content == '<p><br></p>') {
+
+            return toast({
+                title: 'Discussions body is empty',
+                description: 'Please write your discussion description!',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
         setLoading(true)
 
 
@@ -69,7 +93,7 @@ export default function StartDiscussionModal() {
             tags
         }
 
-        
+
         // console.log('Coooooooooooooooookie: ', useCookie())
 
         const res = await axios.post('/discussion/store', data)
@@ -109,9 +133,15 @@ export default function StartDiscussionModal() {
 
     return (
         <>
-            <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='none'>
-                Start Discussion
-            </Button>
+            {(!user.isLoading && user.data)
+                ?
+                <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='full'>
+                    Start Discussion
+                </Button>
+
+                : <Button rounded='full' bg='#e6caaf' fontSize='12px'>Login to start discussion</Button>
+            }
+
 
             <Modal
                 overlayColor='black'
@@ -178,7 +208,7 @@ export default function StartDiscussionModal() {
                     controls={[
                         ['bold', 'italic', 'underline', 'link'],
                         ['h1', 'h2', 'h3'],
-                        ['alignLeft', 'alignCenter', 'alignRight'], 
+                        ['alignLeft', 'alignCenter', 'alignRight'],
                         ['code'],
                     ]}
                 />

@@ -26,6 +26,8 @@ model User {
   reactions       Reaction[]
   reply_reactions Replyreaction[]
 
+  notifications Notification[]
+
   createdAt DateTime? @default(now())
 }
 
@@ -39,10 +41,6 @@ model Category {
   discussions Discussion[]
 
   createdAt DateTime @default(now())
-}
-
-type Tags {
-  name String
 }
 
 model Discussion {
@@ -68,8 +66,13 @@ model Discussion {
 
   reactions Reaction[]
 
+  Mentions Mentions[]
+
+  recentReplyAt DateTime? @db.Timestamp()
+  
   createdAt DateTime @default(now())
 }
+
 
 model Reply {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -88,6 +91,8 @@ model Reply {
   childs Reply[] @relation("childs")
 
   reaction Replyreaction[]
+
+  mentions Mentions[]
 
   createdAt DateTime @default(now())
 }
@@ -122,4 +127,22 @@ model Replyreaction {
   createdAt DateTime @default(now())
 
   @@unique(fields: [userId, replyId], name: "user_reply")
+}
+
+model Notification {
+  
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String 
+  user User @relation(fields: [userId], references: [id])
+  text String?
+  link String?
+  status Boolean @default(false)
+}
+
+type Tags {
+  name String
+}
+
+type Mentions {
+  userId String @db.ObjectId
 }

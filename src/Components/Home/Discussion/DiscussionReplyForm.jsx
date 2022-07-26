@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Avatar, Box, Button, Flex, HStack, Icon, Input, Text } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
@@ -6,18 +6,29 @@ import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 // import { RichTextEditor } from '@mantine/rte';
 import dynamic from 'next/dynamic';
+import useMentions from '../../../Hooks/useMentions'
 
-const RichTextEditor = dynamic(() => import('@mantine/rte'), {
-    // Disable during server side rendering
-    ssr: false,
+// const RichTextEditor = dynamic(() => import('@mantine/rte'), {
+//     // Disable during server side rendering
+//     ssr: false,
 
-    // Render anything as fallback on server, e.g. loader or html content without editor
-    loading: () => null,
-});
+//     // Render anything as fallback on server, e.g. loader or html content without editor
+//     loading: () => null,
+// });
 
-export default function DiscussionReplyForm({ onSubmitReply, reply, setReply, data }) {
+const RichTextEditor = dynamic(
+    async () => {
+        const { default: RE } = await import('@mantine/rte');
+        return ({ forwardedRef, ...props }) => <RE ref={forwardedRef} {...props} />;
+    },
+    {
+        ssr: false
+    }
+)
 
-   
+const DiscussionReplyForm = forwardRef(({ onSubmitReply, reply, setReply, data }, ref) => {
+
+    const menstions = useMentions('hello i am from mention quill')
 
     return (
         <Box w='full'>
@@ -31,6 +42,7 @@ export default function DiscussionReplyForm({ onSubmitReply, reply, setReply, da
                 <Box w='full'>
 
                     <RichTextEditor
+                        forwardedRef={ref}
                         stickyOffset={92}
                         // style={{ minHeight: 250 }}
                         data-autofocus={true}
@@ -41,9 +53,15 @@ export default function DiscussionReplyForm({ onSubmitReply, reply, setReply, da
                         controls={[
                             ['bold', 'italic', 'underline', 'link'],
                             ['h1', 'h2', 'h3'],
-                            ['alignLeft', 'alignCenter', 'alignRight'], 
+                            ['alignLeft', 'alignCenter', 'alignRight'],
                             ['code'],
                         ]}
+                        
+                        mentions={menstions}
+                        onChangeSelection={() => {
+                            console.log('Selection changed ')
+                        }}
+    
                     />
 
                     <Flex justify='flex-end'>
@@ -74,5 +92,7 @@ export default function DiscussionReplyForm({ onSubmitReply, reply, setReply, da
             </HStack>
         </Box>
     )
-}
+})
+
+export default DiscussionReplyForm
 

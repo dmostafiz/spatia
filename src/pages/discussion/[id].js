@@ -1,5 +1,5 @@
 import { Avatar, Box, Container, Flex, HStack, Icon, Center, Show, Spacer, Button, Text, VStack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import Layout from '../../Components/Home/Layout'
 // import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
 import DiscussionBody from '../../Components/Home/Discussion/DiscussionBody';
@@ -19,10 +19,20 @@ import { useRouter } from 'next/router';
 import BeatLoader from "react-spinners/BeatLoader";
 import BigSpinner from '../../Components/Common/BigSpinner';
 import useToken from '../../Hooks/useToken';
+import authUser from '../../Hooks/authUser';
+import Cookies from "js-cookie";
+
 
 
 function Discussion({ discussion }) {
 
+    const [wl, setWl] = useState(false)
+
+    useEffect(() => {
+        setWl(true)
+    }, [])
+
+    const user = authUser()
     const router = useRouter()
     const toast = useToast()
     const [reply, setReply] = useState('')
@@ -30,11 +40,66 @@ function Discussion({ discussion }) {
     const { scrollIntoView, targetRef } = useScrollIntoView({ offset: 60 })
     const [parentId, setParentId] = useState(null)
 
+    const editorRef = useRef()
+
+    const [mentioned, setMentioned] = useState([])
+
+    const [finalMentioned, setFinalMentioned] = useState([])
+
+    useEffect(() => {
+        const mentionHtml = document.getElementsByClassName('mention');
+        
+        for(var i = 0; i < mentionHtml.length; i++ ){
+            // console.log('Current Mentions', mentionHtml[i].dataset)
+            setMentioned([...mentioned, mentionHtml[i].dataset.id])
+        }
+        // console.log("Current mentioned docs ", mentionHtml)
+    }, [reply])
+
+
+    useEffect(() => {
+        const myMentions = Cookies.get('mentions') ? JSON.parse(Cookies.get('mentions')) : []
+
+        // console.log('Editor Mentions #####', myMentions)
+        // console.log('Pre Mentions ##### ', mentioned)
+
+        // Getting common Entries from two arrays.
+        var commonMentions = myMentions.filter(x => mentioned.includes(x))
+
+        // Merge two arrays into one
+        const mergedArray = [...finalMentioned, ...commonMentions]
+
+        let uniqueEntries = [];
+
+        mergedArray.forEach((c) => {
+            if (!uniqueEntries.includes(c)) {
+                uniqueEntries.push(c);
+            }
+        });
+
+        //Set Final mentioned user after filtering
+        setFinalMentioned(uniqueEntries)
+        
+        Cookies.remove('mentions')
+
+    }, [mentioned])
+
+    useEffect(() => {
+        console.log('Final Mentions ##### ', finalMentioned)
+    }, [finalMentioned])
+
     const handleClickReply = (id) => {
-        console.log('handleClickReply ', id)
+
+        if(user.data?.id){
+            editorRef.current.focus()
+        }
+
+        // console.log('handleClickReply ', id)
         setParentId(id)
         scrollIntoView({ alignment: 'center' })
+
     }
+
 
 
     useEffect(() => {
@@ -49,7 +114,7 @@ function Discussion({ discussion }) {
 
     const onSubmitReply = async () => {
 
-        if (reply == '' || reply == '<p><br></p>') {
+        if (reply.replace(/<[^>]+>/g, '').replace(/\s+/g, '') == '' || reply == '<p><br></p>') {
 
             return toast({
                 title: 'Error',
@@ -63,7 +128,8 @@ function Discussion({ discussion }) {
         const data = {
             reply,
             discussionId: discussion.id,
-            parentId: parentId
+            parentId: parentId,
+            mentions: finalMentioned
         }
 
         const res = await axios.post('/reply/store', data)
@@ -109,11 +175,11 @@ function Discussion({ discussion }) {
 
 
 
-    console.log('Response Discussions: ', discussion)
+    // console.log('Response Discussions: ', discussion)
 
 
-    if(discussion == null){
-        return {notFound: true}
+    if (discussion == null) {
+        return { notFound: true }
     }
 
     return (
@@ -133,9 +199,9 @@ function Discussion({ discussion }) {
 
 
                     <Box flex='1' minH='calc(100vh - 300px)'>
-                        <Box pb={5}>
+                        {/* <Box pb={5}>
                             <CategoryContentsTopbar />
-                        </Box>
+                        </Box> */}
 
                         {/* Discussion Head / Title */}
                         <Box as='div' w='full' p={3} mb={4} bg='#f6e3d1' rounded='sm' shadow>
@@ -180,11 +246,14 @@ function Discussion({ discussion }) {
 
                                 {hasNextPage && <Box py={2}>
                                     <Button
-                                        rounded={0}
+                                        size='xs'
                                         onClick={fetchNextPage}
                                         isLoading={isFetchingNextPage}
                                         colorScheme='yellow'
                                         variant='outline'
+                                        rounded='full'
+                                        fontSize='14px'
+                                        fontWeight='thin'
                                         spinner={<BeatLoader size={8} color='black' />}
                                     >Load more</Button>
                                 </Box>}
@@ -196,10 +265,26 @@ function Discussion({ discussion }) {
                                 <BigSpinner />
                             </Center>}
 
-                        <Box w='full' ref={targetRef}>
-                            <Spacer />
-                            <DiscussionReplyForm key={replySubmited} onSubmitReply={onSubmitReply} reply={reply} setReply={setReply} data={{ name: 'Card Reply' }} />
-                        </Box>
+                        {user.data?.id
+                            ? <Box w='full' ref={targetRef}>
+                                <Spacer />
+                                {wl ? <DiscussionReplyForm
+                                    key={replySubmited}
+                                    ref={editorRef}
+                                    onSubmitReply={onSubmitReply}
+                                    reply={reply}
+                                    setReply={setReply}
+                                    data={{ name: 'Card Reply' }}
+                                /> : <></>}
+
+                            </Box>
+                            : <Box ref={targetRef} pt={5}>
+
+                                <Text fontSize='22px'>Please login to reply</Text>
+
+                            </Box>
+                        }
+
                     </Box>
 
                     <Show above='md'>
@@ -239,8 +324,8 @@ export async function getServerSideProps(context) {
             }
         });
 
-        if(res.data.status == 'error'){
-            return {notFound: true}
+        if (res.data.status == 'error') {
+            return { notFound: true }
         }
 
         data = res.data

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageTitle from '../../Components/Home/PageTitle';
 import Layout from '../../Components/Home/Layout';
 import { Container, Box, Flex, VStack, Stack, Skeleton, Text, Center } from '@chakra-ui/react';
@@ -25,6 +25,8 @@ export default function slug() {
 
   const { ref, inView } = useInView();
 
+  const [sortBy, setSortBy] = useState('Newest')
+
   const category = useSWR(`/category/${router.query?.slug}`, swrFetcher)
 
   const {
@@ -34,10 +36,10 @@ export default function slug() {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useInfiniteQuery(['discussions', router], async (params) => {
+  } = useInfiniteQuery(['discussions', sortBy, router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
-    const res = await axios.get(`/discussions/${router.query?.slug}?cursor=${passCursor}`)
+    const res = await axios.get(`/discussions/${router.query?.slug}?cursor=${passCursor}&sortBy=${sortBy}`)
     return res.data
 
   },
@@ -91,7 +93,10 @@ export default function slug() {
             <VStack alignItems='flex-start'>
 
               {/* Topbar of the category page */}
-              <CategoryContentsTopbar />
+              <CategoryContentsTopbar
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+              />
 
               {/* Contents Of Category */}
               {isLoading && <BigSpinner />}

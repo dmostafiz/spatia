@@ -102,7 +102,7 @@ export default function StartPrivateDiscussionModal() {
 
     return (
         <>
-            <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='none' fontSize='12px'>
+            <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='full' fontSize='12px'>
                 Start Private Discussion
             </Button>
 

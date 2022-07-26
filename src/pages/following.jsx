@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageTitle from '../Components/Home/PageTitle';
 import Layout from '../Components/Home/Layout';
 import { Container, Box, Flex, VStack, Stack, Skeleton, Text, Center } from '@chakra-ui/react';
@@ -24,6 +24,7 @@ export default function following() {
   const { ref, inView } = useInView();
 
   // const discussions = useSWR(`/category/discussions/all`, swrFetcher)
+  const [sortBy, setSortBy] = useState('Newest')
 
   const {
     isLoading,
@@ -32,10 +33,10 @@ export default function following() {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useInfiniteQuery(['discussions', router], async (params) => {
+  } = useInfiniteQuery(['discussions', sortBy, router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
-    const res = await axios.get(`/discussions/all?cursor=${passCursor}`)
+    const res = await axios.get(`/discussions/all?cursor=${passCursor}&sortBy=${sortBy}`)
     return res.data
 
   },
@@ -84,7 +85,10 @@ export default function following() {
             <VStack alignItems='flex-start'>
 
               {/* Topbar of the category page */}
-              <CategoryContentsTopbar />
+              <CategoryContentsTopbar
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+              />
 
               {/* Contents Of Category */}
               {isLoading && <BigSpinner />}

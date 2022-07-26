@@ -107,6 +107,32 @@ exports.getCategoryDiscussions = async (req, reply) => {
     try {
 
         console.log('Category Discussions query string ################################# ', req.query.cursor)
+        console.log('Discussion sorting ################################# ', req.query.sortBy)
+
+        const orderBy = req.query.sortBy == 'Newest'
+            ? {
+                id: 'desc'
+            }
+
+            : req.query.sortBy == 'Newest'
+                ? {
+                    id: 'asc'
+                }
+
+                : req.query.sortBy == 'Most Viewed'
+                    ? {
+                        views: 'desc'
+                    }
+
+                    : req.query.sortBy == 'Most Replied'
+                        ? {
+                            replies: {
+
+                                _count: 'desc'
+                            }
+                        }
+
+                        : undefined
 
 
         const whereQuery = req.params.categorySlug == 'all'
@@ -131,12 +157,13 @@ exports.getCategoryDiscussions = async (req, reply) => {
             skip: cursor,
             take: limit,
             // cursor: cursorObj,
-            orderBy: { id: 'desc' },
+            orderBy: orderBy,
             include: {
                 category: true,
                 author: true,
                 tags: true,
                 replies: {
+                    // orderBy: { crearedAt: 'desc' },
                     include: { author: true }
                 }
             }
@@ -157,14 +184,275 @@ exports.getCategoryDiscussions = async (req, reply) => {
     }
 }
 
+
+exports.getUserPosts = async (req, reply) => {
+
+    try {
+
+        console.log('User discussions ############################### ', req.params.userId)
+        console.log('Category Discussions query string ################################# ', req.query.cursor)
+        console.log('Discussion sorting ################################# ', req.query.sortBy)
+
+        const orderBy = req.query.sortBy == 'Newest'
+            ? {
+                id: 'desc'
+            }
+
+            : req.query.sortBy == 'Newest'
+                ? {
+                    id: 'asc'
+                }
+
+                : req.query.sortBy == 'Most Viewed'
+                    ? {
+                        views: 'desc'
+                    }
+
+                    : req.query.sortBy == 'Most Replied'
+                        ? {
+                            replies: {
+
+                                _count: 'desc'
+                            }
+                        }
+
+                        : undefined
+
+
+        const limit = 5
+        const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
+
+        const discussions = await req.prisma.discussion.findMany({
+            where: {
+                authorId: req.params.userId,
+                isPrivate: false
+            },
+            skip: cursor,
+            take: limit,
+            // cursor: cursorObj,
+            orderBy: orderBy,
+            include: {
+                category: true,
+                author: true,
+                tags: true,
+                replies: {
+                    // orderBy: { crearedAt: 'desc' },
+                    include: { author: true }
+                }
+            }
+        })
+
+
+        // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
+
+        // console.log('Category Discussions end ################################# ', discussions)
+        // console.log('Discussion Cursor last ################################# ',nextCursor)
+
+        return reply.send(discussions)
+
+    } catch (error) {
+        console.log('Category Discussions Error ################################# ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+}
+
+
+exports.getUserDiscussions = async (req, reply) => {
+
+    try {
+
+        console.log('User discussions ############################### ', req.params.userId)
+        console.log('Category Discussions query string ################################# ', req.query.cursor)
+        console.log('Discussion sorting ################################# ', req.query.sortBy)
+
+        const orderBy = req.query.sortBy == 'Newest'
+            ? {
+                id: 'desc'
+            }
+
+            : req.query.sortBy == 'Newest'
+                ? {
+                    id: 'asc'
+                }
+
+                : req.query.sortBy == 'Most Viewed'
+                    ? {
+                        views: 'desc'
+                    }
+
+                    : req.query.sortBy == 'Most Replied'
+                        ? {
+                            replies: {
+
+                                _count: 'desc'
+                            }
+                        }
+
+                        : undefined
+
+
+        const limit = 5
+        const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
+
+        const discussions = await req.prisma.discussion.findMany({
+            where: {
+                // authorId: req.params.userId,
+                isPrivate: false,
+                replies: {
+                    some: {
+                        authorId: req.params.userId
+
+                    }
+                }
+            },
+            skip: cursor,
+            take: limit,
+            // cursor: cursorObj,
+            orderBy: orderBy,
+
+            include: {
+                category: true,
+                author: true,
+                tags: true,
+                replies: {
+                    // orderBy: { crearedAt: 'desc' },
+                    include: { author: true }
+                }
+            }
+        })
+
+
+        // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
+
+        // console.log('Category Discussions end ################################# ', discussions)
+        // console.log('Discussion Cursor last ################################# ',nextCursor)
+
+        return reply.send(discussions)
+
+    } catch (error) {
+        console.log('Category Discussions Error ################################# ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+}
+
+exports.getUserMentions = async (req, reply) => {
+
+    try {
+
+        console.log('User discussions ############################### ', req.params.userId)
+        console.log('Category Discussions query string ################################# ', req.query.cursor)
+        console.log('Discussion sorting ################################# ', req.query.sortBy)
+
+        const orderBy = req.query.sortBy == 'Newest'
+            ? {
+                id: 'desc'
+            }
+
+            : req.query.sortBy == 'Newest'
+                ? {
+                    id: 'asc'
+                }
+
+                : req.query.sortBy == 'Most Viewed'
+                    ? {
+                        views: 'desc'
+                    }
+
+                    : req.query.sortBy == 'Most Replied'
+                        ? {
+                            replies: {
+
+                                _count: 'desc'
+                            }
+                        }
+
+                        : undefined
+
+
+        const limit = 5
+        const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
+
+        const discussions = await req.prisma.discussion.findMany({
+            where: {
+                // authorId: req.params.userId,
+                isPrivate: false,
+
+                replies: {
+                    some: {
+                        mentions: {
+                            some: {
+                                userId: req.params.userId
+                            }
+                        }
+
+                    }
+                }
+            },
+            skip: cursor,
+            take: limit,
+            // cursor: cursorObj,
+            orderBy: orderBy,
+
+            include: {
+                category: true,
+                author: true,
+                tags: true,
+
+                replies: {
+                    // orderBy: { crearedAt: 'desc' },
+                    include: { author: true }
+                }
+            }
+        })
+
+
+        // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
+
+        console.log('Mentioned Discussions ################################# ', discussions)
+        // console.log('Discussion Cursor last ################################# ',nextCursor)
+
+        return reply.send(discussions)
+
+    } catch (error) {
+        console.log('Category Discussions Error ################################# ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+}
+
 //Get All private discussions
 exports.getPrivateDiscussions = async (req, reply) => {
 
     try {
 
-        console.log('Category Discussions query string ################################# ', req.query.cursor)
+        // console.log('Category Discussions query string ################################# ', req.query.cursor)
 
+        const orderBy = req.query.sortBy == 'Newest'
+        ? {
+            id: 'desc'
+        }
 
+        : req.query.sortBy == 'Newest'
+            ? {
+                id: 'asc'
+            }
+
+            : req.query.sortBy == 'Most Viewed'
+                ? {
+                    views: 'desc'
+                }
+
+                : req.query.sortBy == 'Most Replied'
+                    ? {
+                        replies: {
+
+                            _count: 'desc'
+                        }
+                    }
+
+                    : undefined
 
         const limit = 5
         const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
@@ -186,7 +474,7 @@ exports.getPrivateDiscussions = async (req, reply) => {
             skip: cursor,
             take: limit,
             // cursor: cursorObj,
-            orderBy: { id: 'desc' },
+            orderBy: orderBy,
             include: {
                 category: true,
                 author: true,
@@ -288,14 +576,17 @@ exports.storeReply = async (req, reply) => {
 
         // console.log('Request User', body)
         const comment = await req.prisma.reply.create({
+
             data: {
                 content: body.reply,
                 discussionId: body.discussionId,
                 authorId: user.id,
-                parentId: body.parentId
-                // parent: {
-                //     connect:{id: body.parentId}
-                // }
+                parentId: body.parentId,
+
+                mentions: body.mentions.map(mention => {
+                    return { userId: mention }
+                })
+
             },
 
             include: {
@@ -303,6 +594,18 @@ exports.storeReply = async (req, reply) => {
                 parent: true,
                 childs: true
             }
+
+        })
+
+        body.mentions.forEach(async (mention) => {
+
+            await req.prisma.notification.create({
+                data: {
+                    userId: mention,
+                    text: `${req.user.name} has mentioned you in a discussion reply.`,
+                    link: ''
+                }
+            })
 
         })
 
@@ -321,7 +624,7 @@ exports.storeReply = async (req, reply) => {
         // })
 
         // console.log('Reply Created: ', comment)
-        // console.log('Reply updated: ', comment)
+        console.log('Reply updated: ', comment)
 
         return reply.send({ status: 'success', msg: 'Reply created successfully!' })
 
