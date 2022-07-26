@@ -160,9 +160,9 @@ export default function TopBar() {
                     }}
                     variant='ghost'
                   />
-                  <MenuList w={350} pt={0} shadow='md'>
+                  <MenuList w={350} pt='0px' shadow='md' border='2px solid'>
 
-                    <Box p={3} bg='#e6caaf'>
+                    <Box p={3} mt='-1px' bg='#fcc31e' roundedTopLeft='md' roundedTopEnd='md'>
                       <Text>Unread Notifications ({notifications?.length})</Text>
                     </Box>
 
@@ -193,8 +193,8 @@ export default function TopBar() {
                   </MenuList>
                 </Menu>
 
-                {notifications?.length > 0 && <Center position='absolute' top='-2px' right='-2px' h='20px' w='20px' rounded='full' bg='#993695'>
-                  <Text fontSize='12px' color='white'>{notifications.length}</Text>
+                {notifications?.length > 0 && <Center position='absolute' top='0px' right='0px' h='20px' w='20px' rounded='full' bg='#fcc31e' shadow='lg' border='1px solid'>
+                  <Text fontSize='12px' color='black'>{notifications.length}</Text>
                 </Center>}
 
 
