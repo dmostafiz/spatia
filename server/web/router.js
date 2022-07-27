@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
-const {getCategories, getOneCategory, storeSubCategories} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions } = require('../controllers/DiscussionController')
+const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory} = require('../controllers/CategoryController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions } = require('../controllers/DiscussionController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -25,6 +25,8 @@ async function router(app) {
     //Category
     app.get('/category/get', getCategories)
     app.get('/category/:slug', getOneCategory)
+    app.get('/subcategory/:id', getOneSubCategory)
+
 
     //Create Static sub category (will remove after done)
     // app.get('/subcategory', storeSubCategories)
@@ -32,6 +34,8 @@ async function router(app) {
  
     //Discussions
     app.get('/discussions/:categorySlug', getCategoryDiscussions)
+    app.get('/discussions/subcategory/:id', getsubCategoryDiscussions)
+
     app.get('/discussions/private', {onRequest: app.auth}, getPrivateDiscussions)
     app.get('/discussion/:discussionId', {onRequest: app.auth}, getOneDiscussion)
     app.post('/discussion/views/:id', increasDiscussionViews)

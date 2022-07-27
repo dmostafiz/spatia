@@ -55,6 +55,38 @@ exports.getOneCategory = async (req, reply) => {
     }
 }
 
+
+exports.getOneSubCategory = async (req, reply) => {
+
+
+
+    try {
+        const subCategory = await req.prisma.subCategory.findFirst({
+            where: {
+                id: req.params.id
+            },
+            include: {
+                discussions: {
+                    orderBy: { id: 'desc' },
+                    // take: 1,
+                    include: {
+                        author: true
+                    }
+                },
+                category: true
+            }
+        })
+
+        // console.log('Category ################################# ', category)
+        return reply.send(subCategory)
+
+    } catch (error) {
+        console.log('Category Discussions Error ################################# ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+}
+
 // exports.storeSubCategories = async (req, reply) => {
 //     try {
 
