@@ -51,7 +51,9 @@ exports.getUserInfo = async (request, reply) => {
                     where: {
                         isPrivate: false
                     }
-                }
+                },
+                
+                hatings: true
             }
         })
 

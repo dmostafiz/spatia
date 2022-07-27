@@ -248,6 +248,7 @@ exports.getsubCategoryDiscussions = async (req, reply) => {
             orderBy: orderBy,
             include: {
                 category: true,
+                subCategory: true,
                 author: true,
                 tags: true,
                 replies: {
@@ -402,6 +403,7 @@ exports.getUserDiscussions = async (req, reply) => {
 
             include: {
                 category: true,
+                subCategory: true,
                 author: true,
                 tags: true,
                 replies: {
@@ -486,6 +488,7 @@ exports.getUserMentions = async (req, reply) => {
 
             include: {
                 category: true,
+                subCategory: true,
                 author: true,
                 tags: true,
 

@@ -116,24 +116,24 @@ export default function UserHead({ user }) {
 
                         <Spacer h={3} />
                         <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 7 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
-                            <Flex alignItems='center' gap={2}>
+                            <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiWatch} />
-                                <Text>12 months ago</Text>
+                                <Text>2 minutes ago</Text>
                             </Flex>
-                            <Flex alignItems='center' gap={2}>
+                            <Flex alignItems='center' gap={1}>
                                 {/* <Icon fontSize={18} as={FiWatch}/> */}
                                 <Text>Joined Nov, 2021</Text>
                             </Flex>
-                            <Flex alignItems='center' gap={2}>
+                            <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={UserCheck} />
                                 <Text>Status-Verified</Text>
                             </Flex>
-                            <Flex alignItems='center' gap={2}>
+                            {/* <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={BoxMultiple} />
                                 <Text>888 Points</Text>
-                            </Flex>
+                            </Flex> */}
 
-                            <Flex alignItems='center' gap={2}>
+                            <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiUserPlus} />
                                 <Text>{user.followerIds?.length} Follower{user.followerIds?.length > 1 && 's'}</Text>
                             </Flex>
