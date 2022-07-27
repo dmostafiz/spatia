@@ -8,12 +8,22 @@ import LeftSidebar from './LeftSidebar';
 import UserHead from './UserHead';
 import Layout from '../Home/Layout';
 import StickyBox from "react-sticky-box"
+import authUser from '../../Hooks/authUser';
 
 export default function UserLayout({ children }) {
 
     const router = useRouter()
 
+    const aUser = authUser()
+
     const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        if (aUser.data && aUser.data.id == router.query?.id) {
+            router.replace('/profile')
+        }
+
+    }, [aUser.data, router.query])
 
     useEffect(() => {
         async function getUserInfo() {

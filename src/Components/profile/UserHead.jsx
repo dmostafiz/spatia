@@ -1,9 +1,18 @@
 import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button } from '@chakra-ui/react';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FiWatch } from 'react-icons/fi';
-import { Bible, UserCheck, BoxMultiple } from 'tabler-icons-react';
+import { Bible, UserCheck, BoxMultiple, UserPlus } from 'tabler-icons-react';
 
 export default function UserHead({ user }) {
+
+    const [bio, setBio] = useState(user?.bio)
+
+
+    const handleSaveBio = async () => {
+           const res = await axios.post('/user/save_bio', {bio: bio})
+    }
+
     return (
         <Box as='div' w='full' p={3} mb={4} bg='#f6e3d1' rounded='sm' shadow>
             <Box p={4} bg='#fffefd' rounded='sm'>
@@ -37,11 +46,16 @@ export default function UserHead({ user }) {
                                 <Icon fontSize={18} as={BoxMultiple} />
                                 <Text>888 Points</Text>
                             </Flex>
+
+                            <Flex alignItems='center' gap={2}>
+                                <Icon fontSize={18} as={UserPlus} />
+                                <Text>{user.followerIds?.length} Follower{user.followerIds?.length > 1 && 's'}</Text>
+                            </Flex>
                         </SimpleGrid>
 
                         <Spacer h={3} />
 
-                        <Input placeholder='Write something about your self....' border={0} _focus={{ border: 'none', ring: 'none' }} px={1} />
+                        <Input onBlur={ handleSaveBio } onChange={(e) => setBio(e.target.value)} value={bio} placeholder='Write something about your self....' border={0} _focus={{ border: 'none', ring: 'none' }} px={1} />
 
                     </Box>
                 </Flex>

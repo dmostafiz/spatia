@@ -55,7 +55,7 @@ export default function TitleNavigation() {
                     </NextLink>
                 </>}
 
-                <NextLink href='/tags'>
+                <NextLink href='/'>
                     <Link href='/tags' alignItems='flex-start'>
                         <HStack alignItems='flex-start'>
                             <Icon fontSize={22} as={BsTagFill} />

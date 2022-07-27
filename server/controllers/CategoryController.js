@@ -10,7 +10,8 @@ exports.getCategories = async (req, reply) => {
             ],
     
             include: {
-                discussions: true
+                discussions: true,
+                subCategories: true
             }
         })
     
@@ -54,4 +55,20 @@ exports.getOneCategory = async (req, reply) => {
     }
 }
 
+// exports.storeSubCategories = async (req, reply) => {
+//     try {
 
+//         const category = await req.prisma.category.findMany({
+//             where:{},
+//             include: {
+//                 subCategories: true
+//             }
+//         })
+        
+
+//         reply.send(category)
+
+//     } catch (error) {
+//         console.log('Sub Category Error ########################### ', error.message)
+//     }
+// }

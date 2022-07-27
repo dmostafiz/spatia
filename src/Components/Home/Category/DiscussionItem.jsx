@@ -33,7 +33,25 @@ export default function DiscussionItem({ item }) {
                             {item.description}
                         </Text>
                     </Box>
+
+                    {item.subCategories?.length > 0 && <Box>
+
+                        {item.subCategories.map((subCat, index) => {
+
+                            return <>
+                                <NextLink key={index} href={`/subcategory/${subCat.id}`}>
+                                    <Link href={`/subcategory/${subCat.id}`}>
+                                        <Text as='span' textDecoration='underline' fontSize={13} fontWeight='semibold' fontFamily='sans-serif'>{subCat.name}</Text>
+                                    </Link>
+                                </NextLink>&nbsp;&nbsp;
+                            </>
+
+                        })}
+
+                    </Box>}
+
                 </Box>
+
                 <Box w='100%' py={2} px={6} bg='#604a38'>
                     <Box>
                         <Text
@@ -44,7 +62,7 @@ export default function DiscussionItem({ item }) {
                             fontFamily={`'Assistant', sans-serif`}
                             letterSpacing={2}
                         >
-                            Lated Post | {moment(item.discussions?.[0]?.createdAt).calendar() }
+                            Lated Post | {moment(item.discussions?.[0]?.createdAt).calendar()}
                         </Text>
                         <Text
                             color='whiteAlpha.900'

@@ -1,11 +1,12 @@
 import React from 'react'
-import { Avatar, Box, Flex, HStack, Icon, Text } from '@chakra-ui/react'
+import { Avatar, Box, Flex, HStack, Icon, Link, Text } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import moment from 'moment'
 import ReactionsReact from '../ReactionsReact'
+import NextLink from 'next/link'
 
 export default function DiscussionBody({ handleClickReply, discussion }) {
     return (
@@ -16,11 +17,15 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                 </Box>
                 <Box>
                     <HStack fontSize='14px' gap={2} mb={2}>
-                        <Text
-                            fontWeight='bold'
-                            fontFamily={`'Montserrat', sans-serif;`}>
-                            {discussion?.author?.name}
-                        </Text>
+                        <NextLink href={`/user/${discussion?.author.id}`}>
+                            <Link href={`/user/${discussion?.author.id}`}>
+                                <Text
+                                    fontWeight='bold'
+                                    fontFamily={`'Montserrat', sans-serif;`}>
+                                    {discussion?.author?.name}
+                                </Text>
+                            </Link>
+                        </NextLink>
                         <Text
                             color='#7a7f85'
                         >
@@ -49,7 +54,11 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                         <>
                                             {discussion.replies.map((reply, index) => {
                                                 return <Text key={index} as='span'>
-                                                    <Text as='span' fontWeight='bold'>{reply.author.name}</Text> {index == discussion.replies.length - 2 && 'and '} {index < discussion.replies.length - 2 && ', '}
+                                                    <NextLink href={`/user/${reply.author?.id}`}>
+                                                        <Link href={`/user/${reply.author?.id}`}>
+                                                            <Text as='span' fontWeight='bold'>{reply.author.name}</Text>
+                                                        </Link>
+                                                    </NextLink> {index == discussion.replies.length - 2 && 'and '} {index < discussion.replies.length - 2 && ', '}
                                                 </Text>
                                             })}
                                         </>

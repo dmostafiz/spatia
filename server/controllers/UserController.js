@@ -4,7 +4,7 @@ exports.signup = async (request, reply) => {
 
         const user = await request.prisma.user.findFirst({
             where: {
-                email: 'test@gmail.com',
+                email: 'test1@gmail.com',
             }
         })
 
@@ -47,7 +47,11 @@ exports.getUserInfo = async (request, reply) => {
 
             include: {
 
-                posts: true
+                posts: {
+                    where: {
+                        isPrivate: false
+                    }
+                }
             }
         })
 
@@ -193,5 +197,120 @@ exports.makeNotificationUnread = async (req, reply) => {
     } catch (error) {
         console.log('Notification error ###################### ', error.message)
         return reply.send({ status: 'error', msg: error.message })
+    }
+}
+
+exports.saveBio = async (req, reply) => {
+
+    try {
+
+        const user = await req.prisma.user.update({
+            where: {
+                id: req.user.id
+            },
+            data: {
+                bio: req.body.bio
+            }
+        })
+
+        return reply.send({ status: 'success', msg: 'Bio updated successfully' })
+
+    } catch (error) {
+        console.log('Bio Error ################## ', error.message)
+    }
+}
+
+exports.userAction = async (req, reply) => {
+
+    try {
+
+
+        console.log('Request Body ################ ', req.body)
+
+        let action = {}
+
+        if (req.body.action == 'Follow') {
+            action = {
+                followers: {
+                    connect: {
+                        id: req.user.id
+                    }
+                },
+
+                haters: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                }
+            }
+
+        }
+
+        else if (req.body.action == 'Ignore') {
+            action = {
+                followers: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                },
+
+                haters: {
+                    connect: {
+                        id: req.user.id
+                    }
+                }
+            }
+        }
+
+        else if (req.body.action == 'Unfollow') {
+            action = {
+                followers: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                }
+            }
+        }
+
+        else if (req.body.action == 'Ignored') {
+            action = {
+                haters: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                }
+            }
+        }
+
+
+        const user = await req.prisma.user.update({
+            where: {
+                id: req.body.userId
+            },
+
+            data: {
+                ...action
+            }
+        })
+
+
+        if (req.body.action == 'Follow') {
+            
+            const notification = await req.prisma.notification.create({
+                data: {
+                    userId: req.body.userId,
+                    text: 'started following you.',
+                    link: `/user/${req.user.id}`,
+                    senderName: req.user.name
+                }
+            })
+        }
+
+        console.log('Action User #####################3 ', user)
+
+        return reply.send(user)
+
+    } catch (error) {
+        console.log('Bio Error ################## ', error.message)
     }
 }

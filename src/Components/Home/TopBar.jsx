@@ -175,7 +175,7 @@ export default function TopBar() {
                         : <>
                           {notifications?.map((notify, index) => {
                             return <MenuItem onClick={() => handleNotificationClick(notify)} key={index} icon={<RiHistoryFill size={20} />}>
-                              <Box w='full' py={2}>
+                              <Box w='full' py={1}>
                                 <Text as='span' fontSize='13px' fontWeight='thin' fontFamily='sans-serif'>
                                   {notify.senderName && <Text as='span' fontWeight='bold'>{notify.senderName} </Text>} {notify.text}
                                 </Text>

@@ -1,11 +1,12 @@
 import React from 'react'
-import { Avatar, Box, Flex, HStack, Icon, Text } from '@chakra-ui/react'
+import { Avatar, Box, Flex, HStack, Icon, Link, Text } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import moment from 'moment'
 import ReplyReaction from '../ReplyReaction'
+import NextLink from 'next/link'
 
 export default function DiscussionReplyThread({ handleClickReply, reply }) {
     return (
@@ -16,11 +17,15 @@ export default function DiscussionReplyThread({ handleClickReply, reply }) {
                 </Box>
                 <Box w='full'>
                     <HStack fontSize='14px' gap={2} mb={2}>
-                        <Text
-                            fontWeight='bold'
-                            fontFamily={`'Montserrat', sans-serif;`}>
-                            {reply?.author?.name}
-                        </Text>
+                        <NextLink href={`/user/${reply?.author?.id}`}>
+                            <Link href={`/user/${reply?.author?.id}`}>
+                                <Text
+                                    fontWeight='bold'
+                                    fontFamily={`'Montserrat', sans-serif;`}>
+                                    {reply?.author?.name}
+                                </Text>
+                            </Link>
+                        </NextLink>
                         <Text
                             color='#7a7f85'
                         >
@@ -30,9 +35,13 @@ export default function DiscussionReplyThread({ handleClickReply, reply }) {
 
                     <Flex gap={1} mb={2}>
                         <Icon fontSize='18px' as={CgMailReply} />
-                        <Text color='' fontSize='14px' fontWeight='semibold' fontFamily={`'Montserrat', sans-serif;`}  >
-                            {reply?.parent ? reply?.parent?.author?.name : reply?.discussion?.author?.name}
-                        </Text>
+                        <NextLink href={`/user/${reply?.parent ? reply?.parent?.author?.id : reply?.discussion?.author?.id}`}>
+                            <Link href={`/user/${reply?.parent ? reply?.parent?.author?.id : reply?.discussion?.author?.id}`}>
+                                <Text color='' fontSize='14px' fontWeight='semibold' fontFamily={`'Montserrat', sans-serif;`}  >
+                                    {reply?.parent ? reply?.parent?.author?.name : reply?.discussion?.author?.name}
+                                </Text>
+                            </Link>
+                        </NextLink>
                     </Flex>
 
 

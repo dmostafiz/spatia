@@ -42,6 +42,7 @@ export default function getCategories() {
             title: cat.title,
             description: cat.description,
             discussions: cat.discussions,
+            subCategories: cat.subCategories,
             createdAt: cat.createdAt
         })
         
