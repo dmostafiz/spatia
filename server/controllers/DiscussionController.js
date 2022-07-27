@@ -21,12 +21,17 @@ exports.storeDiscussion = async (req, reply) => {
 
                 category: {
                     connect: { id: body.categoryId }
+                },
+
+                subCategory: {
+                    connect: { id: body.subCategoryId }
                 }
             },
 
             include: {
                 author: true,
-                category: true
+                category: true,
+                subCategory: true,
             }
 
         })
@@ -160,6 +165,7 @@ exports.getCategoryDiscussions = async (req, reply) => {
             orderBy: orderBy,
             include: {
                 category: true,
+                subCategory: true,
                 author: true,
                 tags: true,
                 replies: {
@@ -315,6 +321,7 @@ exports.getUserPosts = async (req, reply) => {
             orderBy: orderBy,
             include: {
                 category: true,
+                subCategory: true,
                 author: true,
                 tags: true,
                 replies: {
@@ -597,6 +604,7 @@ exports.getOneDiscussion = async (req, reply) => {
 
             include: {
                 category: true,
+                subCategory: true,
                 author: true,
                 tags: true,
                 replies: {

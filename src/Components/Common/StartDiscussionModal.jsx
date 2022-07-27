@@ -12,7 +12,7 @@ import { MultiSelect } from '@mantine/core';
 import { Modal, Group } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
 import { ActionIcon } from '@mantine/core';
-import { X } from 'tabler-icons-react';
+import { ArrowRight, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 
 export default function StartDiscussionModal() {
@@ -27,6 +27,8 @@ export default function StartDiscussionModal() {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [category, setCategory] = useState(null)
+    const [subCategory, setSubCategory] = useState(null)
+
 
     const [loading, setLoading] = useState(false)
 
@@ -90,6 +92,7 @@ export default function StartDiscussionModal() {
             title: title,
             content: content,
             categoryId: category.id,
+            subCategoryId: subCategory.id,
             tags
         }
 
@@ -186,7 +189,7 @@ export default function StartDiscussionModal() {
                         />
                     </Box>
                     <Box>
-                        <SelectCategoryModal setCategory={setCategory} />
+                        <SelectCategoryModal setCategory={setCategory} setSubCategory={setSubCategory} />
                     </Box>
                 </Flex>
 
@@ -195,6 +198,10 @@ export default function StartDiscussionModal() {
                     <Flex direction='row' gap={1} alignItems='center'>
                         <Icon fontSize='22px' as={category.icon} />
                         <Text>{category.title}</Text>
+                        {subCategory && <>
+                            <Icon fontSize='22px' as={ArrowRight} />
+                            <Text>{subCategory.name}</Text>
+                        </>}
                     </Flex>
                 </Box>}
 

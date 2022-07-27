@@ -6,11 +6,12 @@ import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButto
 import Discussion from './../../pages/discussion/[id]';
 import getCategories from './../../Hooks/getCategories';
 
-export default function SelectCategoryModal({setCategory}) {
+export default function SelectCategoryModal({ setCategory, setSubCategory }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const categories = getCategories()
+    const [viewSubCategories, setViewSubCategories] = useState({ show: false, catId: null })
 
     // const [selected, setSelected] = useState(null)
 
@@ -26,6 +27,16 @@ export default function SelectCategoryModal({setCategory}) {
         // }
 
         setCategory(category)
+
+        if (!category.subCategories.length) {
+            onClose()
+        } else {
+            setViewSubCategories({ show: true, catId: category.id })
+        }
+    }
+
+    const handleClickSubCategory = (subCategory) => {
+        setSubCategory(subCategory)
         onClose()
     }
 
@@ -83,6 +94,26 @@ export default function SelectCategoryModal({setCategory}) {
                                     <Box>
                                         <Text fontSize='20px' fontWeight='bold'>{cat.title}</Text>
                                         <Text>{cat.description}</Text>
+
+                                        {(viewSubCategories.show == true && viewSubCategories.catId == cat.id) && <Box pt={2}>
+                                            <Text fontWeight='bold'>Choose a sub category</Text>
+                                            <Spacer h={1} />
+                                            <HStack>
+                                                {cat.subCategories.map((ct, index) => {
+                                                    return <Button
+                                                        size='sm'
+                                                        rounded='full'
+                                                        bg='#fcc31e'
+                                                        _hover={{
+                                                            bg: 'yellow.500'
+                                                        }}
+                                                        onClick={() => handleClickSubCategory(ct)}
+                                                    >
+                                                        {ct.name}
+                                                    </Button>
+                                                })}
+                                            </HStack>
+                                        </Box>}
                                     </Box>
                                 </HStack>
 

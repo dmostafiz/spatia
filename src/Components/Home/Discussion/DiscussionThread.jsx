@@ -15,6 +15,9 @@ import moment from 'moment';
 
 
 export default function DiscussionThread({ discussion }) {
+
+    console.log('discussion subcategory ', discussion.subCategory)
+
     return (
         <>
             {discussion.id ? <Box as='div' w='full' p={2} bg='#f6e3d1' rounded='sm' shadow>
@@ -29,7 +32,14 @@ export default function DiscussionThread({ discussion }) {
                         {discussion.title}
                     </Text>
 
-                    {discussion.tags?.length ? <HStack pt={2}>
+                    {discussion.subCategory && <Box as='button' bg='#f4edde' px={2} py={1}>
+                        <HStack>
+                            <Icon as={HiOutlineLightBulb} />
+                            <Text fontSize={10} fontWeight='bold'>{discussion.subCategory.name}</Text>
+                        </HStack>
+                    </Box>}
+
+                    {/* {discussion.tags?.length ? <HStack pt={2}>
                         {discussion.tags.map((tag, index) => {
                             return <Box key={index} as='button' bg='#f4edde' px={2} py={1}>
                                 <HStack>
@@ -38,7 +48,7 @@ export default function DiscussionThread({ discussion }) {
                                 </HStack>
                             </Box>
                         })}
-                    </HStack> : <></>}
+                    </HStack> : <></>} */}
 
 
                     <HStack justify='space-between' pt={2} pb={3}>

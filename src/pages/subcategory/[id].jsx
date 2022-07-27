@@ -39,7 +39,7 @@ export default function subcategory() {
   } = useInfiniteQuery(['discussions', sortBy, router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
-    const res = await axios.get(`/discussions/subcategory${router.query?.id}?cursor=${passCursor}&sortBy=${sortBy}`)
+    const res = await axios.get(`/discussions/subcategory/${router.query?.id}?cursor=${passCursor}&sortBy=${sortBy}`)
     return res.data
 
   },
