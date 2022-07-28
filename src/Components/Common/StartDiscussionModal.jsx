@@ -14,6 +14,7 @@ import { RichTextEditor } from '@mantine/rte';
 import { ActionIcon } from '@mantine/core';
 import { ArrowRight, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
+import LoginWindowButton from './LoginWindowButton';
 
 export default function StartDiscussionModal() {
 
@@ -142,7 +143,13 @@ export default function StartDiscussionModal() {
                     Start Discussion
                 </Button>
 
-                : <Button rounded='full' bg='#e6caaf' fontSize='12px'>Login to start discussion</Button>
+                : <LoginWindowButton
+                    rounded='full'
+                    bg='#e6caaf'
+                    fontSize='12px'
+                    innerText="Login to start discussion"
+                />
+                // <Button rounded='full' bg='#e6caaf' fontSize='12px'>Login to start discussion</Button>
             }
 
 

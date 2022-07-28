@@ -101,6 +101,7 @@ export default function SelectCategoryModal({ setCategory, setSubCategory }) {
                                             <HStack>
                                                 {cat.subCategories.map((ct, index) => {
                                                     return <Button
+                                                        key={index}
                                                         size='sm'
                                                         rounded='full'
                                                         bg='#fcc31e'

@@ -99,7 +99,7 @@ export default function SearchModal({mobileMenu = false}) {
                                     <Text>Search results of discussions</Text>
                                 </Box>
 
-                                <Box maxH={100} overflowY='auto' p={2}>
+                                <Box maxH={200} overflowY='auto' p={2}>
                                     <Flex direction='column'>
                                         {discussions.map((discussion, index) => {
                                             return <NextLink key={index} href={`/discussion/${discussion.id}`}>
@@ -126,10 +126,10 @@ export default function SearchModal({mobileMenu = false}) {
                                     <Text>Search results of users</Text>
                                 </Box>
 
-                                <Box maxH={100} p={2} overflowY='auto'>
+                                <Box maxH={150} p={2} overflowY='auto'>
                                     <Flex direction='column'>
                                         {users.map((user, index) => {
-                                            return <NextLink href={`/user/${user.id}`}>
+                                            return <NextLink key={index} href={`/user/${user.id}`}>
                                                 <Link href={`/user/${user.id}`}>
                                                     <Flex alignItems='center' gap={2}>
                                                         <Avatar size='xs' src={user.avatar} name={user.name} />

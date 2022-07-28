@@ -7,6 +7,9 @@ const { getSeachData } = require('../controllers/SystemController')
 
 async function router(app) {
 
+
+    app.post('/sso_auth', {onRequest: app.authSso }, UserController.ssoAuth)
+    
     app.get('/signup', UserController.signup )
     app.post('/authorize', {onRequest: app.auth}, UserController.authorize) 
 

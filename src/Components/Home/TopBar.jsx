@@ -16,6 +16,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import moment from 'moment'
 import SearchModal from '../Common/SearchModal'
+import LoginWindowButton from '../Common/LoginWindowButton'
 
 export default function TopBar() {
 
@@ -89,27 +90,24 @@ export default function TopBar() {
 
           <HStack gap={2}>
             <Show above='lg'>
-                <SearchModal />
+              <SearchModal />
             </Show>
 
             {(!user.isLoading && !user.data) && <Show above='md'>
-              <NextLink href='/login'>
-                <Button
-                  as='a'
-                  varient='solid'
-                  color='white'
-                  rounded='full'
-                  bg='#a52a2a'
-                  _hover={{
-                    color: 'whiteAlpha.900',
-                    textDecoration: 'none'
-                  }}
-                  href='/login'
-                  minW={100}
-                >
-                  Login
-                </Button>
-              </NextLink>
+              {/* <NextLink href='/login'> */}
+              <LoginWindowButton
+                varient='solid'
+                color='white'
+                rounded='full'
+                bg='#a52a2a'
+                _hover={{
+                  color: 'whiteAlpha.900',
+                  textDecoration: 'none'
+                }}
+                minW={100}
+                innerText='Sign In'
+              />
+              {/* </NextLink> */}
 
               <NextLink href='/register'>
                 <Button

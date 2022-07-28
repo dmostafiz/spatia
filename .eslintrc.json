@@ -5,6 +5,7 @@
     "@next/next/no-page-custom-font": "off",
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "off",
-    "import/no-anonymous-default-export": "off"
+    "import/no-anonymous-default-export": "off",
+    "react/display-name": "off"
   }
 }

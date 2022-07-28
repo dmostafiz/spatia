@@ -59,7 +59,6 @@ export default function discussions() {
   return (
     <UserLayout>
 
-
       <VStack alignItems='flex-start'>
 
         {/* Topbar of the category page */}

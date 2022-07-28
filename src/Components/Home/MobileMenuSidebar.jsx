@@ -6,7 +6,7 @@ import { BellRinging, UserCircle } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import SearchModal from '../Common/SearchModal';
 import NextLink from 'next/link'
-import { RiChatPrivateLine, RiLogoutCircleRLine, RiSettings4Line } from 'react-icons/ri';
+import { RiChatPrivateLine, RiLogoutCircleRLine, RiSettings4Line, RiHistoryFill } from 'react-icons/ri';
 
 const MobileMenuSidebar = ({ notifications }) => {
 

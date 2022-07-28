@@ -24,7 +24,9 @@ export default function authUser() {
         })
 
         return res.data
-    })
+    }, {
+        refetchOnWindowFocus: true
+    } )
 
     // console.log('Authorization: ', response.data)
 

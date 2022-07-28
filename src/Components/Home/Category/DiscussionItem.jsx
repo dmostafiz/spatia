@@ -62,15 +62,19 @@ export default function DiscussionItem({ item }) {
                             fontFamily={`'Assistant', sans-serif`}
                             letterSpacing={2}
                         >
-                            Lated Post | {moment(item.discussions?.[0]?.createdAt).calendar()}
+                            Latest Post | {moment(item.discussions?.[0]?.createdAt).calendar()}
                         </Text>
-                        <Text
-                            color='whiteAlpha.900'
-                            fontFamily={`'Montserrat', sans-serif`}
-                            fontSize='12px'
-                        >
-                            {item.discussions?.[0]?.title}
-                        </Text>
+                        <NextLink href={`/discussion/${item.discussions?.[0]?.id}`}>
+                            <Link href={`/discussion/${item.discussions?.[0]?.id}`}>
+                                <Text
+                                    color='whiteAlpha.900'
+                                    fontFamily={`'Montserrat', sans-serif`}
+                                    fontSize='12px'
+                                >
+                                    {item.discussions?.[0]?.title}
+                                </Text>
+                            </Link>
+                        </NextLink>
                     </Box>
                 </Box>
             </VStack>

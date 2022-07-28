@@ -4,7 +4,7 @@ import Layout from '../../Components/Home/Layout'
 // import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
 import DiscussionBody from '../../Components/Home/Discussion/DiscussionBody';
 import DiscussionReplyThread from '../../Components/Home/Discussion/DiscussionReplyThread';
-// import StickyBox from 'react-sticky-box';
+import StickyBox from 'react-sticky-box';
 // import DiscussionsRightSidebar from '../../Components/Home/Discussion/DiscussionsRightSidebar';
 import DiscussionReplyForm from '../../Components/Home/Discussion/DiscussionReplyForm';
 import axios from 'axios'
@@ -21,6 +21,8 @@ import BigSpinner from '../../Components/Common/BigSpinner';
 import useToken from '../../Hooks/useToken';
 import authUser from '../../Hooks/authUser';
 import Cookies from "js-cookie";
+import LoginWindowButton from '../../Components/Common/LoginWindowButton';
+import FollowUnfollow from '../../Components/profile/FollowUnfollow';
 
 
 
@@ -48,8 +50,8 @@ function Discussion({ discussion }) {
 
     useEffect(() => {
         const mentionHtml = document.getElementsByClassName('mention');
-        
-        for(var i = 0; i < mentionHtml.length; i++ ){
+
+        for (var i = 0; i < mentionHtml.length; i++) {
             // console.log('Current Mentions', mentionHtml[i].dataset)
             setMentioned([...mentioned, mentionHtml[i].dataset.id])
         }
@@ -79,7 +81,7 @@ function Discussion({ discussion }) {
 
         //Set Final mentioned user after filtering
         setFinalMentioned(uniqueEntries)
-        
+
         Cookies.remove('mentions')
 
     }, [mentioned])
@@ -90,7 +92,7 @@ function Discussion({ discussion }) {
 
     const handleClickReply = (id) => {
 
-        if(user.data?.id){
+        if (user.data?.id) {
             editorRef.current.focus()
         }
 
@@ -289,11 +291,46 @@ function Discussion({ discussion }) {
 
                     <Show above='md'>
                         <Box w={200} minH='100vh' overflowWrap='hidden'>
-                            {/* <StickyBox offsetTop={250}>
-        
-                                        <DiscussionsRightSidebar />
-        
-                                    </StickyBox> */}
+                            <StickyBox offsetTop={110}>
+
+                                {/* <DiscussionsRightSidebar /> */}
+                                {user.data?.id
+                                    ? <Box>
+                                        {/* <Button
+                                            // onClick={() => handleClickReply(null)}
+                                            bg='#f4edde'
+                                            rounded='full'
+                                            shadow='sm'
+                                        >
+                                            Follow Respbery
+                                        </Button> */}
+
+
+
+                                        <Button
+                                            onClick={() => handleClickReply(null)}
+                                            bg='#f4edde'
+                                            rounded='full'
+                                            shadow='sm'
+                                        >
+                                            Reply this discussion
+                                        </Button>
+
+                                        <Spacer h={2} />
+
+                                        <FollowUnfollow user={discussion.author} />
+
+                                    </Box>
+                                    : <LoginWindowButton
+                                        bg='#f4edde'
+                                        rounded='full'
+                                        shadow='sm'
+                                        innerText='Login to reply'
+                                    />
+                                }
+
+
+                            </StickyBox>
                         </Box>
                     </Show>
 

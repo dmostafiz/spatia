@@ -608,7 +608,12 @@ exports.getOneDiscussion = async (req, reply) => {
             include: {
                 category: true,
                 subCategory: true,
-                author: true,
+                author: {
+                    include: {
+                        followers: true,
+                        haters: true
+                    }
+                },
                 tags: true,
                 replies: {
                     take: 3,

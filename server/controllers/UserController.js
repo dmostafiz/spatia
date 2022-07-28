@@ -1,3 +1,40 @@
+exports.ssoAuth = async (request, reply) => {
+
+    try {
+
+        console.log('SSO User token', request.query.token)
+
+        // const user = await request.prisma.user.findFirst({
+        //     where: {
+        //         email: 'test1@gmail.com',
+        //     }
+        // })
+
+        const token = request.app.jwt.sign({
+            id: request.user.id,
+            username: request.user.username,
+            email: request.user.email,
+            name: request.user.name
+        })
+
+        console.log('Token Signed ##################### ', token)
+
+        reply
+            .setCookie('_token', token, {
+                path: '/'
+            })
+            .send({ token: token })
+
+
+    } catch (error) {
+
+        console.log('TryCatch Error ##################### ', error.message)
+
+    }
+
+}
+
+
 exports.signup = async (request, reply) => {
 
     try {
