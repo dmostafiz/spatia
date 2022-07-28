@@ -1,6 +1,7 @@
 const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory} = require('../controllers/CategoryController')
 const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions } = require('../controllers/DiscussionController')
+const { getSeachData } = require('../controllers/SystemController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -8,6 +9,9 @@ async function router(app) {
 
     app.get('/signup', UserController.signup )
     app.post('/authorize', {onRequest: app.auth}, UserController.authorize) 
+
+    //Search
+    app.get('/search', getSeachData)
 
     //People
     app.get('/user/:id', UserController.getUserInfo)

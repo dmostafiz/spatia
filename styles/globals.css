@@ -22,3 +22,8 @@ font-family: 'Montserrat', sans-serif; */
     box-shadow: none !important;
 }   
 
+.search-highlighter {
+    font-weight: bold;
+    font-size: 18px;
+    background: transparent;
+}

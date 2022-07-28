@@ -15,6 +15,7 @@ import logoutMe from '../../Hooks/logoutMe'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import moment from 'moment'
+import SearchModal from '../Common/SearchModal'
 
 export default function TopBar() {
 
@@ -88,9 +89,7 @@ export default function TopBar() {
 
           <HStack gap={2}>
             <Show above='lg'>
-       
-
-       
+                <SearchModal />
             </Show>
 
             {(!user.isLoading && !user.data) && <Show above='md'>
