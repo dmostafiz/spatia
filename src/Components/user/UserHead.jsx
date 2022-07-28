@@ -150,7 +150,7 @@ export default function UserHead({ user }) {
 
 
                         {/* <Button rounded='full' bg='#ede7e0'>Follow</Button> */}
-                        <ButtonGroup mt={3} size='md' isAttached variant='outline' fontFamily='body'>
+                        {aUser.data?.id && <ButtonGroup mt={3} size='md' isAttached variant='outline' fontFamily='body'>
                             <Button
                                 disabled={loading}
                                 _hover={{
@@ -192,7 +192,8 @@ export default function UserHead({ user }) {
 
                                 </MenuList>
                             </Menu>
-                        </ButtonGroup>
+                        </ButtonGroup>}
+
 
                     </Box>
                 </Flex>

@@ -230,7 +230,7 @@ export default function TopBar() {
 
             <Show below='md'>
 
-              <MobileMenuSidebar />
+              <MobileMenuSidebar notifications={notifications} />
 
             </Show>
 

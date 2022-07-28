@@ -19,7 +19,7 @@ exports.getSeachData = async (req, reply) => {
                     }
                 ]
             },
-            take: 5
+            take: 10
         })
 
         const users = await req.prisma.user.findMany({
@@ -45,7 +45,7 @@ exports.getSeachData = async (req, reply) => {
                     }
                 ]
             },
-            take: 5
+            take: 10
         })
 
         // console.log('Seatch Resulsts ############################### ', {discussions, users})

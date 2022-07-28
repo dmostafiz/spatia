@@ -16,7 +16,7 @@ import NextLink from 'next/link'
 import Highlighter from "react-highlight-words";
 import { useRouter } from 'next/router'
 
-export default function SearchModal() {
+export default function SearchModal({mobileMenu = false}) {
 
     const router = useRouter()
 
@@ -65,8 +65,8 @@ export default function SearchModal() {
                     readOnly={true}
                     onClick={() => onOpen()}
                     rounded='full'
-                    minW={300}
-                    pr={50} pl={25} py={6} bg='white'
+                    minW={mobileMenu ? 50 : 300}
+                    pr={mobileMenu ? 0 : 50} pl={25} py={6} bg='white'
                     border='0px solid #7e8b9f'
                     _focus={{ ring: 0, border: '0px soild', outline: 0 }}
                     placeholder='Search the community'
@@ -104,12 +104,14 @@ export default function SearchModal() {
                                         {discussions.map((discussion, index) => {
                                             return <NextLink key={index} href={`/discussion/${discussion.id}`}>
                                                 <Link href={`/discussion/${discussion.id}`}>
-                                                    <Highlighter
-                                                        highlightClassName="search-highlighter"
-                                                        searchWords={[searchQuery]}
-                                                        autoEscape={true}
-                                                        textToHighlight={discussion.title}
-                                                    />
+                                                    <Text fontFamily='sans-serif' color='gray.500'>
+                                                        <Highlighter
+                                                            highlightClassName="search-highlighter"
+                                                            searchWords={[searchQuery]}
+                                                            autoEscape={true}
+                                                            textToHighlight={discussion.title}
+                                                        />
+                                                    </Text>
                                                 </Link>
                                             </NextLink>
                                         })}
