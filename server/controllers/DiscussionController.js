@@ -190,6 +190,82 @@ exports.getCategoryDiscussions = async (req, reply) => {
     }
 }
 
+exports.getFollowingDiscussions = async (req, reply) => {
+
+    try {
+
+        console.log('Category Discussions query string ################################# ', req.query.cursor)
+        console.log('Discussion sorting ################################# ', req.query.sortBy)
+
+        const orderBy = req.query.sortBy == 'Newest'
+            ? {
+                id: 'desc'
+            }
+
+            : req.query.sortBy == 'Newest'
+                ? {
+                    id: 'asc'
+                }
+
+                : req.query.sortBy == 'Most Viewed'
+                    ? {
+                        views: 'desc'
+                    }
+
+                    : req.query.sortBy == 'Most Replied'
+                        ? {
+                            replies: {
+
+                                _count: 'desc'
+                            }
+                        }
+
+                        : undefined
+
+
+
+        const limit = 5
+        const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
+
+        const discussions = await req.prisma.discussion.findMany({
+            where: {
+                author: {
+                    followerIds: {
+                        has: req.user.id
+                    }
+                },
+                isPrivate: false
+            },
+            skip: cursor,
+            take: limit,
+            // cursor: cursorObj,
+            orderBy: orderBy,
+            include: {
+                category: true,
+                subCategory: true,
+                author: true,
+                tags: true,
+                replies: {
+                    // orderBy: { crearedAt: 'desc' },
+                    include: { author: true }
+                }
+            }
+        })
+
+
+        // const nextCursor = discussions.length == limit? discussions[limit - 1].id : null
+
+        console.log('Following Discussions end ################################# ', discussions)
+        // console.log('Discussion Cursor last ################################# ',nextCursor)
+
+        return reply.send(discussions)
+
+    } catch (error) {
+        console.log('Category Discussions Error ################################# ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+    }
+}
+
 exports.getsubCategoryDiscussions = async (req, reply) => {
 
     try {

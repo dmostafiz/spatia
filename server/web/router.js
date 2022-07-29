@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions } = require('../controllers/DiscussionController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
@@ -41,6 +41,7 @@ async function router(app) {
  
     //Discussions
     app.get('/discussions/:categorySlug', getCategoryDiscussions)
+    app.get('/discussions/following', {onRequest: app.auth}, getFollowingDiscussions)
     app.get('/discussions/subcategory/:id', getsubCategoryDiscussions)
 
     app.get('/discussions/private', {onRequest: app.auth}, getPrivateDiscussions)

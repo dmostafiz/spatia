@@ -36,7 +36,7 @@ export default function following() {
   } = useInfiniteQuery(['discussions', sortBy, router], async (params) => {
 
     const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
-    const res = await axios.get(`/discussions/all?cursor=${passCursor}&sortBy=${sortBy}`)
+    const res = await axios.get(`/discussions/following?cursor=${passCursor}&sortBy=${sortBy}`)
     return res.data
 
   },
@@ -64,7 +64,7 @@ export default function following() {
       <Container maxW='container.xl'>
 
         <PageTitle
-          title="All Discussions"
+          title="Discussions you are following"
         //   subtitle={category.data.description}
         // navigation={<NavigationIndata />}
         />
@@ -105,7 +105,7 @@ export default function following() {
                   <Center w='full' height='300px'>
                     <VStack>
                       <Text fontSize='22px'>No discussions found.</Text>
-                      <StartDiscussionModal />
+                      {/* <StartDiscussionModal /> */}
                     </VStack>
                   </Center>
 
