@@ -2,19 +2,29 @@ exports.ssoAuth = async (request, reply) => {
 
     try {
 
-        console.log('SSO User token', request.query.token)
+        // console.log('SSO User token', request.query.token)
 
-        // const user = await request.prisma.user.findFirst({
-        //     where: {
-        //         email: 'test1@gmail.com',
-        //     }
-        // })
+        const user = await request.prisma.user.upsert({
+            where: {
+                email: request.user.email,
+            },
+
+            update: {},
+
+            create: {
+                username: request.user.username,
+                email: request.user.email,
+                name: request.user.name,
+                avatar: null,
+                bio: null
+            },
+        })
 
         const token = request.app.jwt.sign({
-            id: request.user.id,
-            username: request.user.username,
-            email: request.user.email,
-            name: request.user.name
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            name: user.name
         })
 
         console.log('Token Signed ##################### ', token)
@@ -41,7 +51,7 @@ exports.signup = async (request, reply) => {
 
         const user = await request.prisma.user.findFirst({
             where: {
-                email: 'test@gmail.com',
+                email: 'test1@gmail.com',
             }
         })
 
@@ -89,7 +99,7 @@ exports.getUserInfo = async (request, reply) => {
                         isPrivate: false
                     }
                 },
-                
+
                 hatings: true
             }
         })
@@ -334,7 +344,7 @@ exports.userAction = async (req, reply) => {
 
 
         if (req.body.action == 'Follow') {
-            
+
             const notification = await req.prisma.notification.create({
                 data: {
                     userId: req.body.userId,
@@ -348,6 +358,28 @@ exports.userAction = async (req, reply) => {
         console.log('Action User #####################3 ', user)
 
         return reply.send(user)
+
+    } catch (error) {
+        console.log('user action Error ################## ', error.message)
+    }
+}
+
+exports.removeFromIgnore = async (req, reply) => {
+
+    try {
+
+        const user = await req.prisma.user.update({
+            where: {
+                id: req.user.id
+            },
+            data: {
+                hatings: {
+                    disconnect: {id: req.body.userId},
+                }
+            }
+        })
+
+        return reply.send({ status: 'success', msg: 'The user removed from your ignore list.' })
 
     } catch (error) {
         console.log('Bio Error ################## ', error.message)

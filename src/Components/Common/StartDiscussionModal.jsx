@@ -37,6 +37,13 @@ export default function StartDiscussionModal() {
     // const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
+        // console.log()
+        // if(){
+        //     setCategory(null)
+        // }
+    }, [category])
+
+    useEffect(() => {
 
         if (router.query.slug) {
             // console.log('sdsdsd#####################', router.query.slug)

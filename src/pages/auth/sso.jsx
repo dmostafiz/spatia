@@ -13,7 +13,7 @@ export default function sso() {
     useEffect(() => {
 
         async function verifySSOToken() {
-            const res = await axios.post(`/sso_auth?token=${router.query.token}`, {}, {
+            const res = await axios.post(`/sso_auth`, {}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${router.query.token}`

@@ -55,14 +55,14 @@ export default function TitleNavigation() {
                     </NextLink>
                 </>}
 
-                <NextLink href='/'>
+                {/* <NextLink href='/'>
                     <Link href='/tags' alignItems='flex-start'>
                         <HStack alignItems='flex-start'>
                             <Icon fontSize={22} as={BsTagFill} />
                             <Text>Tags</Text>
                         </HStack>
                     </Link>
-                </NextLink>
+                </NextLink> */}
             </Stack>
         </Box>
     )

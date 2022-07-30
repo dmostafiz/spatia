@@ -36,7 +36,7 @@ export default function UserHead({ user }) {
                             </Flex>
                             <Flex alignItems='center' gap={1}>
                                 {/* <Icon fontSize={18} as={FiWatch}/> */}
-                                <Text>Joined Nov, 2021</Text>
+                                <Text>Joined {user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
                             </Flex>
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={UserCheck} />

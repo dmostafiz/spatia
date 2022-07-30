@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions } = require('../controllers/DiscussionController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
@@ -27,7 +27,9 @@ async function router(app) {
     app.post('/user/notification/make_read', {onRequest: app.auth}, UserController.makeNotificationUnread)
     app.post('/user/save_bio', {onRequest: app.auth}, UserController.saveBio)
     app.post('/user/action', {onRequest: app.auth}, UserController.userAction)
+    app.post('/user/remove_from_ignore', {onRequest: app.auth}, UserController.removeFromIgnore)
 
+    
     
     //Category
     app.get('/category/get', getCategories)
@@ -49,6 +51,7 @@ async function router(app) {
     app.post('/discussion/views/:id', increasDiscussionViews)
     app.post('/discussion/store', {onRequest: app.auth}, storeDiscussion)
     app.post('/discussion/private/store', {onRequest: app.auth}, storePrivateDiscussion)
+    app.post('/discussion/action', {onRequest: app.auth}, discussionAction)
 
 
     //Reply

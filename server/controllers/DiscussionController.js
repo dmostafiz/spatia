@@ -1063,5 +1063,99 @@ exports.getReplyReaction = async (req, reply) => {
     }
 }
 
+// Follow or ignore any discussion
+exports.discussionAction = async (req, reply) => {
+    try {
+
+
+        console.log('Request Body ################ ', req.body)
+
+        let action = {}
+
+        if (req.body.action == 'Follow') {
+            action = {
+                followingUsers: {
+                    connect: {
+                        id: req.user.id
+                    }
+                },
+
+                ignoringUsers: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                }
+            }
+
+        }
+
+        else if (req.body.action == 'Ignore') {
+            action = {
+                followingUsers: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                },
+
+                ignoringUsers: {
+                    connect: {
+                        id: req.user.id
+                    }
+                }
+            }
+        }
+
+        else if (req.body.action == 'Unfollow') {
+            action = {
+                followingUsers: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                }
+            }
+        }
+
+        else if (req.body.action == 'Ignored') {
+            action = {
+                ignoringUsers: {
+                    disconnect: {
+                        id: req.user.id
+                    }
+                }
+            }
+        }
+
+
+        const discussion = await req.prisma.discussion.update({
+            where: {
+                id: req.body.discussionId
+            },
+
+            data: {
+                ...action
+            }
+        })
+
+
+        if (req.body.action == 'Follow') {
+
+            const notification = await req.prisma.notification.create({
+                data: {
+                    userId: discussion.authorId,
+                    text: 'started following your discussion.',
+                    link: `/discussion/${discussion.id}`,
+                    senderName: req.user.name
+                }
+            })
+        }
+
+        console.log('Action Discussion #####################3 ', discussion)
+
+        return reply.send(discussion)
+
+    } catch (error) {
+        console.log('Bio Error ################## ', error.message)
+    }
+}
 
 

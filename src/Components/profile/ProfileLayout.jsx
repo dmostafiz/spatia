@@ -46,14 +46,16 @@ export default function ProfileLayout({ children }) {
                 {(!aUser.isLoading && aUser.data?.id) ? <Container maxW='container.xl' py={5}>
                     <Flex direction={{ base: 'column', lg: 'row' }} gap={5}>
 
-                        <Box minH={{ base: 'auto', md: '100vh' }} w={{ base: 'full', lg: '250px' }} >
-                            {user && <StickyBox offsetTop={110}>
-                                <LeftSidebar user={user} />
-                            </StickyBox>}
-                        </Box>
+                        {user &&
+                            <Box minH={{ base: 'auto', md: '100vh' }} w={{ base: 'full', lg: '250px' }} >
+                                <StickyBox offsetTop={110}>
+                                    <LeftSidebar user={user} />
+                                </StickyBox>
+                            </Box>
+                        }
 
                         <Box flex='1'>
-                            {children}
+                            {user ? children : <BigSpinner />}
                         </Box>
                     </Flex>
 

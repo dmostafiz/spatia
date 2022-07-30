@@ -1,5 +1,6 @@
 import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button } from '@chakra-ui/react';
 import axios from 'axios';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { FiWatch } from 'react-icons/fi';
 import { Bible, UserCheck, BoxMultiple, UserPlus } from 'tabler-icons-react';
@@ -32,7 +33,7 @@ export default function UserHead({ user }) {
                         <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 7 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiWatch} />
-                                <Text>Joined Nov, 2021</Text>
+                                <Text>Joined {user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
                             </Flex>
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={UserCheck} />
@@ -40,7 +41,7 @@ export default function UserHead({ user }) {
                             </Flex>
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={BoxMultiple} />
-                                <Text>888 Points</Text>
+                                <Text>{user.points ?? 0} Points</Text>
                             </Flex>
 
                             <Flex alignItems='center' gap={1}>

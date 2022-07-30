@@ -23,6 +23,7 @@ import authUser from '../../Hooks/authUser';
 import Cookies from "js-cookie";
 import LoginWindowButton from '../../Components/Common/LoginWindowButton';
 import FollowUnfollow from '../../Components/profile/FollowUnfollow';
+import FollowUnfollowDiscussion from '../../Components/profile/FollowUnfollowDiscussion';
 
 
 
@@ -318,7 +319,7 @@ function Discussion({ discussion }) {
 
                                         <Spacer h={2} />
 
-                                        <FollowUnfollow user={discussion.author} />
+                                        <FollowUnfollowDiscussion disc={discussion} />
 
                                     </Box>
                                     : <LoginWindowButton

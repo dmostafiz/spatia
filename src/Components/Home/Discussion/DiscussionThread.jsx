@@ -62,8 +62,10 @@ export default function DiscussionThread({ discussion }) {
                             <Flex alignItems='end' gap={1}>
                                 <Icon fontSize={24} as={CgMailReply} />
                                 <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
-                                    <NextLink href='#'>
-                                        <Link href='#' color='blue.400'>{discussion.replies[discussion.replies.length - 1].author.name}</Link>
+                                    <NextLink href={`/user/${discussion.replies[discussion.replies.length - 1].author.id}`}>
+                                        <Link href={`/user/${discussion.replies[discussion.replies.length - 1].author.id}`} color='blue.400'>
+                                            {discussion.replies[discussion.replies.length - 1].author.name}
+                                        </Link>
                                     </NextLink> {moment(discussion.replies[discussion.replies.length - 1].createdAt).calendar()}
                                 </Text>
                             </Flex>

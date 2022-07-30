@@ -29,6 +29,11 @@ export default function SelectCategoryModal({ setCategory, setSubCategory }) {
         setCategory(category)
 
         if (!category.subCategories.length) {
+            setSubCategory(null)
+        }
+
+        if (!category.subCategories.length) {
+            setViewSubCategories({ show: false, catId: null })
             onClose()
         } else {
             setViewSubCategories({ show: true, catId: category.id })
@@ -37,6 +42,7 @@ export default function SelectCategoryModal({ setCategory, setSubCategory }) {
 
     const handleClickSubCategory = (subCategory) => {
         setSubCategory(subCategory)
+        setViewSubCategories({ show: false, catId: null })
         onClose()
     }
 

@@ -20,6 +20,8 @@ model User {
 
   bio String?
 
+  role String @default("user")
+
   posts Discussion[] @relation("posts")
 
   privatePostIds String[]     @db.ObjectId
@@ -40,6 +42,12 @@ model User {
 
   hatingIds String[] @db.ObjectId
   hatings   User[]   @relation(name: "haters", fields: [hatingIds], references: [id])
+
+  followingDiscussionIds String[]     @db.ObjectId
+  followingDiscussions   Discussion[] @relation(name: "followingDiscussions", fields: [followingDiscussionIds], references: [id])
+
+  ignoringDiscussionIds String[]     @db.ObjectId
+  ignoringDiscussions   Discussion[] @relation(name: "ignoringDiscussions", fields: [ignoringDiscussionIds], references: [id])
 
   notifications Notification[]
 
@@ -98,6 +106,12 @@ model Discussion {
 
   privateMemberIds String[] @db.ObjectId
   privateMembers   User[]   @relation(name: "privatePosts", fields: [privateMemberIds], references: [id])
+
+  followingUsersIds String[] @db.ObjectId
+  followingUsers    User[]   @relation(name: "followingDiscussions", fields: [followingUsersIds], references: [id])
+
+  ignoringUsersIds String[] @db.ObjectId
+  ignoringUsers    User[]   @relation(name: "ignoringDiscussions", fields: [ignoringUsersIds], references: [id])
 
   reactions Reaction[]
 
