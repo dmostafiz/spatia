@@ -229,10 +229,8 @@ exports.getFollowingDiscussions = async (req, reply) => {
 
         const discussions = await req.prisma.discussion.findMany({
             where: {
-                author: {
-                    followerIds: {
-                        has: req.user.id
-                    }
+                followingUsersIds: {
+                    has: req.user.id
                 },
                 isPrivate: false
             },
