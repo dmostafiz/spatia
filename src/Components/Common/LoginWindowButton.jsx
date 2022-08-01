@@ -18,7 +18,7 @@ export default function LoginWindowButton(props) {
         <>
             <Button
                 {...props}
-                onClick={() => openInNewTab(process.env.SSO_ENDPOINT)}
+                onClick={() => openInNewTab(process.env.SSO_ENDPOINT || 'http://localhost:8080/api/sso_token')}
             >
                 {props.innerText}
             </Button>
