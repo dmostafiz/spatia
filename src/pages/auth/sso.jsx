@@ -1,12 +1,15 @@
-import { Center } from '@chakra-ui/react'
+import { Center, Text } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import BigSpinner from '../../Components/Common/BigSpinner'
+import authUser from '../../Hooks/authUser'
 
 export default function sso() {
 
     const router = useRouter()
+    const [error, setError] = useState(false)
+    const user = authUser()
 
     // const [token, setToken] = useState(null)
 
@@ -20,14 +23,11 @@ export default function sso() {
                 }
             })
 
-            if(res.data){
-
-                window.opener.triggerCloseOpener()
-                window.close()
-                
+            if (res.data.status == 'success') {
+                router.push(`/${router.query.surl}`)
+            } else {
+                setError(true)
             }
-
-            // window.newWindow.close()
 
         }
 
@@ -36,6 +36,33 @@ export default function sso() {
         }
 
     }, [router])
+
+
+    if(user.data?.id){
+        return (
+            <Center w='full' h='100vh'>
+                <Text>You are already authenticated</Text>
+            </Center>
+        )
+    }
+
+    if (error) {
+        return (
+            <Center w='full' h='100vh'>
+                <Text>Authentication failed with bad token</Text>
+            </Center>
+        )
+    }
+
+    if (!router.query.token || !router.query.surl) {
+        return (
+            <Center w='full' h='100vh'>
+                {(!router.query)
+                    ? <BigSpinner />
+                    : <Text>Oopps! Bad Request</Text>}
+            </Center>
+        )
+    }
 
 
     return (

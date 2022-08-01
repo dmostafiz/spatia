@@ -7,32 +7,18 @@ export default function LoginWindowButton(props) {
 
     const router = useRouter()
 
+    console.log('Login router', router)
+
     const openInNewTab = (url) => {
-        const newWindow = window.open(url, '_blank', "toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=500,width=400,height=400")
-        // if (newWindow) newWindow.opener = null
-        // newWindow.opener.location.reload(true)
-        // window.focus()
-        // window.newWindow = newWindow
-
-        newWindow.opener.triggerCloseOpener = () => {
-            console.log('Opener is closed triggerCloseOpener')
-            newWindow.opener.close()
-            router.reload()
-        }
-
-        console.log('newWindow.opener ', newWindow.opener)
-
-        if(newWindow.closed){
-            alert('Awesome')
-        }
-        console.log('New window', newWindow)
+        const newWindow = window.open(`${url}?surl=${router.asPath}`, '_self')
+        if (newWindow) newWindow.opener = null
     }
 
     return (
         <>
             <Button
                 {...props}
-                onClick={() => openInNewTab('http://localhost:8080/sso')}
+                onClick={() => openInNewTab(process.env.SSO_ENDPOINT)}
             >
                 {props.innerText}
             </Button>

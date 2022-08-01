@@ -3,6 +3,9 @@ exports.ssoAuth = async (request, reply) => {
     try {
 
         // console.log('SSO User token', request.query.token)
+        if(!request.user){
+
+        }
 
         const user = await request.prisma.user.upsert({
             where: {
@@ -33,12 +36,13 @@ exports.ssoAuth = async (request, reply) => {
             .setCookie('_token', token, {
                 path: '/'
             })
-            .send({ token: token })
+            .send({status: 'success', token: token })
 
 
     } catch (error) {
 
         console.log('TryCatch Error ##################### ', error.message)
+        reply.send({status: 'error'})
 
     }
 
