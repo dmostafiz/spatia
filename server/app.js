@@ -28,7 +28,7 @@ app.register(prismaPlugin)
 
 
 app.register(require('@fastify/cookie'), {
-    secret: "4rgfdg234qwfr243rt34243rt344", // for cookies signature
+    secret: process.env.APP_SECRET, // for cookies signature
     parseOptions: {}     // options for parsing cookies
 })
 
