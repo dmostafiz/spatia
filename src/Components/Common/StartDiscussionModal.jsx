@@ -100,7 +100,7 @@ export default function StartDiscussionModal() {
             title: title,
             content: content,
             categoryId: category.id,
-            subCategoryId: subCategory.id,
+            subCategoryId: subCategory?.id,
             tags
         }
 

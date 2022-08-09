@@ -1,9 +1,16 @@
 
 exports.storeDiscussion = async (req, reply) => {
 
+    
     try {
-
+        
         const body = req.body
+
+        const connectSubCategory = body.subCategoryId ? {
+            subCategory: {
+                connect: { id: body.subCategoryId || null}
+            }
+        }: undefined
 
         const discussion = await req.prisma.discussion.create({
 
@@ -23,9 +30,7 @@ exports.storeDiscussion = async (req, reply) => {
                     connect: { id: body.categoryId }
                 },
 
-                subCategory: {
-                    connect: { id: body.subCategoryId }
-                }
+                ...connectSubCategory
             },
 
             include: {
