@@ -1,8 +1,7 @@
 const bootstrap = async (app) => {
 
-
     app.register(require('@fastify/jwt'), {
-        secret: 'supersecret'
+        secret: process.env.JWT_SECRET
     })
 
 
@@ -35,7 +34,7 @@ const bootstrap = async (app) => {
 
     app.decorate('authSso', async (req, reply) => {
 
-        console.log('____Token ### ', req.headers)
+        // console.log('____Token ### ', req.headers)
 
         try {
             await req.jwtVerify(function (err, decoded) {
