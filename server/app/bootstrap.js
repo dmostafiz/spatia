@@ -17,7 +17,7 @@ const bootstrap = async (app) => {
             await req.jwtVerify(function (err, decoded) {
                 // console.log('Auth Response %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%: ', err || decoded)
                 if (err) {
-                    console.log('Auth Error######### ', err)
+                    // console.log('Auth Error######### ', err)
                     return reply.send({ status: 'error', msg: 'Authentication failed!' })
                 } else {
                     // console.log('*******Auth Success********* ', decoded)
@@ -25,7 +25,7 @@ const bootstrap = async (app) => {
             })
 
         } catch (error) {
-            console.log('*******Auth try catch error********* ', error.message)
+            // console.log('*******Auth try catch error********* ', error.message)
             // return reply.send({ status: 'error', msg: 'Authentication failed' })
         }
         // console.log('Authentication################################### :', verify)
@@ -44,15 +44,15 @@ const bootstrap = async (app) => {
             await req.jwtVerify(function (err, decoded) {
 
                 if (err) {
-                    console.log('Auth Error######### ', err)
+                    // console.log('Auth Error######### ', err)
                     return reply.send({ status: 'error', msg: 'Authentication failed!' })
                 } else {
-                    console.log('*******Auth Success********* ', decoded)
+                    // console.log('*******Auth Success********* ', decoded)
                 }
             })
 
         } catch (error) {
-            console.log('*******Auth try catch error********* ', error.message)
+            // console.log('*******Auth try catch error********* ', error.message)
         }
     })
 

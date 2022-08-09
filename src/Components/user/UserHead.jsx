@@ -3,15 +3,38 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { FiUserPlus, FiWatch } from 'react-icons/fi';
+import { GoPrimitiveDot } from 'react-icons/go';
+
+
 import { Bible, UserCheck, BoxMultiple, ArrowDown } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import FollowUnfollow from '../profile/FollowUnfollow';
+import { useSelector } from 'react-redux'
+
 
 export default function UserHead({ user }) {
+
+    const onlineUsers = useSelector(state => state.onlineState.users)
+
+    const [userOnline, setUserOnline] = useState(false)
 
     const router = useRouter()
     const aUser = authUser()
     const toast = useToast()
+
+    useEffect(() => {
+
+        const userExist = onlineUsers?.filter(usr => usr.id == user.id)
+
+        if (userExist.length) {
+            setUserOnline(true)
+        }else{
+            setUserOnline(false)
+        }
+        // console.log('Online Users ID ', userExist)
+
+    }, [onlineUsers])
+
     // const [action, setAction] = useState('Follow')
     return (
         <Box as='div' w='full' p={3} mb={4} bg='#f6e3d1' rounded='sm' shadow>
@@ -30,12 +53,13 @@ export default function UserHead({ user }) {
 
                         <Spacer h={3} />
                         <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 7 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
+                            {userOnline && <Flex>
+                                <Icon fontSize={18} color='green.500' as={GoPrimitiveDot} />
+                                <Text>Online</Text>
+                            </Flex>}
+
                             <Flex alignItems='center' gap={1}>
-                                <Icon fontSize={18} as={FiWatch} />
-                                <Text>2 minutes ago</Text>
-                            </Flex>
-                            <Flex alignItems='center' gap={1}>
-                                {/* <Icon fontSize={18} as={FiWatch}/> */}
+                                <Icon fontSize={18} as={FiWatch}/>
                                 <Text>Joined {user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
                             </Flex>
                             <Flex alignItems='center' gap={1}>
@@ -109,7 +133,7 @@ export default function UserHead({ user }) {
                         </ButtonGroup>} */}
 
 
-                        <FollowUnfollow user={user}/>
+                        <FollowUnfollow user={user} />
 
                     </Box>
                 </Flex>

@@ -17,6 +17,8 @@ import {
   QueryClientProvider,
 } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { wrapper } from '../StateManager/store';
+// import initSocket from '../Hooks/initSocket';
 
 const queryClient = new QueryClient()
 
@@ -35,6 +37,7 @@ function MyApp({ Component, pageProps }) {
   // axios.defaults.baseURL = 'https://spacom.herokuapp.com/api'
   axios.defaults.headers.common['Authorization'] = useToken();
   axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 
   return <MantineProvider
     withGlobalStyles
@@ -67,4 +70,4 @@ function MyApp({ Component, pageProps }) {
   </MantineProvider>
 }
 
-export default MyApp
+export default  wrapper.withRedux( MyApp )

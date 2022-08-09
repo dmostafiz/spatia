@@ -7,10 +7,39 @@ import Head from 'next/head';
 import { Box } from '@chakra-ui/react';
 import Footer from './Footer';
 import authUser from '../../Hooks/authUser';
+import initSocket from '../../Hooks/initSocket';
+import { useSelector, useDispatch } from 'react-redux'
+import { setOnline } from '../../StateManager/Reducers/UserOnlineSlice';
 
 export default function Layout({ children, title = 'Home' }) {
+  initSocket()
 
   const titleHead = `${title} | Spatial Community`
+
+  const socket = useSelector(state => state.socket.io)
+
+  const aUser = authUser()
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    console.log('Socket from redux ', socket)
+    socket?.emit('addUser', {
+      user: aUser?.data
+    })
+  }, [aUser, socket])
+
+
+  useEffect(() => {
+
+    socket?.on('userAdded', (users) => {
+      console.log('userAdded called from server ', users)
+
+      dispatch(setOnline(users))
+
+    })
+  }, [socket])
+
 
   return (
     <AppContainer>
