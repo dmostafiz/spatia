@@ -1,16 +1,19 @@
 import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function LoginWindowButton(props) {
 
 
     const router = useRouter()
 
-    console.log('Login router', router)
-
+    
     const openInNewTab = (url) => {
-        const newWindow = window.open(`${url}?surl=${router.asPath}`, '_self')
+        
+        const hostName = window.location.hostname == 'localhost' ? `${window.location.hostname}:3000` : window.location.hostname
+  
+        const newWindow = window.open(`${url}?hostdomain=//${hostName}&surl=${router.asPath}`, '_self')
+    
         if (newWindow) newWindow.opener = null
     }
 

@@ -57,24 +57,24 @@ app.ready(err => {
     let users = []
 
     const addUser = (user, socketId) => {
-        !users.some(usr => usr.id == user.id) && users.push({ id: user.id, socketId })
+        !users.some(usr => usr.id == user?.id) && users.push({ id: user?.id, socketId })
     }
 
     const removeUser = (socketId) => {
-        users = users.filter(user => user.socketId != socketId)
+        users = users.filter(user => user?.socketId != socketId)
     }
 
 
     app.io.on('connection', (socket) => {
 
-        console.info('Socket connected!', socket.id)
+        console.info('Socket connected!', socket?.id)
 
         //Socket codes here
 
 
         socket.on('addUser', (data) => {
 
-            addUser(data.user, socket.id)
+            addUser(data?.user, socket?.id)
 
             socket.emit('userAdded', users)
 
@@ -84,7 +84,7 @@ app.ready(err => {
 
         socket.on('disconnect', () => {
 
-            removeUser(socket.id)
+            removeUser(socket?.id)
             console.info('Socket disconnected! from #disconnect#')
 
         })

@@ -25,6 +25,7 @@ export default function sso() {
 
             if (res.data.status == 'success') {
                 router.push(`/${router.query.surl}`)
+                // window.location.href = router.query.surl
             } else {
                 setError(true)
             }
