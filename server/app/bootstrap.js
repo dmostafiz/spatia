@@ -1,7 +1,7 @@
 const bootstrap = async (app) => {
 
     app.register(require('@fastify/jwt'), {
-        secret: process.env.APP_SECRET
+        secret: "supersecret"
     })
 
 

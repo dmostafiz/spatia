@@ -45,8 +45,6 @@ app.register(require('@fastify/websocket'))
 
 app.register(require('./web/router'), { prefix: 'api' })
 
-
-
 app.register(socketioServer)
 
 app.ready(err => {
@@ -64,13 +62,11 @@ app.ready(err => {
         users = users.filter(user => user?.socketId != socketId)
     }
 
-
     app.io.on('connection', (socket) => {
 
         console.info('Socket connected!', socket?.id)
 
         //Socket codes here
-
 
         socket.on('addUser', (data) => {
 
@@ -83,7 +79,6 @@ app.ready(err => {
 
 
         socket.on('disconnect', () => {
-
             removeUser(socket?.id)
             console.info('Socket disconnected! from #disconnect#')
 

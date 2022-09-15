@@ -87,6 +87,7 @@ exports.getOneSubCategory = async (req, reply) => {
     }
 }
 
+
 // exports.storeSubCategories = async (req, reply) => {
 //     try {
 

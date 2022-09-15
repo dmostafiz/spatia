@@ -1,4 +1,4 @@
-import { Avatar, Box, Container, Flex, HStack, Icon, Center, Show, Spacer, Button, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Container, Flex, HStack, Icon, Center, Show, Spacer, Button, Text, VStack, Link } from '@chakra-ui/react'
 import React, { createRef, useEffect, useRef, useState } from 'react'
 import Layout from '../../Components/Home/Layout'
 // import DiscussionTags from '../../Components/Home/Discussion/DiscussionTags';
@@ -24,8 +24,7 @@ import Cookies from "js-cookie";
 import LoginWindowButton from '../../Components/Common/LoginWindowButton';
 import FollowUnfollow from '../../Components/profile/FollowUnfollow';
 import FollowUnfollowDiscussion from '../../Components/profile/FollowUnfollowDiscussion';
-
-
+import NextLink from 'next/link'
 
 function Discussion({ discussion }) {
 
@@ -176,17 +175,13 @@ function Discussion({ discussion }) {
         }
     )
 
-
-
-    // console.log('Response Discussions: ', discussion)
-
-
     if (discussion == null) {
         return { notFound: true }
     }
 
     return (
         <Layout title={discussion.title} error={discussion == null && 404}>
+
             <Container maxW='container.xl'>
 
                 <Flex gap={3} direction={{ base: 'column', lg: 'row' }}>
@@ -195,7 +190,7 @@ function Discussion({ discussion }) {
                         <ReactStickyBox offsetTop={110}>
 
                             {/* Category left sidebar */}
-                            <CategoryLeftSidebar currentCategory={null} />
+                            <CategoryLeftSidebar currentCategory={discussion.category} />
 
                         </ReactStickyBox>
                     </Box>
@@ -210,17 +205,41 @@ function Discussion({ discussion }) {
                         <Box as='div' w='full' p={3} mb={4} bg='#f6e3d1' rounded='sm' shadow>
                             <Box p={4} bg='#fffefd' rounded='sm'>
 
+
+
                                 {/* Tags */}
-                                {discussion?.tags?.length ? <HStack pb={4} fontFamily='heading'>
-                                    {discussion.tags.map((tag, index) => {
-                                        return <Box key={index} as='button' bg='#f4edde' px={2} py={1}>
-                                            <HStack>
-                                                <Icon as={HiOutlineLightBulb} />
-                                                <Text fontSize={10} fontWeight='bold'>{tag.name}</Text>
-                                            </HStack>
-                                        </Box>
-                                    })}
-                                </HStack> : <></>}
+                                <HStack pb={4} fontFamily='heading'>
+
+                                    {discussion?.subCategory &&
+                                        <NextLink href={`/subcategory/${discussion.subCategory.id}`}>
+                                            <Link href={`/subcategory/${discussion.subCategory.id}`}>
+                                                <Box as='button' bg='#f4edde' px={2} py={1}>
+                                                    <HStack>
+                                                        <Icon as={HiOutlineLightBulb} />
+                                                        <Text fontSize={10} fontWeight='bold'>{discussion?.subCategory?.name}</Text>
+                                                    </HStack>
+                                                </Box>
+                                            </Link>
+                                        </NextLink>
+                                    }
+
+                                    {discussion?.tags?.length ?
+
+                                        discussion.tags.map((tag, index) => {
+                                            return<NextLink key={index} href={`/tag/${tag.name}`}>
+                                                <Link href={`/tag/${tag.name}`}>
+                                                    <Box as='button' bg='#f4edde' px={2} py={1}>
+                                                        <HStack>
+                                                            <Icon as={HiOutlineLightBulb} />
+                                                            <Text fontSize={10} fontWeight='bold'>{tag.name}</Text>
+                                                        </HStack>
+                                                    </Box>
+                                                </Link>
+                                            </NextLink>
+                                        })
+
+                                        : <></>}
+                                </HStack>
 
                                 {/* Title */}
                                 <Text as='h1' fontSize={{ base: '20px', sm: '24px', md: '50px' }} fontWeight='bold' lineHeight='1' color='#000000'>

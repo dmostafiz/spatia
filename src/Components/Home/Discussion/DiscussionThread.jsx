@@ -23,21 +23,45 @@ export default function DiscussionThread({ discussion }) {
             {discussion.id ? <Box as='div' w='full' p={2} bg='#f6e3d1' rounded='sm' shadow>
                 <Box w='full' p={3} bg='#fffefd' rounded='sm'>
 
-                    <Text
-                        as='h1'
-                        fontSize='22px'
-                        fontWeight='black'
-                        lineHeight={1}
-                    >
-                        {discussion.title}
-                    </Text>
+                    <NextLink href={`/discussion/${discussion.id}`}>
+                        <Link href={`/discussion/${discussion.id}`}>
+                            <Text
+                                as='h1'
+                                fontSize='22px'
+                                fontWeight='black'
+                                lineHeight={1}
+                            >
+                                {discussion.title}
+                            </Text>
+                        </Link>
+                    </NextLink>
 
-                    {discussion.subCategory && <Box as='button' bg='#f4edde' px={2} py={1}>
-                        <HStack>
-                            <Icon as={HiOutlineLightBulb} />
-                            <Text fontSize={10} fontWeight='bold'>{discussion.subCategory.name}</Text>
-                        </HStack>
-                    </Box>}
+                    {discussion.subCategory &&
+                        <NextLink href={`/subcategory/${discussion.subCategory.id}`}>
+                            <Link href={`/subcategory/${discussion.subCategory.id}`}>
+                                <Box as='button' mr={1} bg='#f4edde' px={2} py={1}>
+                                    <HStack>
+                                        <Icon as={HiOutlineLightBulb} />
+                                        <Text fontSize={10} fontWeight='bold'>{discussion.subCategory.name}</Text>
+                                    </HStack>
+                                </Box>
+                            </Link>
+                        </NextLink>
+                    }
+
+                    {discussion?.tags?.length > 0 && discussion.tags.map((tag, index) =>
+                        <NextLink key={index} href={`/tag/${tag.name}`}>
+                            <Link href={`/tag/${tag.name}`}>
+                                <Box as='button' bg='#f4edde' mr={1} px={2} py={1}>
+                                    <HStack>
+                                        <Icon as={HiOutlineLightBulb} />
+                                        <Text fontSize={10} fontWeight='bold'>{tag.name}</Text>
+                                    </HStack>
+                                </Box>
+                            </Link>
+                        </NextLink>
+                    )}
+
 
                     {/* {discussion.tags?.length ? <HStack pt={2}>
                         {discussion.tags.map((tag, index) => {
@@ -117,7 +141,8 @@ export default function DiscussionThread({ discussion }) {
 
                 </Box>
 
-            </Box> : <></>}
+            </Box> : <></>
+            }
 
         </>
     )

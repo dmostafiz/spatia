@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
-const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction } = require('../controllers/DiscussionController')
+const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory, getOneTag} = require('../controllers/CategoryController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
@@ -36,7 +36,6 @@ async function router(app) {
     app.get('/category/:slug', getOneCategory)
     app.get('/subcategory/:id', getOneSubCategory)
 
-
     //Create Static sub category (will remove after done)
     // app.get('/subcategory', storeSubCategories)
 
@@ -45,6 +44,8 @@ async function router(app) {
     app.get('/discussions/:categorySlug', getCategoryDiscussions)
     app.get('/discussions/following', {onRequest: app.auth}, getFollowingDiscussions)
     app.get('/discussions/subcategory/:id', getsubCategoryDiscussions)
+    app.get('/discussions/tag/:name', getTagDiscussions)
+
 
     app.get('/discussions/private', {onRequest: app.auth}, getPrivateDiscussions)
     app.get('/discussion/:discussionId', {onRequest: app.auth}, getOneDiscussion)

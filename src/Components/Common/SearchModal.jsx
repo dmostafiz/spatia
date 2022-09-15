@@ -23,9 +23,10 @@ export default function SearchModal({mobileMenu = false}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [searchQuery, setSearchQuery] = useState('')
-
+    
     const [discussions, setDiscussions] = useState([])
     const [users, setUsers] = useState([])
+    const [discussionTags, setDiscussionTags] = useState([])
 
     useEffect(() => {
 
@@ -34,6 +35,7 @@ export default function SearchModal({mobileMenu = false}) {
 
             setDiscussions(res.data.discussions)
             setUsers(res.data.users)
+            setDiscussionTags(res.data.discussionTags)
 
             console.log('Search Results: ', res.data)
 
@@ -94,7 +96,7 @@ export default function SearchModal({mobileMenu = false}) {
                         />
 
                         <Box>
-                            {discussions.length > 0 && <Box>
+                            {discussions?.length > 0 && <Box>
                                 <Box bg='black' color='white' p={2}>
                                     <Text>Search results of discussions</Text>
                                 </Box>
@@ -120,8 +122,36 @@ export default function SearchModal({mobileMenu = false}) {
                             </Box>}
                         </Box>
 
+
                         <Box>
-                            {users.length > 0 && <Box>
+                            {discussionTags?.length > 0 && <Box>
+                                <Box bg='black' color='white' p={2}>
+                                    <Text>Search results of discussions by tags</Text>
+                                </Box>
+
+                                <Box maxH={200} overflowY='auto' p={2}>
+                                    <Flex direction='column'>
+                                        {discussionTags.map((discussion, index) => {
+                                            return <NextLink key={index} href={`/discussion/${discussion.id}`}>
+                                                <Link href={`/discussion/${discussion.id}`}>
+                                                    <Text fontFamily='sans-serif' color='gray.500'>
+                                                        <Highlighter
+                                                            highlightClassName="search-highlighter"
+                                                            searchWords={[searchQuery]}
+                                                            autoEscape={true}
+                                                            textToHighlight={discussion.title}
+                                                        />
+                                                    </Text>
+                                                </Link>
+                                            </NextLink>
+                                        })}
+                                    </Flex>
+                                </Box>
+                            </Box>}
+                        </Box>
+
+                        <Box>
+                            {users?.length > 0 && <Box>
                                 <Box bg='black' color='white' p={2}>
                                     <Text>Search results of users</Text>
                                 </Box>
