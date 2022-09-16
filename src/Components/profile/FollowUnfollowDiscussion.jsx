@@ -118,7 +118,7 @@ export default function FollowUnfollowDiscussion({ disc }) {
                     fontFamily='body'
                     rounded='full'
                 >
-                    {followAction == 'Follow' ? 'Follow Dsicussions' : followAction == 'Ignore' ? 'Ignoring discussion' :  'Following'}
+                    {followAction == 'Follow' ? 'Follow Discussion' : followAction == 'Ignore' ? 'Ignoring discussion' :  'Following'}
                 </Button>
                 <Menu>
                     <MenuButton

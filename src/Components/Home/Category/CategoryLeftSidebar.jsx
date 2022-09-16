@@ -63,7 +63,6 @@ export default function CategoryLeftSidebar({ currentCategory, privateDiscussion
                         </Link>
                     </NextLink>
 
-
                     <NextLink href='/following'>
                         <Link href='/following'>
                             <HStack alignItems='flex-start' bg={router.pathname == "/following" ? '#ede7e0' : 'none'} p={router.pathname == "/following" ? 1 : 0}>
@@ -74,7 +73,6 @@ export default function CategoryLeftSidebar({ currentCategory, privateDiscussion
                     </NextLink>
                 
                 </>}
-
 
                 {categories.map((item, index) => {
                     return <NextLink key={index} href={`/category/${item.slug}`}>
@@ -90,6 +88,7 @@ export default function CategoryLeftSidebar({ currentCategory, privateDiscussion
 
 
             </SimpleGrid>
+            
         </VStack>
     )
 }

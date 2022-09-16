@@ -21,6 +21,7 @@ export default function DiscussionThread({ discussion }) {
     return (
         <>
             {discussion.id ? <Box as='div' w='full' p={2} bg='#f6e3d1' rounded='sm' shadow>
+
                 <Box w='full' p={3} bg='#fffefd' rounded='sm'>
 
                     <NextLink href={`/discussion/${discussion.id}`}>
@@ -108,7 +109,9 @@ export default function DiscussionThread({ discussion }) {
                     </Box>
 
                     <Box pt={2}>
+
                         <HStack justify='space-between'>
+
                             <NextLink href={`/discussion/${discussion.id}`}>
                                 <Link href={`/discussion/${discussion.id}`}>
                                     <Text
@@ -135,6 +138,7 @@ export default function DiscussionThread({ discussion }) {
                                 </Flex>
 
                             </HStack>
+
                         </HStack>
 
                     </Box>

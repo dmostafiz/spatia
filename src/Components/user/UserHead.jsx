@@ -52,7 +52,8 @@ export default function UserHead({ user }) {
                         </Text>
 
                         <Spacer h={3} />
-                        <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 7 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
+                        <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 9 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
+                          
                             {userOnline && <Flex>
                                 <Icon fontSize={18} color='green.500' as={GoPrimitiveDot} />
                                 <Text>Online</Text>
@@ -60,21 +61,21 @@ export default function UserHead({ user }) {
 
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiWatch}/>
-                                <Text>Joined {user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
+                                <Text>{user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
                             </Flex>
-                            <Flex alignItems='center' gap={1}>
-                                <Icon fontSize={18} as={UserCheck} />
-                                <Text>Status-Verified</Text>
-                            </Flex>
-                            {/* <Flex alignItems='center' gap={1}>
-                                <Icon fontSize={18} as={BoxMultiple} />
-                                <Text>888 Points</Text>
-                            </Flex> */}
-
+                     
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiUserPlus} />
                                 <Text>{user.followerIds?.length} Follower{user.followerIds?.length > 1 && 's'}</Text>
                             </Flex>
+                  
+                            <Flex alignItems='center' gap={1}>
+                                <Icon fontSize={18} as={UserCheck} />
+                                <Text>{user.followingIds?.length} Following</Text>
+                            </Flex>
+
+
+
                         </SimpleGrid>
                         <Spacer h={3} />
 
