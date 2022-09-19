@@ -16,7 +16,7 @@ import { ArrowRight, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import LoginWindowButton from './LoginWindowButton';
 
-export default function StartDiscussionModal() {
+export default function StartDiscussionModal({mode}) {
 
     const user = authUser()
 
@@ -146,7 +146,7 @@ export default function StartDiscussionModal() {
         <>
             {(!user.isLoading && user.data)
                 ?
-                <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='full'>
+                <Button onClick={() => setOpened(true)} bg='#e6caaf' w={mode == 'mobile' ? 'full' : 'auto'} rounded={mode == 'mobile' ? 'none' : 'full'}>
                     Start Discussion
                 </Button>
 
@@ -173,7 +173,7 @@ export default function StartDiscussionModal() {
                 size='xl'
                 centered
                 radius={0}
-                zIndex={999}
+                zIndex={999999999999}
             >
                 {/* Modal content */}
                 <ActionIcon

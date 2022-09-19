@@ -55,6 +55,12 @@ model User {
 
   status Boolean @default(true)
 
+  isAdmin Boolean @default(false)
+  
+  isModerator Boolean @default(false)
+
+  isNew Boolean @default(true)
+
   createdAt DateTime? @default(now())
 }
 

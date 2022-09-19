@@ -27,7 +27,9 @@ exports.ssoAuth = async (request, reply) => {
             id: user.id,
             username: user.username,
             email: user.email,
-            name: user.name
+            name: user.name,
+            isNew: user.isNew || true,
+            role: user.role || 'user'
         })
 
         console.log('Token Signed ##################### ', token)

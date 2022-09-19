@@ -1,4 +1,4 @@
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure, Input, HStack, InputGroup, InputRightElement, Box, Menu, MenuButton, IconButton, MenuList, Text, MenuItem, Flex, Avatar, Divider } from '@chakra-ui/react';
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure, Input, HStack, InputGroup, InputRightElement, Box, Menu, MenuButton, IconButton, MenuList, Text, MenuItem, Flex, Avatar, Divider, Spacer } from '@chakra-ui/react';
 import { Center } from '@mantine/core';
 import { useRef } from 'react';
 import { FiSearch } from 'react-icons/fi'
@@ -8,8 +8,9 @@ import SearchModal from '../Common/SearchModal';
 import NextLink from 'next/link'
 import { RiChatPrivateLine, RiLogoutCircleRLine, RiSettings4Line, RiHistoryFill } from 'react-icons/ri';
 import moment from 'moment';
+import CategoryLeftSidebar from './Category/CategoryLeftSidebar';
 
-const MobileMenuSidebar = ({ notifications }) => {
+const MobileMenuSidebar = ({  notifications }) => {
 
     const user = authUser()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -45,15 +46,24 @@ const MobileMenuSidebar = ({ notifications }) => {
                 finalFocusRef={btnRef}
             >
                 <DrawerOverlay />
+
                 <DrawerContent>
+
                     <DrawerCloseButton />
-                    <DrawerHeader bg='#ede7e0'>Menu</DrawerHeader>
+
+                    <DrawerHeader bg='#ede7e0'>
+                        <Text>Menu</Text>
+                        <Box maxW='full' pt={'5'}>
+                            <SearchModal mobileMenu={true} />
+                        </Box>
+                    </DrawerHeader>
 
                     <DrawerBody>
 
-                        <Box maxW='full'>
-                            <SearchModal mobileMenu={true} />
-                        </Box>
+
+                        <Spacer h='5' />
+
+                        <CategoryLeftSidebar mode='mobile' currentCategory={null} />
 
                     </DrawerBody>
 

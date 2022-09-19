@@ -186,14 +186,16 @@ function Discussion({ discussion }) {
 
                 <Flex gap={3} direction={{ base: 'column', lg: 'row' }}>
 
-                    <Box maxW={{ base: '100vw', lg: 200 }}>
-                        <ReactStickyBox offsetTop={110}>
+                    <Show above='lg'>
+                        <Box maxW={{ base: '100vw', lg: 200 }}>
+                            <ReactStickyBox offsetTop={110}>
 
-                            {/* Category left sidebar */}
-                            <CategoryLeftSidebar currentCategory={discussion.category} />
+                                {/* Category left sidebar */}
+                                <CategoryLeftSidebar currentCategory={discussion.category} />
 
-                        </ReactStickyBox>
-                    </Box>
+                            </ReactStickyBox>
+                        </Box>
+                    </Show>
 
 
                     <Box flex='1' minH='calc(100vh - 300px)'>
@@ -226,7 +228,7 @@ function Discussion({ discussion }) {
                                     {discussion?.tags?.length ?
 
                                         discussion.tags.map((tag, index) => {
-                                            return<NextLink key={index} href={`/tag/${tag.name}`}>
+                                            return <NextLink key={index} href={`/tag/${tag.name}`}>
                                                 <Link href={`/tag/${tag.name}`}>
                                                     <Box as='button' bg='#f4edde' px={2} py={1}>
                                                         <HStack>

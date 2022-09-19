@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PageTitle from '../../Components/Home/PageTitle';
 import Layout from '../../Components/Home/Layout';
-import { Container, Box, Flex, VStack, Stack, Skeleton, Text, Center } from '@chakra-ui/react';
+import { Container, Box, Flex, VStack, Stack, Skeleton, Text, Center, Show } from '@chakra-ui/react';
 import CategoryLeftSidebar from '../../Components/Home/Category/CategoryLeftSidebar';
 import CategoryContentsTopbar from '../../Components/Home/Category/CategoryContentsTopbar';
 import StickyBox from "react-sticky-box"
@@ -80,14 +80,16 @@ export default function subcategory() {
 
         <Flex gap={5} direction={{ base: 'column', lg: 'row' }}>
 
-          <Box maxW={{ base: '100vw', lg: 200 }}>
-            <StickyBox offsetTop={110}>
+          <Show above='lg'>
+            <Box maxW={{ base: '100vw', lg: 200 }}>
+              <StickyBox offsetTop={110}>
 
-              {/* Category left sidebar */}
-              <CategoryLeftSidebar currentCategory={subCategory.data} />
+                {/* Category left sidebar */}
+                <CategoryLeftSidebar currentCategory={subCategory.data} />
 
-            </StickyBox>
-          </Box>
+              </StickyBox>
+            </Box>
+          </Show>
 
           <Box flex='1' minH='calc(100vh - 300px)'>
             <VStack alignItems='flex-start'>

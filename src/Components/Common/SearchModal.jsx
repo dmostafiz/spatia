@@ -66,7 +66,7 @@ export default function SearchModal({mobileMenu = false}) {
                 <Input
                     readOnly={true}
                     onClick={() => onOpen()}
-                    rounded='full'
+                    rounded={mobileMenu ? 'none' : 'full'}
                     minW={mobileMenu ? 50 : 300}
                     pr={mobileMenu ? 0 : 50} pl={25} py={6} bg='white'
                     border='0px solid #7e8b9f'
