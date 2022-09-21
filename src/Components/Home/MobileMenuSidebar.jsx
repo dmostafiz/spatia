@@ -60,9 +60,6 @@ const MobileMenuSidebar = ({  notifications }) => {
 
                     <DrawerBody>
 
-
-                        <Spacer h='5' />
-
                         <CategoryLeftSidebar mode='mobile' currentCategory={null} />
 
                     </DrawerBody>

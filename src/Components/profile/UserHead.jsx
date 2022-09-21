@@ -22,6 +22,8 @@ export default function UserHead({ user }) {
 
                     <Box>
                         <Avatar size='2xl' src={user?.avatar} name={user?.name} />
+                        <Spacer h={2} />
+                        <Button size='sm' colorScheme='gray' variant='outline' rounded='full'>Chnage Avatar</Button>
                     </Box>
 
                     <Box w='full' as='div'>
