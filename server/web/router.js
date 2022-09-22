@@ -2,6 +2,7 @@ const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory, getOneTag} = require('../controllers/CategoryController')
 const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
+const { updateProfile } = require('../controllers/ProfileController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -12,6 +13,9 @@ async function router(app) {
     
     app.get('/signup', UserController.signup )
     app.post('/authorize', {onRequest: app.auth}, UserController.authorize) 
+
+    //Profile
+    app.post('/update_profile', {onRequest: app.authSso}, updateProfile)
 
     //Search
     app.get('/search', getSeachData)

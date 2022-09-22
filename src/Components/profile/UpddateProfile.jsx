@@ -1,19 +1,75 @@
-import { Box, Button, Divider, Flex, Input, Spacer, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, Input, Spacer, Stack, Text, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
-export default function UpddateProfile() {
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
+import axios from 'axios';
 
-    const [userName, setUsername] = useState(null)
-    const [fullName, setFullname] = useState(null)
-    const [email, setEmail] = useState(null)
+const schema = yup.object().shape({
+
+    userName: yup.string()
+        .default('jimmy')
+        .min(4, 'Username must have 4 characters.')
+        .required()
+        .matches(
+            /^[a-zA-Z_.]*$/u,
+            'Only ( _ ) dash and ( . ) dot are allowed. White space are not allowed.'
+        ),
+
+    fullName: yup.string()
+        .min(3, 'Full name should have at least 3 characters.')
+        .required('Fullname field is required.'),
+
+    email: yup.string()
+        .email("This should be a valid email.")
+        .required("Email field is required."),
+
+});
+
+schema.cast({
+    fullName: 'dfdf dfdf dfdfdf',
+    email: 'email@gmail.com',
+});
+
+
+export default function UpddateProfile({ user }) {
+
+    const toast = useToast()
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+            userName: user.username,
+            fullName: user.name,
+            email: user.email,
+        },
+        resolver: yupResolver(schema)
+    });
+
 
     const [loading, setLoading] = useState(false)
 
-    const saveChanges = () => {
+    const saveChanges = async (data) => {
 
-        
         setLoading(true)
+        const user = await axios.post('/update_profile', data)
+
+        if(user.data.status == 'success'){
+            toast({
+                title: 'Success',
+                description: "Your profile information has been updated!",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
+        setLoading(false)
+
     }
+
 
     return (
         <div>
@@ -23,24 +79,46 @@ export default function UpddateProfile() {
             <Flex>
                 <Box w={{ base: 'full', md: '50%' }}>
                     <Stack spacing={4}>
-                        <Box>
-                            <Text>Username (unique)</Text>
-                            <Text color={'gray.600'} fontFamily='cursive' fontSize={'12px'}>Only ( _ ) and ( . ) are allowed. don't use any white space.</Text>
+                        <FormControl>
+                            
+                            <Text>Username {!user.username && '(unique)'}</Text>
+                            {!user.username && <Text color={'gray.600'} fontFamily='cursive' fontSize={'12px'}>Only ( _ ) and ( . ) are allowed. don't use any white space.</Text>}
+                            
                             <Spacer h={1} />
-                            <Input onChange={e => setUsername(e.target.value)} value={userName} placeholder='Enter your unique username' size='md' />
-                        </Box>
+                            <Input
+                                // name='userName'
+                                {...register('userName')}
+                                readOnly={user.username}
+                                disabled={user.username}
+                                placeholder='Enter your unique username'
+                                size='md'
+                            />
+
+                            <Text color='red.500'>{errors?.userName?.message}</Text>
+                        </FormControl>
                         <Box>
                             <Text>Full Name</Text>
-                            <Input onChange={e => setFullname(e.target.value)} value={fullName} placeholder='Your full name' size='md' />
+                            <Input
+                                {...register('fullName')}
+                                placeholder='Your full name'
+                                size='md'
+                            />
+                            <Text color='red.500'>{errors?.fullName?.message}</Text>
                         </Box>
-       
+
                         <Box>
                             <Text>Email</Text>
-                            <Input onChange={e => setEmail(e.target.value)} value={email} placeholder='Enter your valid email' size='md' />
+                            <Input
+                                {...register('email')}
+                                placeholder='Enter your valid email'
+                                size='md'
+                            />
+                            <Text color='red.500'>{errors?.email?.message}</Text>
+
                         </Box>
-                        
+
                         <Box pt='3'>
-                            <Button isLoading={loading} loadingText='Saving...' onClick={saveChanges} colorScheme='yellow'>Save Changes</Button>
+                            <Button isLoading={loading} loadingText='Saving...' onClick={handleSubmit(saveChanges)} colorScheme='yellow'>Save Changes</Button>
                         </Box>
                     </Stack>
                 </Box>

@@ -57,7 +57,7 @@ exports.signup = async (request, reply) => {
 
         const user = await request.prisma.user.findFirst({
             where: {
-                email: 'test@gmail.com',
+                email: 'dev.mostafiz@gmail.com',
             }
         })
 
