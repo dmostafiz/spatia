@@ -9,8 +9,6 @@ const app = require('fastify')({
     pluginTimeout: 20000,
 })
 
-
-
 app.register(require('@fastify/cors'), {
     origin: '*'
 })
@@ -38,6 +36,17 @@ app.register(require('@fastify/cookie'), {
     secret: process.env.APP_SECRET, // for cookies signature
     parseOptions: {}     // options for parsing cookies
 })
+
+// app.register(require('fastify-simple-form'), {
+//     multipart: true,   // Enable parsing for `multipart/form-data`, default: true
+//     urlencoded: false, // Disable parsing for `application/x-www-form-urlencoded`, default: true
+// });
+
+app.register(require('@fastify/multipart'), {
+    preservePath: true
+})
+
+
 
 require('./app/bootstrap')(app)
 

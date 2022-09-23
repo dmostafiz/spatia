@@ -1,13 +1,53 @@
-import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button } from '@chakra-ui/react';
+import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FiWatch } from 'react-icons/fi';
 import { Bible, UserCheck, BoxMultiple, UserPlus } from 'tabler-icons-react';
+import { useDropzone } from 'react-dropzone'
 
 export default function UserHead({ user }) {
 
+
+    const toast = useToast()
+
+
     const [bio, setBio] = useState(user?.bio)
+
+    const [uploaded, setUploaded] = useState(null)
+    const [loading, setLoading] = useState(false)
+
+    const onDrop = useCallback(async (acceptedFiles) => {
+
+        setLoading(true)
+        // Do something with the files
+        const file = acceptedFiles[0]
+  
+        const res = await axios.post('/upload_profile_photo', {file}, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        if(res.data.status == 'success'){
+            setUploaded(res.data.user.avatar)
+
+            toast({
+                title: 'Success',
+                description: "Profile images changed successfully!",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
+        setLoading(false)
+
+        
+
+
+    }, [])
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
 
     const handleSaveBio = async () => {
@@ -21,9 +61,9 @@ export default function UserHead({ user }) {
                 <Flex alignItems={{ base: 'flex-start', lg: 'center' }} gap={5} direction={{ base: 'column', lg: 'row' }}>
 
                     <Box>
-                        <Avatar size='2xl' src={user?.avatar} name={user?.name} />
+                        <Avatar size='2xl' src={uploaded || user?.avatar} name={user?.name} />
                         <Spacer h={2} />
-                        <Button size='sm' colorScheme='gray' variant='outline' rounded='full'>Chnage Avatar</Button>
+                        <Button isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' type='file' colorScheme='gray' variant='outline' rounded='full'>Chnage Avatar</Button>
                     </Box>
 
                     <Box w='full' as='div'>
@@ -37,7 +77,7 @@ export default function UserHead({ user }) {
                                 <Icon fontSize={18} as={FiWatch} />
                                 <Text>{user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
                             </Flex>
-                   
+
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={BoxMultiple} />
                                 <Text>{user.points ?? 0} Points</Text>
