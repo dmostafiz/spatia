@@ -28,6 +28,7 @@ exports.ssoAuth = async (request, reply) => {
             username: user.username,
             email: user.email,
             name: user.name,
+            avatar: user.avatar,
             isNew: user.isNew || true,
             role: user.role || 'user'
         })
@@ -65,7 +66,8 @@ exports.signup = async (request, reply) => {
             id: user.id,
             username: user.username,
             email: user.email,
-            name: user.name
+            name: user.name,
+            avatar: user.avatar
         })
 
         console.log('Token Signed ##################### ', token)

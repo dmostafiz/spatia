@@ -202,7 +202,7 @@ export default function TopBar() {
                 // rightIcon={<ArrowDown />}
                 >
                   <Flex gap={1} alignItems='center'>
-                    <Avatar size='sm' src='' name={user.data.name} />
+                    <Avatar size='sm' src={user.data.avatar} name={user.data.name} />
                     <Text flex={1} fontWeight='bold' fontSize='14px' wordBreak='keep-all'>{user.data.name}</Text>
                     {/* <IoIosArrowDown /> */}
                   </Flex>
