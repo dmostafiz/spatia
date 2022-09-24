@@ -1,14 +1,56 @@
 import React from 'react'
-import { Avatar, Box, Flex, HStack, Icon, Link, Text } from '@chakra-ui/react'
+import { Avatar, Box, Flex, HStack, Icon, Link, Text, useToast } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
-import { AiOutlineEye } from 'react-icons/ai'
+import { AiFillStar, AiOutlineEye, AiOutlineStar } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
 import { RiHeart2Fill } from 'react-icons/ri'
 import moment from 'moment'
 import ReplyReaction from '../ReplyReaction'
 import NextLink from 'next/link'
+import { Star } from 'tabler-icons-react'
+import axios from 'axios'
+import authUser from '../../../Hooks/authUser'
 
-export default function DiscussionReplyThread({ handleClickReply, reply }) {
+export default function DiscussionReplyThread({setBestAnswer, discussion, handleClickReply, reply }) {
+
+
+    const user = authUser()
+    const toast = useToast()
+
+    const addBestAnswer = async (replyId) => {
+
+        if(user.data.id != discussion.authorId){
+            return
+        }
+
+        const { data } = await axios.post('/store_best_answer', { replyId, discussionId: discussion.id })
+
+        if(data.status == 'success'){
+
+            setBestAnswer(reply.id)
+
+            return toast({
+                title: 'Success',
+                description: 'Reply set as best answer!',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+            })
+
+        }
+
+        if(data.status == 'error'){
+            return toast({
+                title: 'Success',
+                description: data.msg,
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+ 
+        }
+    }
+
     return (
         <Box w='full' px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
@@ -58,7 +100,7 @@ export default function DiscussionReplyThread({ handleClickReply, reply }) {
                         <Flex direction={{ base: 'column', md: 'row' }} justify='flex-end' gap={3}>
 
 
-                            <HStack gap={4}>
+                            <Flex alignItems='center' gap={4}>
                                 {/* <Flex alignItems='center' gap={1}>
                                     <Icon fontSize={24} as={AiOutlineEye} />
                                     <Text>25</Text>
@@ -69,7 +111,14 @@ export default function DiscussionReplyThread({ handleClickReply, reply }) {
                                 <Flex alignItems='center' gap={1}>
                                     <Text cursor='pointer' onClick={() => handleClickReply(reply?.id)}>Reply</Text>
                                 </Flex>
-                            </HStack>
+
+                                <Box>
+
+                                    {!reply.bestAnswer
+                                        ? <Icon title='Set as the best answer' cursor='pointer' onClick={() => addBestAnswer(reply?.id)} fontSize={20} as={AiOutlineStar} />
+                                        : <Icon title='Best Answer' fontSize={20} color='yellow.500' as={AiFillStar} />}
+                                </Box>
+                            </Flex>
                         </Flex>
                     </Box>
                 </Box>

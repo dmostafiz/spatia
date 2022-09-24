@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon } from '@chakra-ui/react';
@@ -16,7 +16,7 @@ import { ArrowRight, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import LoginWindowButton from './LoginWindowButton';
 
-export default function StartDiscussionModal({mode}) {
+export default function StartDiscussionModal({ mode }) {
 
     const user = authUser()
 
@@ -142,6 +142,34 @@ export default function StartDiscussionModal({mode}) {
         setLoading(false)
     }
 
+
+    const handleImageUpload = useCallback(
+        file => new Promise((resolve, reject) => {
+
+            const formData = new FormData();
+            // formData.append('image', file);
+
+            // fetch('https://api.imgbb.com/1/upload?key=api_key', {
+            //     method: 'POST',
+            //     body: formData,
+            // })
+
+            axios.post('/upload_discussion_photo', { file }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+                // .then((response) => response.json())
+                .then((result) => resolve(result.data.url))
+                .catch(() => reject(new Error('Upload failed')));
+        }),
+
+        []
+
+    )
+
+
     return (
         <>
             {(!user.isLoading && user.data)
@@ -173,7 +201,7 @@ export default function StartDiscussionModal({mode}) {
                 size='xl'
                 centered
                 radius={0}
-                zIndex={999999999999}
+                zIndex={999}
             >
                 {/* Modal content */}
                 <ActionIcon
@@ -225,12 +253,16 @@ export default function StartDiscussionModal({mode}) {
                     radius={0}
                     value={content}
                     onChange={setContent}
+
+                    onImageUpload={handleImageUpload}
+
                     placeholder='Start your discussion...'
                     controls={[
                         ['bold', 'italic', 'underline', 'link'],
                         ['h1', 'h2', 'h3'],
                         ['alignLeft', 'alignCenter', 'alignRight'],
                         ['code'],
+                        ['image']
                     ]}
                 />
 

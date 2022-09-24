@@ -71,3 +71,39 @@ exports.uploadProfilePhoto = async (request, reply) => {
         reply.send({status: 'error'})
     }
 }
+
+exports.uploadDiscussionPhoto = async (request, reply) => {
+
+    try {
+
+        const data = await request.saveRequestFiles()
+
+        console.log('request.body() ', data[0].filepath)
+
+        const upload = await cloudinary.uploader.upload(data[0].filepath,{
+            upload_preset:'spacom',
+            // folder:folder,
+        })
+
+        console.log('Upload ', upload)
+        // const body = request.body
+
+        // const user = await request.prisma.user.update({
+        //     where: {
+        //         id: request.user.id,
+        //     },
+
+        //     data: {
+        //         avatar: upload.url
+        //     }
+        // })
+
+        console.log('Updated User ',)
+
+        reply.send({status: 'success', url: upload.url})
+        
+    } catch (error) {
+        console.log('TryCatch Error ##################### ', error.message)
+        reply.send({status: 'error'})
+    }
+}

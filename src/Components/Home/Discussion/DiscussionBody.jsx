@@ -15,7 +15,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                 <Box w={50}>
                     <Avatar src='' name='Mahesh Babu' />
                 </Box>
-                <Box>
+                <Box w='full'>
                     <HStack fontSize='14px' gap={2} mb={2}>
                         <NextLink href={`/user/${discussion?.author.id}`}>
                             <Link href={`/user/${discussion?.author.id}`}>
@@ -33,7 +33,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                         </Text>
                     </HStack>
 
-                    <Box>
+                    <Box w='full'>
                         <Text
                             as='div'
                             fontSize='14px'
@@ -46,7 +46,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                             {/* {discussion.content} */}
                         </Text>
 
-                        <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' gap={3}>
+                        <Flex w='full' direction={{ base: 'column', md: 'row' }} justify='space-between' gap={3}>
                             <HStack maxW='350px' alignItems='flex-start'>
                                 <Icon fontSize='18px' as={CgMailReply} />
                                 <Text color='#2c53a8' fontSize='12px' fontFamily={`'Montserrat', sans-serif;`} >

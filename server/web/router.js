@@ -1,8 +1,8 @@
 const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory, getOneTag} = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions } = require('../controllers/DiscussionController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions, setBestAnswer } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
-const { updateProfile, uploadProfilePhoto } = require('../controllers/ProfileController')
+const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto } = require('../controllers/ProfileController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -18,6 +18,9 @@ async function router(app) {
     app.post('/update_profile', {onRequest: app.authSso}, updateProfile)
     app.post('/upload_profile_photo', {onRequest: app.authSso}, uploadProfilePhoto)
 
+    app.post('/upload_discussion_photo', {onRequest: app.authSso}, uploadDiscussionPhoto)
+
+    
 
     //Search
     app.get('/search', getSeachData)
@@ -64,6 +67,9 @@ async function router(app) {
     //Reply
     app.post('/reply/store', {onRequest: app.auth}, storeReply)
     app.get('/replies/:discussionId', getDiscussionReplies)
+
+
+    app.post('/store_best_answer', {onRequest: app.auth}, setBestAnswer)
 
     //Reaction
     app.get('/reaction/get/:discussionId', getReaction)

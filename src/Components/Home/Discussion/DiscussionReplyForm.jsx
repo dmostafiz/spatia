@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { Avatar, Box, Button, Flex, HStack, Icon, Input, Text } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
@@ -7,6 +7,7 @@ import { RiHeart2Fill } from 'react-icons/ri'
 // import { RichTextEditor } from '@mantine/rte';
 import dynamic from 'next/dynamic';
 import useMentions from '../../../Hooks/useMentions'
+import axios from 'axios'
 
 // const RichTextEditor = dynamic(() => import('@mantine/rte'), {
 //     // Disable during server side rendering
@@ -30,6 +31,35 @@ const DiscussionReplyForm = forwardRef(({ onSubmitReply, reply, setReply, data }
 
     const menstions = useMentions('hello i am from mention quill')
 
+
+    const handleImageUpload = useCallback(
+        file => new Promise((resolve, reject) => {
+
+            const formData = new FormData();
+            // formData.append('image', file);
+
+            // fetch('https://api.imgbb.com/1/upload?key=api_key', {
+            //     method: 'POST',
+            //     body: formData,
+            // })
+
+            axios.post('/upload_discussion_photo', { file }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+                // .then((response) => response.json())
+                .then((result) => resolve(result.data.url))
+                .catch(() => reject(new Error('Upload failed')));
+        }),
+
+        []
+
+    )
+
+
+
     return (
         <Box w='full'>
             <Box pb={2} pt={8}>
@@ -49,19 +79,21 @@ const DiscussionReplyForm = forwardRef(({ onSubmitReply, reply, setReply, data }
                         radius={0}
                         value={reply}
                         onChange={setReply}
+                        onImageUpload={handleImageUpload}
                         placeholder='Write your comment...'
                         controls={[
                             ['bold', 'italic', 'underline', 'link'],
                             ['h1', 'h2', 'h3'],
                             ['alignLeft', 'alignCenter', 'alignRight'],
                             ['code'],
+                            ['image']
                         ]}
-                        
+
                         mentions={menstions}
                         onChangeSelection={() => {
                             console.log('Selection changed ')
                         }}
-    
+
                     />
 
                     <Flex justify='flex-end'>

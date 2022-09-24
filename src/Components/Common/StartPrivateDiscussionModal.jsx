@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Avatar, Icon, Tooltip } from '@chakra-ui/react';
@@ -100,6 +100,33 @@ export default function StartPrivateDiscussionModal() {
         setMembers(members.filter(user => user.id !== member.id))
     }
 
+
+    const handleImageUpload = useCallback(
+        file => new Promise((resolve, reject) => {
+
+            const formData = new FormData();
+            // formData.append('image', file);
+
+            // fetch('https://api.imgbb.com/1/upload?key=api_key', {
+            //     method: 'POST',
+            //     body: formData,
+            // })
+
+            axios.post('/upload_discussion_photo', { file }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+                // .then((response) => response.json())
+                .then((result) => resolve(result.data.url))
+                .catch(() => reject(new Error('Upload failed')));
+        }),
+
+        []
+
+    )
+
     return (
         <>
             <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='full' fontSize='12px'>
@@ -181,12 +208,14 @@ export default function StartPrivateDiscussionModal() {
                     radius={0}
                     value={content}
                     onChange={setContent}
+                    onImageUpload={handleImageUpload}
                     placeholder='Start your discussion...'
                     controls={[
                         ['bold', 'italic', 'underline', 'link'],
                         ['h1', 'h2', 'h3'],
                         ['alignLeft', 'alignCenter', 'alignRight'],
                         ['code'],
+                        ['image']
                     ]}
                 />
 

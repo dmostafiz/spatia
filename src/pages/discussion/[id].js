@@ -153,6 +153,9 @@ function Discussion({ discussion }) {
     }
 
 
+    const [bestAnswer, setBestAnswer] = useState(null)
+
+
     const {
         isLoading,
         isError,
@@ -160,7 +163,7 @@ function Discussion({ discussion }) {
         isFetchingNextPage,
         fetchNextPage,
         hasNextPage
-    } = useInfiniteQuery(['replies', replySubmited, router], async (params) => {
+    } = useInfiniteQuery(['replies', replySubmited, bestAnswer, router], async (params) => {
 
         const passCursor = typeof params.pageParam == 'undefined' ? 0 : params.pageParam
         const res = await axios.get(`/replies/${router.query?.id}?cursor=${passCursor}`)
@@ -264,7 +267,7 @@ function Discussion({ discussion }) {
                                 <VStack>
 
                                     {data?.pages?.flat()?.map((reply, index) => {
-                                        return <DiscussionReplyThread handleClickReply={handleClickReply} key={index} reply={reply} />
+                                        return <DiscussionReplyThread  setBestAnswer={setBestAnswer} discussion={discussion} handleClickReply={handleClickReply} key={index} reply={reply} />
                                     })}
                                 </VStack>
 

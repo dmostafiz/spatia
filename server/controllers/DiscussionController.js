@@ -903,6 +903,27 @@ exports.storeReply = async (req, reply) => {
             })
         }
 
+        const updateUserPoint = await req.prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                points: {
+                    increment: 1
+                }
+            }
+        })
+
+        if (updateUserPoint) {
+            await req.prisma.notification.create({
+                data: {
+                    userId: user.id,
+                    text: `You have received 1 point for replying to a discussion.`,
+                    link: `/discussion/${comment.discussionId}`,
+                }
+            })
+        }
+
         // const discussion = await req.prisma.discussion.findFirst({
         //     where:{
         //         id: body.discussionId
@@ -918,7 +939,7 @@ exports.storeReply = async (req, reply) => {
         // })
 
         // console.log('Reply Created: ', comment)
-        console.log('Reply updated: ', comment)
+        console.log('Point Increased: ', updateUserPoint.points)
 
         return reply.send({ status: 'success', msg: 'Reply created successfully!' })
 
@@ -1020,7 +1041,31 @@ exports.storeReaction = async (req, reply) => {
         })
 
 
-        // console.log('Reaction ################## ', reaction)
+        const discussion = await req.prisma.discussion.findFirst({
+            where: {
+                id: body.discussionId
+            }
+        })
+
+
+
+        if (req.user.id != discussion.authorId) {
+
+            const updateUserPoint = await req.prisma.user.update({
+                where: {
+                    id: discussion.authorId
+                },
+                data: {
+                    points: {
+                        increment: 1
+                    }
+                }
+            })
+
+            console.log('Reaction point update ################## ', updateUserPoint.points)
+        }
+
+
 
         return reply.send({ status: 'success', msg: 'Reaction updated successfully!' })
 
@@ -1251,6 +1296,88 @@ exports.discussionAction = async (req, reply) => {
     } catch (error) {
         console.log('Bio Error ################## ', error.message)
     }
+}
+
+exports.setBestAnswer = async (req, reply) => {
+
+    const body = req.body
+
+    console.log(body)
+
+    const discussion = await req.prisma.discussion.findFirst({
+        where: {
+            id: body.discussionId
+        }
+    })
+
+    if (req.user.id != discussion.authorId) {
+        console.log('You are not authenticated to do this action.')
+        return reply.send({ status: 'error', msg: 'You are not authenticated to do this action.' })
+    }
+
+    const replies = await req.prisma.reply.findMany({
+        where: {
+            discussionId: discussion.id
+        }
+    })
+
+    replies.forEach(async reply => {
+
+        await req.prisma.reply.update({
+            where: {
+                id: reply.id
+            },
+
+            data: {
+                bestAnswer: false
+            }
+        })
+
+    })
+
+
+    const rp = await req.prisma.reply.update({
+
+        where: {
+            id: body.replyId
+        },
+
+        data: {
+            bestAnswer: true
+        }
+
+    })
+
+
+    const user = await req.prisma.user.update({
+        where: {
+            id: rp.authorId
+        },
+
+        data: {
+            points: {
+                increment: 10
+            }
+        }
+    })
+
+    if (user) {
+        await req.prisma.notification.create({
+            data: {
+                userId: user.id,
+                text: `You have received 10 points for best answer badge in a discussion.`,
+                link: `/discussion/${body.discussionId}`,
+            }
+        })
+    }
+
+
+    console.log('discussion replies point', user)
+
+
+    return reply.send({ status: 'success', msg: 'The reply set as a best answer.' })
+
+
 }
 
 
