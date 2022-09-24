@@ -15,10 +15,13 @@ import { ActionIcon } from '@mantine/core';
 import { ArrowRight, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import LoginWindowButton from './LoginWindowButton';
+import useMentions from '../../Hooks/useMentions';
 
 export default function StartDiscussionModal({ mode }) {
 
     const user = authUser()
+    
+    const menstions = useMentions('hello i am from mention quill')
 
     const router = useRouter()
     const toast = useToast()
@@ -255,7 +258,7 @@ export default function StartDiscussionModal({ mode }) {
                     onChange={setContent}
 
                     onImageUpload={handleImageUpload}
-
+                    mentions={menstions}
                     placeholder='Start your discussion...'
                     controls={[
                         ['bold', 'italic', 'underline', 'link'],

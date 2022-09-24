@@ -10,6 +10,7 @@ import { Bible, UserCheck, BoxMultiple, ArrowDown } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import FollowUnfollow from '../profile/FollowUnfollow';
 import { useSelector } from 'react-redux'
+import moment from 'moment';
 
 
 export default function UserHead({ user }) {
@@ -61,7 +62,7 @@ export default function UserHead({ user }) {
 
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiWatch}/>
-                                <Text>{user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
+                                <Text>{user.createdAt ? moment(user.createdAt).calendar() : '_ / _ / _'}</Text>
                             </Flex>
                      
                             <Flex alignItems='center' gap={1}>

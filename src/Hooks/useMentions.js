@@ -28,7 +28,7 @@ export default function useMentions(qData) {
     useMemo(() => {
 
         const mentionedUsers = members.data?.map(usr => {
-            return { id: usr.id, value: usr.name }
+            return { id: usr.id, value: usr.name, link: `/user/${usr.id}` }
         })
 
         // console.log('Mentioned Users: ', mentionedUsers)
@@ -45,6 +45,8 @@ export default function useMentions(qData) {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
 
             mentionDenotationChars: ['@'],
+
+            linkTarget: '_blank',
 
             source: (searchTerm, renderList, mentionChar) => {
 
@@ -65,6 +67,8 @@ export default function useMentions(qData) {
 
                 const myMentions = Cookies.get('mentions') ? JSON.parse(Cookies.get('mentions')) : []
                
+                const mensionItem = item.id
+                const mensionLink = `<a href='/${item.id}'>${item.value}</a>`
                 myMentions.push(item.id)
                 
                 Cookies.set('mentions', JSON.stringify(myMentions))
