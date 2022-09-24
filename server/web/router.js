@@ -2,7 +2,7 @@ const UserController = require('../controllers/UserController')
 const {getCategories, getOneCategory, storeSubCategories, getOneSubCategory, getOneTag} = require('../controllers/CategoryController')
 const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions, setBestAnswer } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
-const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto } = require('../controllers/ProfileController')
+const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto, updateSetting, updateNotification } = require('../controllers/ProfileController')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -18,9 +18,16 @@ async function router(app) {
     app.post('/update_profile', {onRequest: app.authSso}, updateProfile)
     app.post('/upload_profile_photo', {onRequest: app.authSso}, uploadProfilePhoto)
 
+    //Discussion photo
     app.post('/upload_discussion_photo', {onRequest: app.authSso}, uploadDiscussionPhoto)
 
-    
+
+    //Genenral settings
+    app.post('/update_setting', {onRequest: app.authSso}, updateSetting)
+
+    //updateNotification
+    app.post('/update_notification_setting', {onRequest: app.authSso}, updateNotification)
+
 
     //Search
     app.get('/search', getSeachData)

@@ -51,15 +51,17 @@ model User {
 
   notifications Notification[]
 
-  points Int @default(0)
-
-  status Boolean @default(true)
-
-  isAdmin Boolean @default(false)
-
+  points      Int     @default(0)
+  status      Boolean @default(true)
+  isAdmin     Boolean @default(false)
   isModerator Boolean @default(false)
+  isNew       Boolean @default(true)
 
-  isNew Boolean @default(true)
+  disablePrivateDiscussion             Boolean @default(false)
+  automaticallyFollowRepliedDiscussion Boolean @default(false)
+
+  webNotification   String[]
+  emailNotification String[]
 
   createdAt DateTime? @default(now())
 }
@@ -127,7 +129,7 @@ model Discussion {
 
   createdAt DateTime @default(now())
 }
- 
+
 model Reply {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 

@@ -16,21 +16,24 @@ export default function settings() {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-      async function getUserInfo() {
 
-          const res = await axios.get(`/user/${aUser.data?.id}`)
+    if (aUser.data?.id) {
+      getUserInfo()
+    }
 
-          console.log('Got user', res.data)
-
-          if (res.data.status != 'error') {
-              setUser(res.data)
-          }
-      }
-
-      if (aUser.data?.id) {
-          getUserInfo()
-      }
   }, [aUser.data])
+
+
+  async function getUserInfo() {
+
+    const res = await axios.get(`/user/${aUser.data?.id}`)
+
+    console.log('Got user', res.data)
+
+    if (res.data.status != 'error') {
+      setUser(res.data)
+    }
+  }
 
 
   return (
@@ -63,13 +66,13 @@ export default function settings() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {user &&  <UpddateProfile user={user}/> }
+            {user && <UpddateProfile user={user} />}
           </TabPanel>
           <TabPanel>
-            <GeneralSettings />
+            {user && <GeneralSettings user={user} />}
           </TabPanel>
           <TabPanel>
-            <NotificationSettings />
+            {user && <NotificationSettings getUserInfo={getUserInfo} user={user} />}
           </TabPanel>
         </TabPanels>
       </Tabs>

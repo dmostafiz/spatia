@@ -21,7 +21,7 @@ exports.updateProfile = async (request, reply) => {
 
             data: {
                 username: body.userName,
-                name: body.fullName, 
+                name: body.fullName,
                 email: body.email,
                 isNew: false
             }
@@ -29,11 +29,11 @@ exports.updateProfile = async (request, reply) => {
 
         console.log('Updated User ', user)
 
-        reply.send({status: 'success', user})
-        
+        reply.send({ status: 'success', user })
+
     } catch (error) {
         console.log('TryCatch Error ##################### ', error.message)
-        reply.send({status: 'error'})
+        reply.send({ status: 'error' })
     }
 }
 
@@ -45,8 +45,8 @@ exports.uploadProfilePhoto = async (request, reply) => {
 
         console.log('request.body() ', data[0].filepath)
 
-        const upload = await cloudinary.uploader.upload(data[0].filepath,{
-            upload_preset:'spacom',
+        const upload = await cloudinary.uploader.upload(data[0].filepath, {
+            upload_preset: 'spacom',
             // folder:folder,
         })
 
@@ -65,11 +65,11 @@ exports.uploadProfilePhoto = async (request, reply) => {
 
         console.log('Updated User ', user)
 
-        reply.send({status: 'success', user})
-        
+        reply.send({ status: 'success', user })
+
     } catch (error) {
         console.log('TryCatch Error ##################### ', error.message)
-        reply.send({status: 'error'})
+        reply.send({ status: 'error' })
     }
 }
 
@@ -81,8 +81,8 @@ exports.uploadDiscussionPhoto = async (request, reply) => {
 
         console.log('request.body() ', data[0].filepath)
 
-        const upload = await cloudinary.uploader.upload(data[0].filepath,{
-            upload_preset:'spacom',
+        const upload = await cloudinary.uploader.upload(data[0].filepath, {
+            upload_preset: 'spacom',
             // folder:folder,
         })
 
@@ -101,10 +101,102 @@ exports.uploadDiscussionPhoto = async (request, reply) => {
 
         console.log('Updated User ',)
 
-        reply.send({status: 'success', url: upload.url})
-        
+        reply.send({ status: 'success', url: upload.url })
+
     } catch (error) {
         console.log('TryCatch Error ##################### ', error.message)
-        reply.send({status: 'error'})
+        reply.send({ status: 'error' })
     }
 }
+
+exports.updateSetting = async (request, reply) => {
+
+    const body = request.body
+
+    const user = await request.prisma.user.findFirst({
+        where: {
+            id: request.user.id
+        }
+    })
+
+    const settingObject = body.setting == 'disablePrivateDiscussion'
+        ? { disablePrivateDiscussion: !user.disablePrivateDiscussion }
+        : body.setting == 'automaticallyFollowRepliedDiscussion'
+            ? { automaticallyFollowRepliedDiscussion: !user.automaticallyFollowRepliedDiscussion }
+            : {}
+
+    const userSetting = await request.prisma.user.update({
+        where: {
+            id: request.user.id
+        },
+
+        data: settingObject
+    })
+
+    console.log('Setting body: ', userSetting)
+    // console.log('Setting User: ', user)
+
+    reply.send({ status: 'success', userSetting })
+
+}
+
+exports.updateNotification = async (request, reply) => {
+
+    const body = request.body
+
+    const user = await request.prisma.user.findFirst({
+        where: {
+            id: request.user.id
+        }
+    })
+
+    const settingObject = body.type == 'webNotification'
+        ? { webNotification: !user.disablePrivateDiscussion }
+        : body.setting == 'emailNotification'
+            ? { emailNotification: !user.automaticallyFollowRepliedDiscussion }
+            : {}
+
+    let notificationSetting = {} 
+
+    if(body.type == 'web'){
+
+        let existingWebNotification = user.webNotification
+
+        if(existingWebNotification.includes(body.notification)){
+
+            existingWebNotification = existingWebNotification.filter(not => not != body.notification)
+        }else {
+            existingWebNotification.push(body.notification)
+        }
+
+        notificationSetting = { webNotification: existingWebNotification }
+
+    }else if(body.type == 'email'){
+
+        let existingEmailNotification = user.emailNotification
+
+        if(existingEmailNotification.includes(body.notification)){
+
+            existingEmailNotification = existingEmailNotification.filter(not => not != body.notification)
+        }else {
+            existingEmailNotification.push(body.notification)
+        }
+
+        notificationSetting = {emailNotification: existingEmailNotification}
+    }
+
+    const userNotificationSetting = await request.prisma.user.update({
+        where: {
+            id: request.user.id
+        },
+
+        data: notificationSetting
+    })
+
+    console.log('Notification Setting Body: ', userNotificationSetting)
+    // console.log('Setting User: ', user)
+
+    reply.send({ status: 'success', user: userNotificationSetting })
+
+}
+
