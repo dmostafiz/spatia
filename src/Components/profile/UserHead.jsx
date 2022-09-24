@@ -63,7 +63,7 @@ export default function UserHead({ user }) {
                     <Box>
                         <Avatar size='2xl' src={uploaded || user?.avatar} name={user?.name} />
                         <Spacer h={2} />
-                        <Button isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' type='file' colorScheme='gray' variant='outline' rounded='full'>Chnage Avatar</Button>
+                        <Button isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' type='file' colorScheme='gray' variant='outline' rounded='full'>Change Avatar</Button>
                     </Box>
 
                     <Box w='full' as='div'>
