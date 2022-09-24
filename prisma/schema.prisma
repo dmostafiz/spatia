@@ -127,7 +127,7 @@ model Discussion {
 
   createdAt DateTime @default(now())
 }
-
+ 
 model Reply {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 

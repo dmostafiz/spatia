@@ -9,6 +9,7 @@ export default function sso() {
 
     const router = useRouter()
     const [error, setError] = useState(false)
+
     const user = authUser()
 
     // const [token, setToken] = useState(null)
@@ -24,6 +25,10 @@ export default function sso() {
             })
 
             if (res.data.status == 'success') {
+
+                if(res.data.isNew == true){
+                    return  router.push(`/profile/settings`)
+                }
 
                 router.push(`/${router.query.surl}`)
                 // window.location.href = router.query.surl

@@ -19,7 +19,8 @@ exports.ssoAuth = async (request, reply) => {
                 email: request.user.email,
                 name: request.user.name,
                 avatar: null,
-                bio: null
+                bio: null,
+                isNew: true
             },
         })
 
@@ -29,7 +30,7 @@ exports.ssoAuth = async (request, reply) => {
             email: user.email,
             name: user.name,
             avatar: user.avatar,
-            isNew: user.isNew || true,
+            isNew: user.isNew,
             role: user.role || 'user'
         })
 
@@ -39,7 +40,7 @@ exports.ssoAuth = async (request, reply) => {
             .setCookie('_token', token, {
                 path: '/'
             })
-            .send({status: 'success', token: token })
+            .send({status: 'success', token: token , isNew: user.isNew})
 
 
     } catch (error) {

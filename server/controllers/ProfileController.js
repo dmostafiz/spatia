@@ -22,7 +22,8 @@ exports.updateProfile = async (request, reply) => {
             data: {
                 username: body.userName,
                 name: body.fullName, 
-                email: body.email
+                email: body.email,
+                isNew: false
             }
         })
 
