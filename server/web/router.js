@@ -44,8 +44,6 @@ async function router(app) {
     app.post('/user/save_bio', {onRequest: app.auth}, UserController.saveBio)
     app.post('/user/action', {onRequest: app.auth}, UserController.userAction)
     app.post('/user/remove_from_ignore', {onRequest: app.auth}, UserController.removeFromIgnore)
-
-    
     
     //Category
     app.get('/category/get', getCategories)

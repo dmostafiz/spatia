@@ -1304,6 +1304,16 @@ exports.setBestAnswer = async (req, reply) => {
 
     console.log(body)
 
+    const rep = await req.prisma.reply.findFirst({
+        where: {
+            id: body.replyId
+        }
+    })
+
+    if (req.user.id == rep.authorId) {
+        return reply.send({ status: 'error', msg: 'You cannot set your answer as the best answer.' })
+    }
+
     const discussion = await req.prisma.discussion.findFirst({
         where: {
             id: body.discussionId
