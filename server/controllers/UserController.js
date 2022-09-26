@@ -20,6 +20,7 @@ exports.ssoAuth = async (request, reply) => {
                 name: request.user.name,
                 avatar: null,
                 bio: null,
+                role: request.user.role,
                 isNew: true
             },
         })
