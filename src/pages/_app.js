@@ -24,17 +24,7 @@ const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }) {
 
-
-  // useEffect(() => {
-
-  //   console.log('window.location.hostname ########', window.location.hostname)
-  //   console.log('Environment ########', process.env.ENVIRONMENT)
-
-  // }, [])
-
-  // axios.defaults.baseURL = process.env.ENVIRONMENT == 'development' ? 'http://localhost:3000/api' : 'https://spacom.herokuapp.com/api'
   axios.defaults.baseURL = process.env.baseURL
-  // axios.defaults.baseURL = 'https://spacom.herokuapp.com/api'
   axios.defaults.headers.common['Authorization'] = useToken();
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -70,4 +60,4 @@ function MyApp({ Component, pageProps }) {
   </MantineProvider>
 }
 
-export default  wrapper.withRedux( MyApp )
+export default wrapper.withRedux(MyApp)
