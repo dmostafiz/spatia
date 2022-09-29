@@ -22,14 +22,14 @@ export default function UserHead({ user }) {
         setLoading(true)
         // Do something with the files
         const file = acceptedFiles[0]
-  
-        const res = await axios.post('/upload_profile_photo', {file}, {
+
+        const res = await axios.post('/upload_profile_photo', { file }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
 
-        if(res.data.status == 'success'){
+        if (res.data.status == 'success') {
             setUploaded(res.data.user.avatar)
 
             toast({
@@ -43,10 +43,8 @@ export default function UserHead({ user }) {
 
         setLoading(false)
 
-        
-
-
     }, [])
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
 
@@ -63,7 +61,10 @@ export default function UserHead({ user }) {
                     <Box>
                         <Avatar size='2xl' src={uploaded || user?.avatar} name={user?.name} />
                         <Spacer h={2} />
-                        <Button isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' colorScheme='gray' variant='outline' rounded='full'>Change Avatar</Button>
+                        <Button isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' colorScheme='gray' variant='outline' rounded='full'>
+                            <input {...getInputProps()} />
+                            Change Avatar
+                        </Button>
                     </Box>
 
                     <Box w='full' as='div'>
