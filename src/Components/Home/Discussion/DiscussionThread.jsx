@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Center, HStack, Text, VStack, Icon, Link, Flex, Tooltip } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { HiOutlineLightBulb, HiReply } from 'react-icons/hi'
@@ -17,6 +17,16 @@ import moment from 'moment';
 export default function DiscussionThread({ discussion }) {
 
     console.log('discussion subcategory ', discussion.subCategory)
+
+    const [showMore, setShow] = useState(null)
+
+    const showMoreItem = (discussionId) => {
+        setShow(discussionId)
+    }
+
+    const showLess = () => {
+        setShow(null)
+    }
 
     return (
         <>
@@ -100,7 +110,7 @@ export default function DiscussionThread({ discussion }) {
 
                     <Box w='full' p={3} bg='#f4edde' rounded='sm'>
                         <Text as='div' w='full' fontSize={14} fontFamily={`'Assistant', sans-serif`} fontWeight='semibold' dangerouslySetInnerHTML={{
-                            __html: truncate(discussion.content, 400, {
+                            __html: showMore == discussion.id ? discussion.content : truncate(discussion.content, 400, {
                                 keepWhitespaces: true,
                                 stripTags: true
                             })
@@ -112,16 +122,29 @@ export default function DiscussionThread({ discussion }) {
 
                         <HStack justify='space-between'>
 
-                            <NextLink href={`/discussion/${discussion.id}`}>
-                                <Link href={`/discussion/${discussion.id}`}>
-                                    <Text
-                                        fontSize={14}
-                                        fontWeight='bold'
-                                    >
-                                        View More
-                                    </Text>
-                                </Link>
-                            </NextLink>
+                            {/* <NextLink href={`/discussion/${discussion.id}`}>
+                                <Link href={`/discussion/${discussion.id}`}> */}
+
+                            {showMore == discussion.id ? <Text
+                                    cursor='pointer'
+                                    fontSize={14}
+                                    fontWeight='bold'
+                                    onClick={ showLess }
+                                >
+                                    View Less
+                                </Text> : <Text
+                                    cursor='pointer'
+                                    fontSize={14}
+                                    fontWeight='bold'
+                                    onClick={() => showMoreItem(discussion.id)}
+                                >
+                                    View More
+                                </Text>
+
+                            }
+       
+                            {/* </Link>
+                            </NextLink> */}
 
                             <HStack gap={4}>
 
