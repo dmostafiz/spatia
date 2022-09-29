@@ -62,12 +62,12 @@ export default function private_discussion() {
 
 
   return (
-    <Layout title="All Discussions">
+    <Layout title="Private Discussions">
 
       <Container maxW='container.xl'>
 
         <PageTitle
-          title="All Discussions"
+          title="Private Discussions"
         //   subtitle={category.data.description}
         // navigation={<NavigationIndata />}
         />

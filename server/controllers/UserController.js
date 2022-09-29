@@ -199,7 +199,12 @@ exports.getAllMembers = async (request, reply) => {
 
     try {
 
-        const users = await request.prisma.user.findMany()
+        const users = await request.prisma.user.findMany({
+          select: {
+            id: true,
+            name: true,
+          }
+        })
 
         // console.log('Member searched ########### ', users)
         reply.send({ users })

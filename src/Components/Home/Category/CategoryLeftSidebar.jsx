@@ -16,7 +16,7 @@ const StartPrivateDiscussionModal = dynamic(() => import('../../Common/StartPriv
     ssr: false
 })
 
-export default function CategoryLeftSidebar({ mode='desktop', currentCategory, privateDiscussion = false, closeDrawer }) {
+export default function CategoryLeftSidebar({ mode='desktop', currentCategory, privateDiscussion = false }) {
 
     const user = authUser()
 
@@ -39,7 +39,7 @@ export default function CategoryLeftSidebar({ mode='desktop', currentCategory, p
 
         <VStack alignItems='flex-start' gap={5}>
 
-            {privateDiscussion ? <StartPrivateDiscussionModal closeDrawer={closeDrawer} mode={mode} /> : <StartDiscussionModal closeDrawer={closeDrawer} mode={mode}/>}
+            {privateDiscussion ? <StartPrivateDiscussionModal mode={mode} /> : <StartDiscussionModal mode={mode}/>}
 
             <SimpleGrid columns={{ base: 1, sm: 1, md: 1, lg: 1 }} gap={{ base: 4, lg: 4 }} >
 
