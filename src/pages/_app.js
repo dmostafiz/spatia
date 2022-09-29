@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
   // }, [])
 
   // axios.defaults.baseURL = process.env.ENVIRONMENT == 'development' ? 'http://localhost:3000/api' : 'https://spacom.herokuapp.com/api'
-  axios.defaults.baseURL = 'http://localhost:3000/api'
+  axios.defaults.baseURL = process.env.baseURL
   // axios.defaults.baseURL = 'https://spacom.herokuapp.com/api'
   axios.defaults.headers.common['Authorization'] = useToken();
   axios.defaults.headers.post['Content-Type'] = 'application/json';

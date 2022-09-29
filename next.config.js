@@ -4,7 +4,8 @@ const nextConfig = {
   env: {
     ENVIRONMENT: process.env.ENVIRONMENT,
     SERVER_ENDPOINT: process.env.SERVER_ENDPOINT,
-    SSO_ENDPOINT: process.env.SSO_ENDPOINT
+    SSO_ENDPOINT: process.env.SSO_ENDPOINT,
+    baseURL: process.env.baseURL
   }
 }
 
