@@ -63,7 +63,7 @@ export default function UserHead({ user }) {
                         <Spacer h={2} />
                         <Box as={Button} isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' colorScheme='gray' variant='outline' rounded='full'>
                             <input {...getInputProps()} />
-                            Change Avatar
+                             Change Avatar
                         </Box>
                     </Box>
 
