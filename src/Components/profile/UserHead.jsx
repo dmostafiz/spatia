@@ -61,7 +61,7 @@ export default function UserHead({ user }) {
                     <Box>
                         <Avatar size='2xl' src={uploaded || user?.avatar} name={user?.name} />
                         <Spacer h={2} />
-                        <Box isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' colorScheme='gray' variant='outline' rounded='full'>
+                        <Box as={Button} isLoading={loading} loadingText='Uploading...'  {...getRootProps()} size='sm' colorScheme='gray' variant='outline' rounded='full'>
                             <input {...getInputProps()} />
                             Change Avatar
                         </Box>
