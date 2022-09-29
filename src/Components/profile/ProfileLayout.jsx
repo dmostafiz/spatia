@@ -47,7 +47,7 @@ export default function ProfileLayout({ children }) {
                     <Flex direction={{ base: 'column', lg: 'row' }} gap={5}>
 
                         {user &&
-                            <Box minH={{ base: 'auto', md: '100vh' }} w={{ base: 'full', lg: '250px' }} >
+                            <Box minH={{ base: 'auto', lg: '100vh' }} w={{ base: 'full', lg: '250px' }} >
                                 <StickyBox offsetTop={110}>
                                     <LeftSidebar user={user} />
                                 </StickyBox>

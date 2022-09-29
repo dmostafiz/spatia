@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Stack, Icon } from '@chakra-ui/react';
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
+import { Button, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
 import Discussion from './../../pages/discussion/[id]';
 import getCategories from './../../Hooks/getCategories';
+import { Modal } from '@mantine/core';
+
 
 export default function SelectCategoryModal({ setCategory, setSubCategory }) {
 
@@ -61,24 +63,26 @@ export default function SelectCategoryModal({ setCategory, setSubCategory }) {
             <Modal
                 // closeOnOverlayClick={false}
                 size='3xl'
-                isOpen={isOpen}
+                opened={isOpen}
                 onClose={onClose}
+                // zIndex={100000000000}
+                title={<Text fontWeight='bold' fontSize={20}>Select category & sub category</Text>}
+                zIndex={99999}
                 isCentered
             >
 
-                <ModalOverlay
+                {/* <ModalOverlay
                     bg='blackAlpha.500'
                     backdropFilter='blur(3px)'
-                />
-
+                /> */}
+{/* 
                 <ModalContent rounded='none'>
                     <ModalHeader>
                         Choose the Tag(s) for your Discussion
                     </ModalHeader>
 
                     <ModalCloseButton rounded='full' />
-                    {/* <ModalCloseButton /> */}
-                    <ModalBody py={0}>
+                    <ModalBody py={0}> */}
 
                         <Box maxH='calc(100vh - 200px)' overflowY='auto'>
 
@@ -128,16 +132,12 @@ export default function SelectCategoryModal({ setCategory, setSubCategory }) {
 
                         </Box>
 
-                    </ModalBody>
+                    {/* </ModalBody>
 
                     <ModalFooter as='flex' w='100%' gap={2}>
 
-                        {/* <Button rounded='full' bg='#fcc31e' border='2px solid' w={150}>
-                            Post Discussion
-                        </Button> */}
-
                     </ModalFooter>
-                </ModalContent>
+                </ModalContent> */}
             </Modal>
 
 

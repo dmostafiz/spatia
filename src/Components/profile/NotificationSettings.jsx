@@ -43,7 +43,7 @@ export default function NotificationSettings({getUserInfo, user }) {
                         <Tr>
                             <Th></Th>
                             <Th isNumeric>Web</Th>
-                            <Th isNumeric>Email</Th>
+                            {/* <Th isNumeric>Email</Th> */}
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -55,12 +55,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone replies to on of my posts')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone replies to on of my posts')}
                                     onChange={() => handleNotificationSetting('email', 'Someone replies to on of my posts')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
                         <Tr>
                             <Td>Someone mention me in a post</Td>
@@ -70,12 +70,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone mention me in a post')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone mention me in a post')}
                                     onChange={() => handleNotificationSetting('email', 'Someone mention me in a post')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
                         <Tr>
                             <Td>Someone replies in a post i am following</Td>
@@ -85,12 +85,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone replies in a post i am following')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone replies in a post i am following')}
                                     onChange={() => handleNotificationSetting('email', 'Someone replies in a post i am following')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -101,12 +101,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'When someone sets my post as a best answer')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('When someone sets my post as a best answer')}
                                     onChange={() => handleNotificationSetting('email', 'When someone sets my post as a best answer')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -117,12 +117,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'When a best answer is set in a discussion i participated in')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('When a best answer is set in a discussion i participated in')}
                                     onChange={() => handleNotificationSetting('email', 'When a best answer is set in a discussion i participated in')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -133,12 +133,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone includes me in a new private discussion')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone includes me in a new private discussion')}
                                     onChange={() => handleNotificationSetting('email', 'Someone includes me in a new private discussion')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -149,12 +149,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone posts in a private discussion i am recipient of')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone posts in a private discussion i am recipient of')}
                                     onChange={() => handleNotificationSetting('email', 'Someone posts in a private discussion i am recipient of')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -165,12 +165,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone add me to a existing private discussion')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone add me to a existing private discussion')}
                                     onChange={() => handleNotificationSetting('email', 'Someone add me to a existing private discussion')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
 
@@ -182,12 +182,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone reacts to one of my posts')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone reacts to one of my posts')}
                                     onChange={() => handleNotificationSetting('email', 'Someone reacts to one of my posts')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -198,12 +198,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone create a discussion in a tag i am following')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone create a discussion in a tag i am following')}
                                     onChange={() => handleNotificationSetting('email', 'Someone create a discussion in a tag i am following')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
 
                         <Tr>
@@ -214,12 +214,12 @@ export default function NotificationSettings({getUserInfo, user }) {
                                     onChange={() => handleNotificationSetting('web', 'Someone posts in a tag i am following')}
                                     size='sm' />
                             </Td>
-                            <Td isNumeric>
+                            {/* <Td isNumeric>
                                 <Switch
                                     isChecked={emailNotifications.includes('Someone posts in a tag i am following')}
                                     onChange={() => handleNotificationSetting('email', 'Someone posts in a tag i am following')}
                                     size='sm' />
-                            </Td>
+                            </Td> */}
                         </Tr>
                     </Tbody>
 

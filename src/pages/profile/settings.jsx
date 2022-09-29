@@ -42,23 +42,23 @@ export default function settings() {
       <Tabs fontFamily='sans-serif' variant='enclosed' colorScheme='yellow'>
         <TabList mb='1em'>
 
-          <Tab>
+          <Tab fontSize={{base: '10px', md:'16px'}}>
             <Flex alignItems='center' gap={1}>
-              <Icon fontSize={20} as={User} />
+              <Icon fontSize={{base:12, md: 20}} as={User} />
               <Text> Profile </Text>
             </Flex>
           </Tab>
 
-          <Tab>
+          <Tab fontSize={{base: '10px', md:'16px'}}>
             <Flex alignItems='center' gap={1}>
-              <Icon fontSize={20} as={Settings} />
+              <Icon fontSize={{base:12, md: 20}} as={Settings} />
               <Text> General settings</Text>
             </Flex>
           </Tab>
 
-          <Tab>
+          <Tab fontSize={{base: '10px', md:'16px'}}>
             <Flex alignItems='center' gap={1}>
-              <Icon fontSize={20} as={Bell} />
+              <Icon fontSize={{base:12, md: 20}} as={Bell} />
               <Text> Notifications </Text>
             </Flex>
           </Tab>

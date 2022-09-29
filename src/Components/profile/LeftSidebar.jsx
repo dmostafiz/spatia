@@ -16,7 +16,7 @@ export default function LeftSidebar({ user }) {
 
 
     return (
-        <SimpleGrid columns={{ base: 2, sm: 2, md: 5, lg: 1 }} gap={{ base: 3, lg: 3 }} >
+        <SimpleGrid columns={{ base: 1, sm: 1, md: 1, lg: 1 }} gap={{ base: 3, lg: 3 }} >
 
             <NextLink href={`/profile/posts`}>
                 <Link href={`/profile/posts`} color='black'>

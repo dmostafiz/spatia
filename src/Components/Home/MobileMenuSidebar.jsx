@@ -45,9 +45,9 @@ const MobileMenuSidebar = ({  notifications }) => {
                 onClose={onClose}
                 finalFocusRef={btnRef}
             >
-                <DrawerOverlay />
+                <DrawerOverlay zIndex={111}/>
 
-                <DrawerContent>
+                <DrawerContent zIndex={111}>
 
                     <DrawerCloseButton />
 
@@ -60,7 +60,7 @@ const MobileMenuSidebar = ({  notifications }) => {
 
                     <DrawerBody>
 
-                        <CategoryLeftSidebar mode='mobile' currentCategory={null} />
+                        <CategoryLeftSidebar closeDrawer={onClose} mode='mobile' currentCategory={null} />
 
                     </DrawerBody>
 

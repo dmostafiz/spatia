@@ -81,15 +81,13 @@ export default function UpddateProfile({ user }) {
                     <Stack spacing={4}>
                         <FormControl>
                             
-                            <Text>Username {!user.username && '(unique)'}</Text>
-                            {!user.username && <Text color={'gray.600'} fontFamily='cursive' fontSize={'12px'}>Only ( _ ) and ( . ) are allowed. don't use any white space.</Text>}
+                            <Text>Username (unique)</Text>
+                            <Text color={'gray.600'} fontFamily='cursive' fontSize={'12px'}>Only ( _ ) and ( . ) are allowed. don't use any white space.</Text>
                             
                             <Spacer h={1} />
                             <Input
                                 // name='userName'
                                 {...register('userName')}
-                                readOnly={user.username}
-                                disabled={user.username}
                                 placeholder='Enter your unique username'
                                 size='md'
                             />
@@ -99,6 +97,8 @@ export default function UpddateProfile({ user }) {
                         <Box>
                             <Text>Full Name</Text>
                             <Input
+                                readOnly={user.name}
+                                disabled={user.name}
                                 {...register('fullName')}
                                 placeholder='Your full name'
                                 size='md'
@@ -109,6 +109,8 @@ export default function UpddateProfile({ user }) {
                         <Box>
                             <Text>Email</Text>
                             <Input
+                                readOnly={user.email}
+                                disabled={user.email}
                                 {...register('email')}
                                 placeholder='Enter your valid email'
                                 size='md'
