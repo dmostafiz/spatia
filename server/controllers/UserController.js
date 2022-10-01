@@ -66,7 +66,7 @@ exports.exampleSignup = async (request, reply) => {
 
         // user@gmail.com - user
         // moderator@gmail.com - moderator
-        // admin@gmail.com - moderator
+        // admin@gmail.com - admin
         
         const requestEmail = request.params.email || 'user@gmail.com'
 

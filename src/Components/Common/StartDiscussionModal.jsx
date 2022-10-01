@@ -16,6 +16,7 @@ import { ArrowRight, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import LoginWindowButton from './LoginWindowButton';
 import useMentions from '../../Hooks/useMentions';
+import UploadFiles from './UploadFiles';
 
 export default function StartDiscussionModal({ mode }) {
 
@@ -32,6 +33,8 @@ export default function StartDiscussionModal({ mode }) {
     const [content, setContent] = useState('')
     const [category, setCategory] = useState(null)
     const [subCategory, setSubCategory] = useState(null)
+
+    const [files, setFiles] = useState([])
 
 
     const [loading, setLoading] = useState(false)
@@ -219,7 +222,7 @@ export default function StartDiscussionModal({ mode }) {
                     <X size={18} color='#f4edde' />
                 </ActionIcon>
 
-                <Flex w='100%' gap={2} mb={2}>
+                <Flex direction={{base: 'column', md: 'row'}} w='100%' gap={2} mb={2}>
                     <Box flex='1' >
                         <Input
                             data-autofocus
@@ -233,9 +236,10 @@ export default function StartDiscussionModal({ mode }) {
                             value={title}
                         />
                     </Box>
-                    <Box>
+                    <Flex gap={2} mb={2}>
                         <SelectCategoryModal setCategory={setCategory} setSubCategory={setSubCategory} />
-                    </Box>
+                        <UploadFiles setFiles={setFiles}/>
+                    </Flex>
                 </Flex>
 
 
@@ -249,6 +253,12 @@ export default function StartDiscussionModal({ mode }) {
                         </>}
                     </Flex>
                 </Box>}
+
+                <Box>
+                    {files.map(file=>{
+                        return <Text>{file.name}</Text>
+                    })}
+                </Box>
 
                 <RichTextEditor
                     stickyOffset={-50}
@@ -264,7 +274,6 @@ export default function StartDiscussionModal({ mode }) {
                         ['bold', 'italic', 'underline', 'link'],
                         ['h1', 'h2', 'h3'],
                         ['alignLeft', 'alignCenter', 'alignRight'],
-                        ['code'],
                         ['image']
                     ]}
                 />

@@ -13,6 +13,7 @@ import { Modal, Group } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
 import { ActionIcon } from '@mantine/core';
 import { X } from 'tabler-icons-react';
+import UploadFiles from './UploadFiles';
 
 export default function StartPrivateDiscussionModal() {
 
@@ -161,7 +162,7 @@ export default function StartPrivateDiscussionModal() {
                     <X size={18} color='#f4edde' />
                 </ActionIcon>
 
-                <Flex w='100%' gap={2} mb={2}>
+                <Flex direction={{base: 'column', md: 'row'}} w='100%' gap={2} mb={2}>
                     <Box flex='1' >
                         <Input
                             data-autofocus
@@ -175,9 +176,10 @@ export default function StartPrivateDiscussionModal() {
                             value={title}
                         />
                     </Box>
-                    <Box>
-                        <SelectPeopleModal members={members} setMembers={setMembers} />
-                    </Box>
+                    <Flex gap={2} mb={2}>
+                        <SelectCategoryModal setCategory={setCategory} setSubCategory={setSubCategory} />
+                        <UploadFiles />
+                    </Flex>
                 </Flex>
 
 
@@ -214,7 +216,6 @@ export default function StartPrivateDiscussionModal() {
                         ['bold', 'italic', 'underline', 'link'],
                         ['h1', 'h2', 'h3'],
                         ['alignLeft', 'alignCenter', 'alignRight'],
-                        ['code'],
                         ['image']
                     ]}
                 />

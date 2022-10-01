@@ -1,3 +1,4 @@
+const cloudinary = require("../app/helpers/cloudinary")
 
 exports.storeDiscussion = async (req, reply) => {
 
@@ -1491,4 +1492,44 @@ exports.setBestAnswer = async (req, reply) => {
 
 }
 
+exports.uploadFiles = async (req, reply) => {
 
+    try {
+
+        const data = await req.saveRequestFiles()
+
+
+        // const uploadedFiles = []
+
+
+        // let uploadedFile = new Promise( (resolve, reject) => {
+
+        const uploadInstanceMapping = data.map(async file => {
+
+            const upload = await cloudinary.uploader.upload(file.filepath, {
+                upload_preset: 'spacom',
+                folder: 'files',
+            })
+            console.log('Current Upload ', upload.url)
+
+            var myarr =  upload.key.split('/')
+
+            return {url: upload.url, name: myarr[myarr.length - 1]}
+        })
+
+        //     resolve(uploaded)
+        // })
+
+        // uploadedFile.then(up => {
+
+        const uploadedUrlArray = await Promise.all(uploadInstanceMapping)
+
+        console.log('Request Files ', uploadedUrlArray)
+
+        reply.send({status: 'success', files: uploadedUrlArray})
+        // })
+
+    } catch (error) {
+        console.log('Try Catch error ', error.message)
+    }
+}

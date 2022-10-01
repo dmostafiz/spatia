@@ -125,9 +125,16 @@ model Discussion {
 
   Mentions Mentions[]
 
+  files File[]
+  
   recentReplyAt DateTime? @db.Timestamp()
 
   createdAt DateTime @default(now())
+}
+
+type File{
+  name String
+  url String
 }
 
 model Reply {
@@ -151,6 +158,8 @@ model Reply {
   reaction Replyreaction[]
 
   mentions Mentions[]
+
+  files File[]
 
   createdAt DateTime @default(now())
 }
