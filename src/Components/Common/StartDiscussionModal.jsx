@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon } from '@chakra-ui/react';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon, TagLabel, Tag, Wrap } from '@chakra-ui/react';
 import { Button, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
 import SelectCategoryModal from './SelectCategoryModal';
 import { useToast } from '@chakra-ui/react'
@@ -35,7 +35,6 @@ export default function StartDiscussionModal({ mode }) {
     const [subCategory, setSubCategory] = useState(null)
 
     const [files, setFiles] = useState([])
-
 
     const [loading, setLoading] = useState(false)
 
@@ -107,7 +106,8 @@ export default function StartDiscussionModal({ mode }) {
             content: content,
             categoryId: category.id,
             subCategoryId: subCategory?.id,
-            tags
+            tags,
+            files
         }
 
 
@@ -180,7 +180,7 @@ export default function StartDiscussionModal({ mode }) {
         <>
             {(!user.isLoading && user.data)
                 ?
-                <Button onClick={() => setOpened(true) } bg='#e6caaf' w={mode == 'mobile' ? 'full' : 'auto'} rounded={mode == 'mobile' ? 'none' : 'full'}>
+                <Button onClick={() => setOpened(true)} bg='#e6caaf' w={mode == 'mobile' ? 'full' : 'auto'} rounded={mode == 'mobile' ? 'none' : 'full'}>
                     Start Discussion
                 </Button>
 
@@ -222,7 +222,7 @@ export default function StartDiscussionModal({ mode }) {
                     <X size={18} color='#f4edde' />
                 </ActionIcon>
 
-                <Flex direction={{base: 'column', md: 'row'}} w='100%' gap={2} mb={2}>
+                <Flex direction={{ base: 'column', md: 'row' }} w='100%' gap={2} mb={2}>
                     <Box flex='1' >
                         <Input
                             data-autofocus
@@ -238,7 +238,7 @@ export default function StartDiscussionModal({ mode }) {
                     </Box>
                     <Flex gap={2} mb={2}>
                         <SelectCategoryModal setCategory={setCategory} setSubCategory={setSubCategory} />
-                        <UploadFiles setFiles={setFiles}/>
+                        <UploadFiles setFiles={setFiles} />
                     </Flex>
                 </Flex>
 
@@ -253,12 +253,18 @@ export default function StartDiscussionModal({ mode }) {
                         </>}
                     </Flex>
                 </Box>}
+                
+                {files.length > 0 && <Box pb={'2'}>
+                    <Text>Additional uploading files</Text>
+                    <Wrap>
+                        {files.map((file, index) => {
+                            return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='blue'>
+                                <TagLabel>{file.name}</TagLabel>
+                            </Tag>
+                        })}
+                    </Wrap>
+                </Box>}
 
-                <Box>
-                    {files.map(file=>{
-                        return <Text>{file.name}</Text>
-                    })}
-                </Box>
 
                 <RichTextEditor
                     stickyOffset={-50}

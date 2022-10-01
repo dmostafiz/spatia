@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback } from 'react'
-import { Avatar, Box, Button, Flex, HStack, Icon, Input, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, HStack, Icon, Input, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
@@ -8,6 +8,9 @@ import { RiHeart2Fill } from 'react-icons/ri'
 import dynamic from 'next/dynamic';
 import useMentions from '../../../Hooks/useMentions'
 import axios from 'axios'
+import UploadFiles from '../../Common/UploadFiles'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 // const RichTextEditor = dynamic(() => import('@mantine/rte'), {
 //     // Disable during server side rendering
@@ -27,9 +30,15 @@ const RichTextEditor = dynamic(
     }
 )
 
-const DiscussionReplyForm = forwardRef(({ onSubmitReply, reply, setReply, data }, ref) => {
+const DiscussionReplyForm = forwardRef(({ setReplyFiles, onSubmitReply, reply, setReply, data }, ref) => {
 
     const menstions = useMentions('hello i am from mention quill')
+
+    const [files, setFiles] = useState([])
+
+    useEffect(() => {
+        setReplyFiles(files)
+    }, [files])
 
 
     const handleImageUpload = useCallback(
@@ -65,6 +74,22 @@ const DiscussionReplyForm = forwardRef(({ onSubmitReply, reply, setReply, data }
             <Box pb={2} pt={8}>
                 <Text fontWeight='' fontSize='20px' fontFamily='sans-serif'>Reply to the discussion</Text>
             </Box>
+            <Box pb={2}>
+                <UploadFiles setFiles={setFiles} />
+            </Box>
+
+            {files.length > 0 && <Box pb={'2'} fontFamily={'sans-serif'}>
+                <Text>Additional uploading files</Text>
+                <Wrap>
+                    {files.map((file, index) => {
+                        return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='yellow'>
+                            <TagLabel>{file.name}</TagLabel>
+                        </Tag>
+                    })}
+                </Wrap>
+            </Box>}
+
+
             <HStack alignItems='flex-start' gap={2}>
                 {/* <Box w={50}>
                     <Avatar src='' name={data.name} />

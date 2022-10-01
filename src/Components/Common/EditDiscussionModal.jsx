@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon, MenuItem } from '@chakra-ui/react';
+import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon, MenuItem, Wrap, Tag, TagLabel } from '@chakra-ui/react';
 import { Button, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
 import SelectCategoryModal from './SelectCategoryModal';
 import { useToast } from '@chakra-ui/react'
@@ -16,6 +16,7 @@ import { ArrowRight, Edit, X } from 'tabler-icons-react';
 import authUser from '../../Hooks/authUser';
 import LoginWindowButton from './LoginWindowButton';
 import useMentions from '../../Hooks/useMentions';
+import UploadFiles from './UploadFiles';
 
 export default function EditDiscussionModal({ discussion }) {
 
@@ -37,6 +38,8 @@ export default function EditDiscussionModal({ discussion }) {
     const [loading, setLoading] = useState(false)
 
     const [tags, setTags] = useState([]);
+
+    const [files, setFiles] = useState(discussion.files)
     // const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
@@ -110,9 +113,10 @@ export default function EditDiscussionModal({ discussion }) {
             id: discussion.id,
             title: title,
             content: content,
-            categoryId: category.id,
+            categoryId: category?.id,
             subCategoryId: subCategory?.id,
-            tags
+            tags,
+            files
         }
 
 
@@ -130,7 +134,7 @@ export default function EditDiscussionModal({ discussion }) {
 
             toast({
                 title: 'Success',
-                description: "Your discussion has beeen created successfully!",
+                description: "Your discussion has beeen updated successfully!",
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -224,7 +228,7 @@ export default function EditDiscussionModal({ discussion }) {
                     <X size={18} color='#f4edde' />
                 </ActionIcon>
 
-                <Flex w='100%' gap={2} mb={2}>
+                <Flex direction={{ base: 'column', md: 'row' }} w='100%' gap={2} mb={2}>
                     <Box flex='1' >
                         <Input
                             data-autofocus
@@ -238,9 +242,10 @@ export default function EditDiscussionModal({ discussion }) {
                             value={title}
                         />
                     </Box>
-                    <Box>
-                        <SelectCategoryModal setCategory={setCategory} setSubCategory={setSubCategory} />
-                    </Box>
+                    <Flex gap={2} mb={2}>
+                        {!discussion.isPrivate &&  <SelectCategoryModal setCategory={setCategory} setSubCategory={setSubCategory} />}
+                        <UploadFiles setFiles={setFiles} />
+                    </Flex>
                 </Flex>
 
 
@@ -254,6 +259,18 @@ export default function EditDiscussionModal({ discussion }) {
                         </>}
                     </Flex>
                 </Box>}
+
+                {files.length > 0 && <Box pb={'2'}>
+                    <Text>Additional uploading files</Text>
+                    <Wrap>
+                        {files.map((file, index) => {
+                            return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='blue'>
+                                <TagLabel>{file.name}</TagLabel>
+                            </Tag>
+                        })}
+                    </Wrap>
+                </Box>}
+
 
                 <RichTextEditor
                     stickyOffset={-50}
@@ -325,7 +342,7 @@ export default function EditDiscussionModal({ discussion }) {
                             border='2px solid'
                             w={150}
                         >
-                            Post Discussion
+                            Update Discussion
                         </Button>
                     </Flex>
                 </Box>

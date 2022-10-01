@@ -1,13 +1,17 @@
 import { Box, Button } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
 export default function UploadFiles({setFiles}) {
 
+    const [loading, setLoading] = useState(false)
     const onDrop = useCallback(async acceptedFiles => {
         // Do something with the files
-        console.log('acceptedFiles ', acceptedFiles)
+
+        setLoading(true)
+
+        // console.log('acceptedFiles ', acceptedFiles)
 
         const {data} = await axios.post('/upload_files', { files: acceptedFiles }, {
             headers: {
@@ -19,6 +23,8 @@ export default function UploadFiles({setFiles}) {
             setFiles(data.files)
         }
 
+        setLoading(false)
+
     }, [])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -29,7 +35,7 @@ export default function UploadFiles({setFiles}) {
 
 
     return (
-        <Box as={Button} {...getRootProps()} rounded={'none'}>
+        <Box as={Button} isLoading={loading} loadingText={'Uploading...'} {...getRootProps()} rounded={'none'}>
             <input {...getInputProps()} />
             Upload files
         </Box>

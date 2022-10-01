@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Box, Button, Flex, HStack, Icon, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, HStack, Icon, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
@@ -15,10 +15,13 @@ import DeleteConfirmation from '../../Common/DeleteConfirmation'
 import authUser from '../../../Hooks/authUser'
 import { useEffect } from 'react'
 
+const EditPrivateDiscussionModal = dynamic(import('../../Common/EditPrivateDiscussionModal'), {
+    ssr: false
+})
+
 const EditDiscussionModal = dynamic(import('../../Common/EditDiscussionModal'), {
     ssr: false
 })
-// import EditDiscussionModal from '../../Common/EditDiscussionModal'
 
 export default function DiscussionBody({ handleClickReply, discussion }) {
 
@@ -64,6 +67,22 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                         >
                             {/* {discussion.content} */}
                         </Text>
+
+                        {discussion.files.length > 0 && <Box pb={'2'} fontFamily={'sans-serif'}>
+                            <>
+                                <Text fontWeight={'bold'}>Related files</Text>
+                                <Wrap>
+                                    {discussion.files.map((file, index) => {
+                                        return <a target={'_blank'} href={file.url}>
+                                            <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='cyan'>
+                                                <TagLabel>{file.name}</TagLabel>
+                                            </Tag>
+                                        </a>
+                                    })}
+                                </Wrap>
+                            </>
+                        </Box>}
+
 
                         <Flex w='full' direction={{ base: 'column', md: 'row' }} alignItems={{ base: 'left', md: 'center' }} justify='space-between' gap={3}>
 
@@ -130,7 +149,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                                 {/* <MenuItem onClick={() => alert("Edit discussion")} icon={<Edit />}>
                                             Edit
                                         </MenuItem> */}
-                                                <EditDiscussionModal discussion={discussion} />
+                                                {discussion.isPrivate ? <EditPrivateDiscussionModal discussion={discussion}  /> : <EditDiscussionModal discussion={discussion} /> }
 
                                                 <DeleteConfirmation title='Delete Discussion!' deleteUrl={'/discussion/delete'} deleteId={discussion.id} />
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Box, Flex, HStack, Icon, Link, Text, useToast } from '@chakra-ui/react'
+import { Avatar, Box, Flex, HStack, Icon, Link, Tag, TagLabel, Text, useToast, Wrap } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiFillStar, AiOutlineEye, AiOutlineStar } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
@@ -11,7 +11,7 @@ import { Star } from 'tabler-icons-react'
 import axios from 'axios'
 import authUser from '../../../Hooks/authUser'
 
-export default function DiscussionReplyThread({setBestAnswer, discussion, handleClickReply, reply }) {
+export default function DiscussionReplyThread({ setBestAnswer, discussion, handleClickReply, reply }) {
 
 
     const user = authUser()
@@ -19,13 +19,13 @@ export default function DiscussionReplyThread({setBestAnswer, discussion, handle
 
     const addBestAnswer = async (replyId) => {
 
-        if(user.data.id != discussion.authorId){
+        if (user.data.id != discussion.authorId) {
             return
         }
 
         const { data } = await axios.post('/store_best_answer', { replyId, discussionId: discussion.id })
 
-        if(data.status == 'success'){
+        if (data.status == 'success') {
 
             setBestAnswer(reply.id)
 
@@ -39,7 +39,7 @@ export default function DiscussionReplyThread({setBestAnswer, discussion, handle
 
         }
 
-        if(data.status == 'error'){
+        if (data.status == 'error') {
             return toast({
                 title: 'Success',
                 description: data.msg,
@@ -47,7 +47,7 @@ export default function DiscussionReplyThread({setBestAnswer, discussion, handle
                 duration: 9000,
                 isClosable: true,
             })
- 
+
         }
     }
 
@@ -97,8 +97,23 @@ export default function DiscussionReplyThread({setBestAnswer, discussion, handle
                                 __html: reply.content
                             }}
                         />
-                        <Flex direction={{ base: 'column', md: 'row' }} justify='flex-end' gap={3}>
 
+                        {reply.files.length > 0 && <Box pb={'2'} fontFamily={'sans-serif'}>
+                            <>
+                                <Text fontWeight={'bold'}>Related files</Text>
+                                <Wrap>
+                                    {reply.files.map((file, index) => {
+                                        return <a target={'_blank'} href={file.url}>
+                                            <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='cyan'>
+                                                <TagLabel>{file.name}</TagLabel>
+                                            </Tag>
+                                        </a>
+                                    })}
+                                </Wrap>
+                            </>
+                        </Box>}
+
+                        <Flex direction={{ base: 'column', md: 'row' }} justify='flex-end' gap={3}>
 
                             <Flex alignItems='center' gap={4}>
                                 {/* <Flex alignItems='center' gap={1}>

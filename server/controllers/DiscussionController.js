@@ -31,7 +31,9 @@ exports.storeDiscussion = async (req, reply) => {
                     connect: { id: body.categoryId }
                 },
 
-                ...connectSubCategory
+                ...connectSubCategory,
+
+                files: body.files
             },
 
             include: {
@@ -93,7 +95,9 @@ exports.updateDiscussion = async (req, reply) => {
                         connect: { id: body.categoryId }
                     },
 
-                    ...connectSubCategory
+                    ...connectSubCategory,
+
+                    files: body.files
                 },
 
                 include: {
@@ -189,7 +193,9 @@ exports.storePrivateDiscussion = async (req, reply) => {
                             id: member.id
                         }
                     })
-                }
+                },
+
+                files: body.files
             },
 
             include: {
@@ -212,6 +218,69 @@ exports.storePrivateDiscussion = async (req, reply) => {
     }
 
 }
+
+
+exports.updatePrivateDiscussion = async (req, reply) => {
+
+    try {
+
+        const body = req.body
+
+        // console.log(body.members)
+        // return reply.send({status: 'success', discussion: body})
+
+        const discussion = await req.prisma.discussion.update({
+
+            where: {
+               id: body.id
+            },
+
+            data: {
+                title: body.title,
+                content: body.content,
+
+                tags: body.tags.map(tag => {
+                    return { name: tag }
+                }),
+
+                author: {
+                    connect: { id: req.user.id }
+                },
+
+                isPrivate: true,
+
+                // privateMembers: {
+                //     connect: body.users.map(member => {
+                //         return {
+                //             id: member.id
+                //         }
+                //     })
+                // },
+
+                files: body.files
+            },
+
+            include: {
+                author: true,
+                privateMembers: true
+            }
+
+        })
+
+
+        // console.log('Discussion created ##################### ', discussion)
+        reply.send({ status: 'success', body: discussion })
+
+        // })
+
+    } catch (error) {
+        // return error
+        console.log('TryCatch Error: ###################### ', error.message)
+        reply.send({ status: 'error', msg: error.message })
+    }
+
+}
+
 
 //Get all discussions by category ID
 exports.getCategoryDiscussions = async (req, reply) => {
@@ -966,7 +1035,9 @@ exports.storeReply = async (req, reply) => {
 
                 mentions: body.mentions.map(mention => {
                     return { userId: mention }
-                })
+                }),
+
+                files: body.files
             },
 
             include: {

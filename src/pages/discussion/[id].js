@@ -42,6 +42,8 @@ function Discussion({ discussion }) {
     const { scrollIntoView, targetRef } = useScrollIntoView({ offset: 60 })
     const [parentId, setParentId] = useState(null)
 
+    const [files, setReplyFiles] = useState([])
+
     const editorRef = useRef()
 
     const [mentioned, setMentioned] = useState([])
@@ -131,7 +133,8 @@ function Discussion({ discussion }) {
             reply,
             discussionId: discussion.id,
             parentId: parentId,
-            mentions: finalMentioned
+            mentions: finalMentioned,
+            files
         }
 
         const res = await axios.post('/reply/store', data)
@@ -267,7 +270,7 @@ function Discussion({ discussion }) {
                                 <VStack>
 
                                     {data?.pages?.flat()?.map((reply, index) => {
-                                        return <DiscussionReplyThread  setBestAnswer={setBestAnswer} discussion={discussion} handleClickReply={handleClickReply} key={index} reply={reply} />
+                                        return <DiscussionReplyThread setBestAnswer={setBestAnswer} discussion={discussion} handleClickReply={handleClickReply} key={index} reply={reply} />
                                     })}
                                 </VStack>
 
@@ -296,6 +299,7 @@ function Discussion({ discussion }) {
                             ? <Box w='full' ref={targetRef}>
                                 <Spacer />
                                 {wl ? <DiscussionReplyForm
+                                    setReplyFiles={setReplyFiles}
                                     key={replySubmited}
                                     ref={editorRef}
                                     onSubmitReply={onSubmitReply}

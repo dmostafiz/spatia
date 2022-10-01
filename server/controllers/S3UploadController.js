@@ -38,9 +38,11 @@ exports.uploadFiles = async (req, reply) => {
 
             const data = await uploadFile(buffer, fileName, type);
 
-            var myarr =  data.Key.split('/')
+            // var myarr =  data.Key.split('/')
 
-            return {url: data.Location, name: myarr[myarr.length - 1]}
+            // console.log('Uploading file: ', file)
+
+            return {url: data.Location, name: file.filename}
 
         })
 

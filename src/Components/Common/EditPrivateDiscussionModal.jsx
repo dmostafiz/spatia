@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Avatar, Icon, Tooltip, Tag, TagLabel, Wrap } from '@chakra-ui/react';
-import { Button, SimpleGrid } from '@chakra-ui/react'
-import SelectPeopleModal from './SelectPeopleModal';
+import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon, MenuItem, Wrap, Tag, TagLabel } from '@chakra-ui/react';
+import { Button, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
+import SelectCategoryModal from './SelectCategoryModal';
 import { useToast } from '@chakra-ui/react'
 import useToken from '../../Hooks/useToken';
 import axios from 'axios'
@@ -12,41 +12,66 @@ import { MultiSelect } from '@mantine/core';
 import { Modal, Group } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
 import { ActionIcon } from '@mantine/core';
-import { X } from 'tabler-icons-react';
+import { ArrowRight, Edit, X } from 'tabler-icons-react';
+import authUser from '../../Hooks/authUser';
+import LoginWindowButton from './LoginWindowButton';
+import useMentions from '../../Hooks/useMentions';
 import UploadFiles from './UploadFiles';
-import SelectCategoryModal from './SelectCategoryModal';
 
-export default function StartPrivateDiscussionModal() {
+export default function EditPrivateDiscussionModal({ discussion }) {
+
+    const user = authUser()
+
+    const menstions = useMentions('hello i am from mention quill')
 
     const router = useRouter()
     const toast = useToast()
     const [opened, setOpened] = useState(false);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [title, setTitle] = useState('')
-    const [content, setContent] = useState('')
-    const [members, setMembers] = useState([])
+    const [title, setTitle] = useState(discussion.title)
+    const [content, setContent] = useState(discussion.content)
 
     const [loading, setLoading] = useState(false)
 
-    const [files, setFiles] = useState([])
-
     const [tags, setTags] = useState([]);
+
+    const [files, setFiles] = useState(discussion.files)
+    // const [selectedCategory, setSelectedCategory] = useState(null)
 
     useEffect(() => {
 
-        console.log('Selected  Members: ', members)
+        const editTags = []
 
-    }, [members])
+        discussion.tags.map(tag => {
+            editTags.push(tag.name)
+        })
+
+        console.log('editTags ', editTags)
+
+        setTags(editTags)
+
+    }, [])
 
 
     const handleSubmitDiscussion = async () => {
 
-        if (members.length < 2) {
+        if (!title) {
             return toast({
-                title: 'No mebers selected',
-                description: "Please select members to discuss privately!",
-                status: 'warning',
+                title: 'Title is empty',
+                description: "Please write a title of the discussion.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+
+        if (content.replace(/<[^>]+>/g, '').replace(/\s+/g, '') == '' || content == '<p><br></p>') {
+
+            return toast({
+                title: 'Discussions body is empty',
+                description: 'Please write your discussion description!',
+                status: 'error',
                 duration: 9000,
                 isClosable: true,
             })
@@ -56,33 +81,30 @@ export default function StartPrivateDiscussionModal() {
 
 
         const data = {
+            id: discussion.id,
             title: title,
             content: content,
-            users: members,
             tags,
             files
         }
 
+
         // console.log('Coooooooooooooooookie: ', useCookie())
 
-        const res = await axios.post('/discussion/private/store', data)
+        const res = await axios.post('/discussion/private/update', data)
 
         if (res.data.status == 'success') {
 
-            // return console.log(res.data)
-            router.push(`/discussion/${res.data.body.id}`)
-
-            setTitle('')
-            setContent('')
-
+            
             toast({
                 title: 'Success',
-                description: "Your discussion has beeen created successfully!",
+                description: "Your discussion has beeen updated successfully!",
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
             })
-
+            
+            router.reload(`/discussion/${res.data.body.id}`)
             // console.log('Created discussion: ', res.data.body)
 
             onClose()
@@ -100,12 +122,9 @@ export default function StartPrivateDiscussionModal() {
         setLoading(false)
     }
 
-    const removeSelectedUser = (member) => {
-        setMembers(members.filter(user => user.id !== member.id))
-    }
-
 
     const handleImageUpload = useCallback(
+
         file => new Promise((resolve, reject) => {
 
             const formData = new FormData();
@@ -131,11 +150,20 @@ export default function StartPrivateDiscussionModal() {
 
     )
 
+
     return (
         <>
-            <Button onClick={() => setOpened(true)} bg='#e6caaf' rounded='full' fontSize='12px'>
-                Start Private Discussion
-            </Button>
+            {/* <Button onClick={() => setOpened(true) } bg='#e6caaf' w={mode == 'mobile' ? 'full' : 'auto'} rounded={mode == 'mobile' ? 'none' : 'full'}>
+                    Start Discussion
+                </Button> */}
+            {(!user.isLoading && user.data)
+                &&
+                <MenuItem onClick={() => setOpened(true)} icon={<Edit />}>
+                    Edit
+                </MenuItem>
+                // <Button rounded='full' bg='#e6caaf' fontSize='12px'>Login to start discussion</Button>
+            }
+
 
             <Modal
                 overlayColor='black'
@@ -150,7 +178,7 @@ export default function StartPrivateDiscussionModal() {
                 size='xl'
                 centered
                 radius={0}
-                zIndex={999}
+                zIndex={9999}
             >
                 {/* Modal content */}
                 <ActionIcon
@@ -180,32 +208,10 @@ export default function StartPrivateDiscussionModal() {
                         />
                     </Box>
                     <Flex gap={2} mb={2}>
-                        <SelectPeopleModal members={members} setMembers={setMembers} />
                         <UploadFiles setFiles={setFiles} />
                     </Flex>
                 </Flex>
 
-
-                <Box w='full' py={2}>
-                    {members.length ?
-                        <Box pb={2}>
-                            <Box>
-                                <Text>Selected Members</Text>
-                            </Box>
-                            <Wrap >
-
-                                {members.map((member, index) => {
-                                    return <Flex key={index} gap={1} alignItems='center'>
-                                        <Avatar size='xs' src='' name={member.name} />
-                                        <Text fontSize='12px'>{member.name}</Text>
-                                        <Icon onClick={() => removeSelectedUser(member)} color='red' fontSize='14px' cursor='pointer' title='remove' as={X} />
-                                    </Flex>
-                                })}
-                            </Wrap>
-                        </Box>
-
-                        : <></>}
-                </Box>
 
                 {files.length > 0 && <Box pb={'2'}>
                     <Text>Additional uploading files</Text>
@@ -219,19 +225,21 @@ export default function StartPrivateDiscussionModal() {
                 </Box>}
 
 
-
                 <RichTextEditor
                     stickyOffset={-50}
                     style={{ minHeight: 300 }}
                     radius={0}
                     value={content}
                     onChange={setContent}
+
                     onImageUpload={handleImageUpload}
+                    mentions={menstions}
                     placeholder='Start your discussion...'
                     controls={[
                         ['bold', 'italic', 'underline', 'link'],
                         ['h1', 'h2', 'h3'],
                         ['alignLeft', 'alignCenter', 'alignRight'],
+                        ['code'],
                         ['image']
                     ]}
                 />
@@ -242,20 +250,23 @@ export default function StartPrivateDiscussionModal() {
                         minHeight: '400px',
                         placeholder: "Start your discussion...",
                     }}
+
                     style={{ height: '300px' }}
                     editor={ClassicEditor}
                     data={content}
+
                     onReady={editor => {
                         // You can store the "editor" and use when it is needed.
                         console.log('Editor is ready to use!', editor);
                     }}
+
                     onChange={(event, editor) => {
                         const data = editor.getData();
                         setContent(data)
                         console.log({ event, editor, data });
                     }}
-
                 /> */}
+
                 <Box pt={3}>
                     <Text fontSize='12px' fontFamily=''>You can add 4 tags maximum</Text>
                     <Flex gap={5}>
@@ -284,7 +295,7 @@ export default function StartPrivateDiscussionModal() {
                             border='2px solid'
                             w={150}
                         >
-                            Post Discussion
+                            Update Discussion
                         </Button>
                     </Flex>
                 </Box>
