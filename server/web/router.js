@@ -13,7 +13,7 @@ async function router(app) {
 
     //Example Api Signup ~~ domain.com/api/signup ~~ Delete this route when going production
     /*******************/
-    app.get('/signup', UserController.exampleSignup)
+    app.get('/signup/:email?', UserController.exampleSignup)
     /*******************/
 
     app.post('/authorize', { onRequest: app.auth }, UserController.authorize)

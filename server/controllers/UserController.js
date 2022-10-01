@@ -68,7 +68,7 @@ exports.exampleSignup = async (request, reply) => {
         // moderator@gmail.com - moderator
         // admin@gmail.com - moderator
         
-        const requestEmail = 'user@gmail.com'
+        const requestEmail = request.params.email || 'user@gmail.com'
 
         const user = await request.prisma.user.findFirst({
             where: {
