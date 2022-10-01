@@ -3,9 +3,15 @@ exports.ssoAuth = async (request, reply) => {
     try {
 
         // console.log('SSO User token', request.query.token)
-        if(!request.user){
+        if (!request.user) {
 
         }
+
+        const userRole = request.user.role == 100
+            ? 'user' : request.user.role == 99
+                ? 'moderator' : request.user.role == 1
+                    ? 'admin' : request.user.role == 0
+                        ? 'admin' : 'user'
 
         const user = await request.prisma.user.upsert({
             where: {
@@ -20,7 +26,7 @@ exports.ssoAuth = async (request, reply) => {
                 name: request.user.name,
                 avatar: null,
                 bio: null,
-                role: request.user.role,
+                role: userRole,
                 isNew: true
             },
         })
@@ -41,26 +47,32 @@ exports.ssoAuth = async (request, reply) => {
             .setCookie('_token', token, {
                 path: '/'
             })
-            .send({status: 'success', token: token , isNew: user.isNew})
+            .send({ status: 'success', token: token, isNew: user.isNew })
 
 
     } catch (error) {
 
         console.log('TryCatch Error ##################### ', error.message)
-        reply.send({status: 'error'})
+        reply.send({ status: 'error' })
 
     }
 
 }
 
 
-exports.signup = async (request, reply) => {
+exports.exampleSignup = async (request, reply) => {
 
     try {
 
+        // user@gmail.com - user
+        // moderator@gmail.com - moderator
+        // admin@gmail.com - moderator
+        
+        const requestEmail = 'user@gmail.com'
+
         const user = await request.prisma.user.findFirst({
             where: {
-                email: 'dev.mostafiz@gmail.com',
+                email: requestEmail,
             }
         })
 
@@ -69,7 +81,9 @@ exports.signup = async (request, reply) => {
             username: user.username,
             email: user.email,
             name: user.name,
-            avatar: user.avatar
+            avatar: user.avatar,
+            isNew: user.isNew,
+            role: user.role
         })
 
         console.log('Token Signed ##################### ', token)
@@ -200,10 +214,10 @@ exports.getAllMembers = async (request, reply) => {
     try {
 
         const users = await request.prisma.user.findMany({
-          select: {
-            id: true,
-            name: true,
-          }
+            select: {
+                id: true,
+                name: true,
+            }
         })
 
         // console.log('Member searched ########### ', users)
@@ -389,7 +403,7 @@ exports.removeFromIgnore = async (req, reply) => {
             },
             data: {
                 hatings: {
-                    disconnect: {id: req.body.userId},
+                    disconnect: { id: req.body.userId },
                 }
             }
         })

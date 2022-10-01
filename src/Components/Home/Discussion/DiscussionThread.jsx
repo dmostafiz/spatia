@@ -145,6 +145,7 @@ export default function DiscussionThread({ discussion }) {
        
                             {/* </Link>
                             </NextLink> */}
+                      
 
                             <HStack gap={4}>
 

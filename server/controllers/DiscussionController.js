@@ -55,6 +55,107 @@ exports.storeDiscussion = async (req, reply) => {
 
 }
 
+exports.updateDiscussion = async (req, reply) => {
+
+
+    try {
+
+        if (req.user.role == 'moderator' || req.user.role == 'admin') {
+
+            const body = req.body
+
+            const connectSubCategory = body.subCategoryId ? {
+                subCategory: {
+                    connect: { id: body.subCategoryId || null }
+                }
+            } : undefined
+
+            const discussion = await req.prisma.discussion.update({
+
+                where: {
+                    id: body.id
+                },
+
+                data: {
+                    title: body.title,
+                    content: body.content,
+
+                    tags: body.tags.map(tag => {
+                        return { name: tag }
+                    }),
+
+                    author: {
+                        connect: { id: req.user.id }
+                    },
+
+                    category: {
+                        connect: { id: body.categoryId }
+                    },
+
+                    ...connectSubCategory
+                },
+
+                include: {
+                    author: true,
+                    category: true,
+                    subCategory: true,
+                }
+
+            })
+
+
+            // console.log('Discussion created ##################### ', discussion)
+            reply.send({ status: 'success', body: discussion })
+
+        } else {
+            return reply.send({ status: 'error', msg: "You're not authorised to do this action." })
+        }
+
+        // })
+
+    } catch (error) {
+        // return error
+        console.log('TryCatch Error: ###################### ', error.message)
+        reply.send({ status: 'error', msg: error.message })
+    }
+
+}
+
+exports.deleteDiscussion = async (req, reply) => {
+
+    console.log('Request User ', req.user)
+
+    try {
+        const body = req.body
+
+        if (req.user.role == 'moderator' || req.user.role == 'admin') {
+
+            const deleteDiscussion = await req.prisma.discussion.delete({
+                where: {
+                    id: body.id
+                }
+            })
+
+            await req.prisma.reply.deleteMany({
+                where: {
+                    discussionId: deleteDiscussion.id
+                }
+            })
+
+            reply.send({ status: 'success', msg: "Discussion deleted successfully!" })
+
+
+        } else {
+
+            return reply.send({ status: 'error', msg: "You're not authorised to do this action." })
+        }
+
+
+    } catch (error) {
+        console.log('TryCatch Error ', error.message)
+    }
+}
+
 // Store private discussion
 exports.storePrivateDiscussion = async (req, reply) => {
 

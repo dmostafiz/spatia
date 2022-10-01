@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Box, Flex, HStack, Icon, Link, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, HStack, Icon, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
@@ -7,8 +7,27 @@ import { RiHeart2Fill } from 'react-icons/ri'
 import moment from 'moment'
 import ReactionsReact from '../ReactionsReact'
 import NextLink from 'next/link'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { Edit, X } from 'tabler-icons-react'
+import { FiDelete } from 'react-icons/fi'
+import dynamic from "next/dynamic"
+import DeleteConfirmation from '../../Common/DeleteConfirmation'
+import authUser from '../../../Hooks/authUser'
+import { useEffect } from 'react'
+
+const EditDiscussionModal = dynamic(import('../../Common/EditDiscussionModal'), {
+    ssr: false
+})
+// import EditDiscussionModal from '../../Common/EditDiscussionModal'
 
 export default function DiscussionBody({ handleClickReply, discussion }) {
+
+    const user = authUser()
+
+    useEffect(() => {
+        console.log('Auth User ', user)
+    }, [user])
+
     return (
         <Box mb={4} px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
@@ -46,7 +65,8 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                             {/* {discussion.content} */}
                         </Text>
 
-                        <Flex w='full' direction={{ base: 'column', md: 'row' }} justify='space-between' gap={3}>
+                        <Flex w='full' direction={{ base: 'column', md: 'row' }} alignItems={{ base: 'left', md: 'center' }} justify='space-between' gap={3}>
+
                             <HStack maxW='350px' alignItems='flex-start'>
                                 <Icon fontSize='18px' as={CgMailReply} />
                                 <Text color='#2c53a8' fontSize='12px' fontFamily={`'Montserrat', sans-serif;`} >
@@ -70,7 +90,14 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
 
                             </HStack>
 
-                            <Flex flex={1} justify='flex-end'>
+
+                            {/* <HStack gap={1}>
+                                <Button rounded={'none'} size='sm' colorScheme='red'>Delete</Button>
+                                <Button rounded={'none'} size='sm' colorScheme='blue'>Edit</Button>
+                            </HStack> */}
+
+
+                            <Flex>
                                 <HStack gap={3}>
                                     <Flex alignItems='center' gap={1}>
                                         <Icon fontSize={24} as={AiOutlineEye} />
@@ -87,6 +114,31 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                     <Flex alignItems='center' gap={1}>
                                         <Text cursor='pointer' onClick={() => handleClickReply(null)}>Reply</Text>
                                     </Flex>
+
+                                    {(user?.data?.role == 'admin' || user?.data?.role == 'moderator') &&
+                                        <Menu>
+                                            <MenuButton
+                                                as={IconButton}
+                                                aria-label='Options'
+                                                icon={<BsThreeDotsVertical />}
+                                                size='sm'
+                                                color={'green.900'}
+                                                background='transparent'
+                                                colorScheme='transparent'
+                                            />
+                                            <MenuList>
+                                                {/* <MenuItem onClick={() => alert("Edit discussion")} icon={<Edit />}>
+                                            Edit
+                                        </MenuItem> */}
+                                                <EditDiscussionModal discussion={discussion} />
+
+                                                <DeleteConfirmation title='Delete Discussion!' deleteUrl={'/discussion/delete'} deleteId={discussion.id} />
+
+                                            </MenuList>
+                                        </Menu>
+                                    }
+
+
                                 </HStack>
                             </Flex>
                         </Flex>
