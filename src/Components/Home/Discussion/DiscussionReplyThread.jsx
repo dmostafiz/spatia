@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Box, Flex, HStack, Icon, Link, Tag, TagLabel, Text, useToast, Wrap } from '@chakra-ui/react'
+import { Avatar, Box, Flex, HStack, Icon, IconButton, Link, Menu, MenuButton, MenuList, Tag, TagLabel, Text, useToast, Wrap } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiFillStar, AiOutlineEye, AiOutlineStar } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
@@ -10,6 +10,14 @@ import NextLink from 'next/link'
 import { Star } from 'tabler-icons-react'
 import axios from 'axios'
 import authUser from '../../../Hooks/authUser'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import DeleteConfirmation from '../../Common/DeleteConfirmation'
+
+import dynamic from 'next/dynamic'
+
+const EditReplyModal = dynamic(import('../../Common/EditReplyModal'), {
+    ssr: false
+})
 
 export default function DiscussionReplyThread({ setBestAnswer, discussion, handleClickReply, reply }) {
 
@@ -128,11 +136,37 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
                                 </Flex>
 
                                 <Box>
-
                                     {!reply.bestAnswer
                                         ? <Icon title='Set as the best answer' cursor='pointer' onClick={() => addBestAnswer(reply?.id)} fontSize={20} as={AiOutlineStar} />
                                         : <Icon title='Best Answer' fontSize={20} color='yellow.500' as={AiFillStar} />}
                                 </Box>
+
+
+
+                                {(user?.data?.role == 'admin' || user?.data?.role == 'moderator') &&
+                                    <Menu>
+                                        <MenuButton
+                                            as={IconButton}
+                                            aria-label='Options'
+                                            icon={<BsThreeDotsVertical />}
+                                            size='sm'
+                                            color={'green.900'}
+                                            background='transparent'
+                                            colorScheme='transparent'
+                                        />
+
+                                        <MenuList>
+                                            <EditReplyModal reply={reply} />
+                                            <DeleteConfirmation
+                                                title='Delete Reply!'
+                                                deleteUrl={'/reply/delete'}
+                                                deleteId={reply.id}
+                                                redirectTo={`/discussion/${discussion.id}`}
+                                            />
+                                        </MenuList>
+                                    </Menu>
+                                }
+
                             </Flex>
                         </Flex>
                     </Box>

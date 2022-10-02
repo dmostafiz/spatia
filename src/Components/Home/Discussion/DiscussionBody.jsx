@@ -22,7 +22,7 @@ const EditPrivateDiscussionModal = dynamic(import('../../Common/EditPrivateDiscu
 const EditDiscussionModal = dynamic(import('../../Common/EditDiscussionModal'), {
     ssr: false
 })
-
+ 
 export default function DiscussionBody({ handleClickReply, discussion }) {
 
     const user = authUser()

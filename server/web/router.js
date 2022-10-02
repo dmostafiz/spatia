@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController')
 const { getCategories, getOneCategory, storeSubCategories, getOneSubCategory, getOneTag } = require('../controllers/CategoryController')
-const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions, setBestAnswer, updateDiscussion, deleteDiscussion, updatePrivateDiscussion } = require('../controllers/DiscussionController')
+const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions, setBestAnswer, updateDiscussion, deleteDiscussion, updatePrivateDiscussion, deleteReply, updateReply } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
 const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto, updateSetting, updateNotification } = require('../controllers/ProfileController')
 const { uploadFiles } = require('../controllers/S3UploadController.js')
@@ -82,6 +82,8 @@ async function router(app) {
 
     //Reply
     app.post('/reply/store', { onRequest: app.auth }, storeReply)
+    app.post('/reply/update', { onRequest: app.auth }, updateReply)
+    app.post('/reply/delete', { onRequest: app.auth }, deleteReply)
     app.get('/replies/:discussionId', getDiscussionReplies)
 
 

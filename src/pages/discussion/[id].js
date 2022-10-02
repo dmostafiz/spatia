@@ -255,7 +255,7 @@ function Discussion({ discussion }) {
                                 </Text>
 
                             </Box>
-                        </Box>
+                        </Box> 
 
                         {/* Discussion Body */}
                         {discussion && <DiscussionBody handleClickReply={handleClickReply} discussion={discussion} />}

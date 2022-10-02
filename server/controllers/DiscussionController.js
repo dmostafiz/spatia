@@ -232,7 +232,7 @@ exports.updatePrivateDiscussion = async (req, reply) => {
         const discussion = await req.prisma.discussion.update({
 
             where: {
-               id: body.id
+                id: body.id
             },
 
             data: {
@@ -1127,6 +1127,68 @@ exports.storeReply = async (req, reply) => {
 
 }
 
+exports.updateReply = async (req, reply) => {
+
+    try {
+
+        const user = req.user
+        const body = req.body
+
+        // console.log('Request User', body)
+        const comment = await req.prisma.reply.update({
+            where: {
+                id: body.id
+            },
+            data: {
+                content: body.content,
+                files: body.files
+            },
+
+            include: {
+                author: true,
+                parent: true,
+                childs: true
+            }
+        })
+
+
+
+        return reply.send({ status: 'success', msg: 'Reply update successfully!' })
+
+    } catch (error) {
+
+        console.log('Reply Error #######: ', error.message)
+        return reply.send({ status: 'error', msg: error.message })
+
+    }
+
+
+
+}
+
+exports.deleteReply = async (req, reply) => {
+    try {
+        
+        const body = req.body
+
+        if (req.user.role == 'moderator' || req.user.role == 'admin') {
+
+            const deleteReply = await req.prisma.reply.delete({
+                where: {
+                    id: body.id
+                }
+            })
+
+            console.log("Delete Reply ", deleteReply)
+            
+            return reply.send({status: 'success', msg: 'Reply deleted successfully.'})
+        }
+
+    } catch (error) {
+        console.log('TryCatch error ', error.message)
+    }
+}
+
 //Get replies of a discussion with infinite scroll pagination
 exports.getDiscussionReplies = async (req, reply) => {
     try {
@@ -1583,9 +1645,9 @@ exports.uploadFiles = async (req, reply) => {
             })
             console.log('Current Upload ', upload.url)
 
-            var myarr =  upload.key.split('/')
+            var myarr = upload.key.split('/')
 
-            return {url: upload.url, name: myarr[myarr.length - 1]}
+            return { url: upload.url, name: myarr[myarr.length - 1] }
         })
 
         //     resolve(uploaded)
@@ -1597,7 +1659,7 @@ exports.uploadFiles = async (req, reply) => {
 
         console.log('Request Files ', uploadedUrlArray)
 
-        reply.send({status: 'success', files: uploadedUrlArray})
+        reply.send({ status: 'success', files: uploadedUrlArray })
         // })
 
     } catch (error) {

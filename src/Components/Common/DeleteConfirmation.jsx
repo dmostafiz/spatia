@@ -4,7 +4,7 @@ import { X } from "tabler-icons-react"
 import axios from "axios"
 import { useRouter } from "next/router"
 
-export default function DeleteConfirmation({ title = "Delete Item!", deleteUrl, deleteId }) {
+export default function DeleteConfirmation({ title = "Delete Item!", deleteUrl, deleteId, redirectTo='/' }) {
 
     const router = useRouter()
 
@@ -25,14 +25,14 @@ export default function DeleteConfirmation({ title = "Delete Item!", deleteUrl, 
         if (data.status == 'success') {
 
             toast({
-                title: 'Discussions deleted.',
+                title: 'Item deleted.',
                 description: data.msg,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
             })
 
-            return router.push('/')
+            return router.push(redirectTo)
 
         }
 
