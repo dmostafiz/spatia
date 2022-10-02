@@ -166,10 +166,10 @@ export default function EditPrivateDiscussionModal({ discussion }) {
 
 
             <Modal
-                overlayColor='black'
+                // overlayColor='black'
                 closeOnEscape={true}
-                overlayBlur={3}
-                overlayOpacity={.5}
+                // overlayBlur={3}
+                overlayOpacity={.1}
                 closeOnClickOutside={false}
                 withCloseButton={false}
                 opened={opened}
@@ -190,7 +190,7 @@ export default function EditPrivateDiscussionModal({ discussion }) {
                     variant="transparent"
                     onClick={() => setOpened(false)}
                 >
-                    <X size={18} color='#f4edde' />
+                    <X size={18} color='black' />
                 </ActionIcon>
 
                 <Flex direction={{ base: 'column', md: 'row' }} w='100%' gap={2} mb={2}>

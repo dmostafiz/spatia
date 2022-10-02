@@ -73,7 +73,7 @@ export default function StartDiscussionModal({ mode }) {
                 description: "Please choose a category for your discussion",
                 status: 'warning',
                 duration: 9000,
-                isClosable: true,
+                isClosable: true
             })
         }
 
@@ -195,10 +195,10 @@ export default function StartDiscussionModal({ mode }) {
 
 
             <Modal
-                overlayColor='black'
+                // overlayColor='black'
                 closeOnEscape={true}
-                overlayBlur={3}
-                overlayOpacity={.5}
+                // overlayBlur={3}
+                overlayOpacity={.1}
                 closeOnClickOutside={false}
                 withCloseButton={false}
                 opened={opened}
@@ -219,7 +219,7 @@ export default function StartDiscussionModal({ mode }) {
                     variant="transparent"
                     onClick={() => setOpened(false)}
                 >
-                    <X size={18} color='#f4edde' />
+                    <X size={18} color='black' />
                 </ActionIcon>
 
                 <Flex direction={{ base: 'column', md: 'row' }} w='100%' gap={2} mb={2}>

@@ -1087,7 +1087,8 @@ exports.storeReply = async (req, reply) => {
             }
         })
 
-        if (updateUserPoint) {
+
+        if (updateUserPoint && !updateUserPoint.webNotification.includes('Disable notifications for points awarded')) {
             await req.prisma.notification.create({
                 data: {
                     userId: user.id,
@@ -1196,7 +1197,7 @@ exports.getDiscussionReplies = async (req, reply) => {
         // console.log('Category Discussions query string ################################# ', req.query.cursor)
 
 
-        const limit = -5
+        const limit = 10
         const cursor = typeof req.query.cursor === 'undefined' ? 0 : parseInt(req.query.cursor)
 
         const replies = await req.prisma.reply.findMany({
@@ -1204,7 +1205,7 @@ exports.getDiscussionReplies = async (req, reply) => {
                 discussionId: req.params.discussionId
             },
 
-            orderBy: { id: 'asc' },
+            orderBy: { id: 'desc' },
 
             skip: cursor,
             take: limit,
@@ -1606,7 +1607,7 @@ exports.setBestAnswer = async (req, reply) => {
         }
     })
 
-    if (user) {
+    if (user && !user.webNotification.includes('Disable notifications for points awarded')) {
         await req.prisma.notification.create({
             data: {
                 userId: user.id,

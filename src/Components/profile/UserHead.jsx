@@ -1,4 +1,4 @@
-import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button, useToast } from '@chakra-ui/react';
+import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button, useToast, Wrap } from '@chakra-ui/react';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -73,7 +73,7 @@ export default function UserHead({ user }) {
                         </Text>
 
                         <Spacer h={3} />
-                        <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 9 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
+                        <Wrap spacing={3} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiWatch} />
                                 <Text>{user.createdAt ? moment(user.createdAt).calendar() : 'Nov, 2021'}</Text>
@@ -94,7 +94,7 @@ export default function UserHead({ user }) {
                                 <Text>{user.followingIds?.length} Following</Text>
                             </Flex>
 
-                        </SimpleGrid>
+                        </Wrap>
 
                         <Spacer h={3} />
 

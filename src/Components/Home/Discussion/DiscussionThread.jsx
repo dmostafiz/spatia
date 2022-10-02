@@ -126,26 +126,26 @@ export default function DiscussionThread({ discussion }) {
                                 <Link href={`/discussion/${discussion.id}`}> */}
 
                             {showMore == discussion.id ? <Text
-                                    cursor='pointer'
-                                    fontSize={14}
-                                    fontWeight='bold'
-                                    onClick={ showLess }
-                                >
-                                    View Less
-                                </Text> : <Text
-                                    cursor='pointer'
-                                    fontSize={14}
-                                    fontWeight='bold'
-                                    onClick={() => showMoreItem(discussion.id)}
-                                >
-                                    View More
-                                </Text>
+                                cursor='pointer'
+                                fontSize={14}
+                                fontWeight='bold'
+                                onClick={showLess}
+                            >
+                                View Less
+                            </Text> : <Text
+                                cursor='pointer'
+                                fontSize={14}
+                                fontWeight='bold'
+                                onClick={() => showMoreItem(discussion.id)}
+                            >
+                                View More
+                            </Text>
 
                             }
-       
+
                             {/* </Link>
                             </NextLink> */}
-                      
+
 
                             <HStack gap={4}>
 
@@ -156,10 +156,15 @@ export default function DiscussionThread({ discussion }) {
 
                                 <ReactionsReact discussionId={discussion.id} />
 
-                                <Flex alignItems='center' gap={1}>
-                                    <Icon fontSize={20} as={IoMdChatboxes} />
-                                    <Text>{discussion.replies?.length}</Text>
-                                </Flex>
+
+                                <NextLink href={`/discussion/${discussion.id}`}>
+                                    <Link href={`/discussion/${discussion.id}`}>
+                                        <Flex alignItems='center' gap={1}>
+                                            <Icon fontSize={20} as={IoMdChatboxes} />
+                                            <Text>{discussion.replies?.length}</Text>
+                                        </Flex>
+                                    </Link>
+                                </NextLink>
 
                             </HStack>
 

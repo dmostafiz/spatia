@@ -3,14 +3,14 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 
-export default function NotificationSettings({getUserInfo, user }) {
+export default function NotificationSettings({ getUserInfo, user }) {
 
 
     const [webNotifications, setWeb] = useState([])
     const [emailNotifications, setEmail] = useState([])
 
 
-    const [nt,setNt] = useState(null)
+    const [nt, setNt] = useState(null)
 
     useEffect(() => {
         setWeb(user.webNotification)
@@ -24,7 +24,7 @@ export default function NotificationSettings({getUserInfo, user }) {
 
         // getUserInfo()
 
-        if(data.status == 'success'){
+        if (data.status == 'success') {
             setWeb(data.user.webNotification)
             setEmail(data.user.emailNotification)
         }
@@ -47,6 +47,22 @@ export default function NotificationSettings({getUserInfo, user }) {
                         </Tr>
                     </Thead>
                     <Tbody>
+                        <Tr>
+                            <Td>Disable notifications for points awarded</Td>
+                            <Td isNumeric>
+                                <Switch
+                                    isChecked={webNotifications.includes('Disable notifications for points awarded')}
+                                    onChange={() => handleNotificationSetting('web', 'Disable notifications for points awarded')}
+                                    size='sm' />
+                            </Td>
+                            {/* <Td isNumeric>
+                                <Switch
+                                    isChecked={emailNotifications.includes('Disable notifications for points awarded')}
+                                    onChange={() => handleNotificationSetting('email', 'Disable notifications for points awarded')}
+                                    size='sm' />
+                            </Td> */}
+                        </Tr>
+
                         <Tr>
                             <Td>Someone replies to on of my posts</Td>
                             <Td isNumeric>

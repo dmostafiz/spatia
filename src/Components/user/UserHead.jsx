@@ -1,4 +1,4 @@
-import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button, ButtonGroup, IconButton, MenuButton, MenuList, MenuItem, Menu, useToast } from '@chakra-ui/react';
+import { Text, Box, Container, Flex, Avatar, SimpleGrid, Icon, Spacer, Input, Button, ButtonGroup, IconButton, MenuButton, MenuList, MenuItem, Menu, useToast, Wrap } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -29,7 +29,7 @@ export default function UserHead({ user }) {
 
         if (userExist.length) {
             setUserOnline(true)
-        }else{
+        } else {
             setUserOnline(false)
         }
         // console.log('Online Users ID ', userExist)
@@ -53,31 +53,30 @@ export default function UserHead({ user }) {
                         </Text>
 
                         <Spacer h={3} />
-                        <SimpleGrid w='full' columns={{ base: 2, sm: 2, md: 5, lg: 9 }} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
-                          
+                        <Wrap spacing={3} fontSize='13px' fontFamily='sans-serif' fontWeight='normal' letterSpacing={1}>
+
                             {userOnline && <Flex>
                                 <Icon fontSize={18} color='green.500' as={GoPrimitiveDot} />
                                 <Text>Online</Text>
                             </Flex>}
 
                             <Flex alignItems='center' gap={1}>
-                                <Icon fontSize={18} as={FiWatch}/>
+                                <Icon fontSize={18} as={FiWatch} />
                                 <Text>{user.createdAt ? moment(user.createdAt).calendar() : '_ / _ / _'}</Text>
                             </Flex>
-                     
+
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={FiUserPlus} />
                                 <Text>{user.followerIds?.length} Follower{user.followerIds?.length > 1 && 's'}</Text>
                             </Flex>
-                  
+
                             <Flex alignItems='center' gap={1}>
                                 <Icon fontSize={18} as={UserCheck} />
                                 <Text>{user.followingIds?.length} Following</Text>
                             </Flex>
 
+                        </Wrap>
 
-
-                        </SimpleGrid>
                         <Spacer h={3} />
 
                         {/* <Input placeholder='Write something about your self....' border={0} _focus={{ border: 'none', ring: 'none' }} px={1} /> */}
