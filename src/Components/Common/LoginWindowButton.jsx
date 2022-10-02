@@ -12,7 +12,7 @@ export default function LoginWindowButton(props) {
         
         const hostName = window.location.hostname == 'localhost' ? `${window.location.hostname}:3000` : window.location.hostname
   
-        const newWindow = window.open(`${url}?hostdomain=//${hostName}&surl=${router.asPath}`, '_self')
+        const newWindow = window.open(`${url}?serviceURL=http://${hostName}${router.asPath}`, '_self')
     
         if (newWindow) newWindow.opener = null
     }
@@ -21,7 +21,7 @@ export default function LoginWindowButton(props) {
         <>
             <Button
                 {...props}
-                onClick={() => openInNewTab(process.env.SSO_ENDPOINT || 'http://localhost:8080/api/sso_token')}
+                onClick={() => openInNewTab(process.env.SSO_ENDPOINT || 'http://devspatialcollective.herokuapp.com/login')}
             >
                 {props.innerText}
             </Button>
