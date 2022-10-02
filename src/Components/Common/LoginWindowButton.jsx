@@ -24,6 +24,7 @@ export default function LoginWindowButton(props) {
                 onClick={() => openInNewTab(process.env.SSO_ENDPOINT || 'http://devspatialcollective.herokuapp.com/login')}
             >
                 {props.innerText}
+                
             </Button>
         </>
     )
