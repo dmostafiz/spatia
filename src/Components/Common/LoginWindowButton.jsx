@@ -10,9 +10,9 @@ export default function LoginWindowButton(props) {
     
     const openInNewTab = (url) => {
         
-        const hostName = window.location.hostname == 'localhost' ? `${window.location.hostname}:3000` : window.location.hostname
+        // const hostName = window.location.hostname == 'localhost' ? `${window.location.hostname}:3000` : window.location.hostname
   
-        const newWindow = window.open(`${url}?serviceURL=http://${hostName}${router.asPath}`, '_self')
+        const newWindow = window.open(`${url}?serviceURL=http://spacom.herokuapp.com${router.asPath}`, '_self')
     
         if (newWindow) newWindow.opener = null
     }
