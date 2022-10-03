@@ -4,7 +4,7 @@ exports.ssoAuth = async (request, reply) => {
 
         // console.log('SSO User token', request.query.token)
         if (!request.user) {
-
+            reply.send({ status: 'error', msg: 'Invalid Token' })
         }
 
         const userRole = request.user.role == 100
@@ -47,6 +47,7 @@ exports.ssoAuth = async (request, reply) => {
 
         reply
             .setCookie('_token', token, {
+                domain: process.env.DOMAIN,
                 path: '/'
             })
             .send({ status: 'success', token: token, isNew: user.isNew })
@@ -92,6 +93,7 @@ exports.exampleSignup = async (request, reply) => {
 
         reply
             .setCookie('_token', token, {
+                domain: process.env.DOMAIN,
                 path: '/'
             })
             .send({ token: token })

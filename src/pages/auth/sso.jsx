@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import BigSpinner from '../../Components/Common/BigSpinner'
 import authUser from '../../Hooks/authUser'
+import Cookies from 'js-cookie'
 
 export default function sso() {
 
@@ -26,13 +27,16 @@ export default function sso() {
 
 
             console.log('Redirector: ', res.data)
+
             if (res.data.status == 'success') {
 
-                // if(res.data.isNew == true){
-                //     return window.location.href = '/profile/settings'
-                // }
+                Cookies.set('_token', res.data.token)
 
-                // return window.location.href = router.query.surl
+                if(res.data.isNew == true){
+                    return window.location.href = '/profile/settings'
+                }
+
+                return window.location.href = router.query.surl
 
                 // window.location.href = router.query.surl
             } else {
