@@ -31,6 +31,8 @@ exports.ssoAuth = async (request, reply) => {
             },
         })
 
+        console.log('Redirector User ', user)
+
         const token = request.app.jwt.sign({
             id: user.id,
             username: user.username,

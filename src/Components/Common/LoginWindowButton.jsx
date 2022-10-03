@@ -12,7 +12,11 @@ export default function LoginWindowButton(props) {
         
         // const hostName = window.location.hostname == 'localhost' ? `${window.location.hostname}:3000` : window.location.hostname
   
-        const newWindow = window.open(`${url}?serviceURL=http://spacom.herokuapp.com${router.asPath}`, '_self')
+        const hostDomain = 'http://spacom.herokuapp.com'
+        // const hostDomain = 'http://localhost:3000'
+
+
+        const newWindow = window.open(`${url}?serviceURL=${hostDomain}${router.asPath}`, '_self')
     
         if (newWindow) newWindow.opener = null
     }

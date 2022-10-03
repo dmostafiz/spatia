@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const schema = yup.object().shape({
 
@@ -38,6 +39,8 @@ export default function UpddateProfile({ user }) {
 
     const toast = useToast()
 
+    const router = useRouter()
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         mode: 'onChange',
         defaultValues: {
@@ -64,6 +67,8 @@ export default function UpddateProfile({ user }) {
                 duration: 9000,
                 isClosable: true,
             })
+
+            router.reload()
         }
 
         setLoading(false)

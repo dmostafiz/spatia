@@ -1,4 +1,4 @@
-import { Flex, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react'
+import { Flex, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaCog, FaCogs } from 'react-icons/fa'
@@ -12,6 +12,8 @@ import authUser from '../../Hooks/authUser'
 export default function settings() {
 
   const aUser = authUser()
+
+  const toast = useToast()
 
   const [user, setUser] = useState(null)
 
@@ -33,6 +35,16 @@ export default function settings() {
     if (res.data.status != 'error') {
       setUser(res.data)
     }
+
+    if (res.data.isNew) {
+      toast({
+        title: 'Update Profile',
+        description: "Please update your profile information!",
+        status: 'info',
+        duration: 9000,
+        isClosable: true,
+      })
+    }
   }
 
 
@@ -42,23 +54,23 @@ export default function settings() {
       <Tabs fontFamily='sans-serif' variant='enclosed' colorScheme='yellow'>
         <TabList mb='1em'>
 
-          <Tab fontSize={{base: '10px', md:'16px'}}>
+          <Tab fontSize={{ base: '10px', md: '16px' }}>
             <Flex alignItems='center' gap={1}>
-              <Icon fontSize={{base:12, md: 20}} as={User} />
+              <Icon fontSize={{ base: 12, md: 20 }} as={User} />
               <Text> Profile </Text>
             </Flex>
           </Tab>
 
-          <Tab fontSize={{base: '10px', md:'16px'}}>
+          <Tab fontSize={{ base: '10px', md: '16px' }}>
             <Flex alignItems='center' gap={1}>
-              <Icon fontSize={{base:12, md: 20}} as={Settings} />
+              <Icon fontSize={{ base: 12, md: 20 }} as={Settings} />
               <Text> General settings</Text>
             </Flex>
           </Tab>
 
-          <Tab fontSize={{base: '10px', md:'16px'}}>
+          <Tab fontSize={{ base: '10px', md: '16px' }}>
             <Flex alignItems='center' gap={1}>
-              <Icon fontSize={{base:12, md: 20}} as={Bell} />
+              <Icon fontSize={{ base: 12, md: 20 }} as={Bell} />
               <Text> Notifications </Text>
             </Flex>
           </Tab>
