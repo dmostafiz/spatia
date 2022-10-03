@@ -28,12 +28,11 @@ export default function sso() {
             console.log('Redirector: ', res.data)
             if (res.data.status == 'success') {
 
-                if(res.data.isNew == true){
-                    return window.location.href = '/profile/settings'
-                }
+                // if(res.data.isNew == true){
+                //     return window.location.href = '/profile/settings'
+                // }
 
-                // router.push(`/${router.query.surl}`)
-                return window.location.href = router.query.surl
+                // return window.location.href = router.query.surl
 
                 // window.location.href = router.query.surl
             } else {
