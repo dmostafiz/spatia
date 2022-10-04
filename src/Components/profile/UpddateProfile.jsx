@@ -78,7 +78,7 @@ export default function UpddateProfile({ user }) {
 
     return (
         <div>
-            <Text fontWeight='bold' color='gray.800' fontSize={'18px'}>Upddate Profile</Text>
+            <Text fontWeight='bold' color='gray.800' fontSize={'18px'}>Update Profile</Text>
             <hr />
             <Spacer h='5' />
             <Flex>

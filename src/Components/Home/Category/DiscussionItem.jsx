@@ -62,9 +62,9 @@ export default function DiscussionItem({ item }) {
                             fontFamily={`'Assistant', sans-serif`}
                             letterSpacing={2}
                         >
-                            Latest Post | {moment(item.discussions?.[0]?.createdAt).calendar()}
+                         {item.discussions?.[0]?.createdAt ? 'Latest Post |  ' +  moment(item.discussions?.[0]?.createdAt).calendar() : 'This category is empty'}
                         </Text>
-                        <NextLink href={`/discussion/${item.discussions?.[0]?.id}`}>
+                        {item.discussions?.[0]?.title ? <NextLink href={`/discussion/${item.discussions?.[0]?.id}`}>
                             <Link href={`/discussion/${item.discussions?.[0]?.id}`}>
                                 <Text
                                     color='whiteAlpha.900'
@@ -74,7 +74,14 @@ export default function DiscussionItem({ item }) {
                                     {item.discussions?.[0]?.title}
                                 </Text>
                             </Link>
-                        </NextLink>
+                        </NextLink> : <Text
+                            color='whiteAlpha.900'
+                            fontFamily={`'Montserrat', sans-serif`}
+                            fontSize='12px'
+                        >
+                            No discussions yet
+                        </Text>}
+
                     </Box>
                 </Box>
             </VStack>

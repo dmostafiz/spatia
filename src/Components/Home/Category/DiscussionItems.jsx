@@ -25,7 +25,7 @@ export default function DiscussionItems() {
                 <BigSpinner />
                 : <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
                     {categories.map((item, index) => {
-                        return item.discussions.length ? <DiscussionItem item={item} key={index} /> : ''
+                        return <DiscussionItem item={item} key={index} />
                     })}
                 </SimpleGrid>
             }
