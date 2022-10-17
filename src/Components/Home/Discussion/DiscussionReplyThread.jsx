@@ -63,7 +63,7 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
         <Box w='full' px={8} py={4} bg='#f4edde'>
             <HStack alignItems='flex-start' gap={2}>
                 <Box w={50}>
-                    <Avatar src={reply?.author?.avatar} name={reply?.author?.name} />
+                    <Avatar src={reply?.author?.avatar} name={reply?.author?.username} />
                 </Box>
                 <Box w='full'>
                     <HStack fontSize='14px' gap={2} mb={2}>
@@ -72,7 +72,7 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
                                 <Text
                                     fontWeight='bold'
                                     fontFamily={`'Montserrat', sans-serif;`}>
-                                    {reply?.author?.name}
+                                    {reply?.author?.username}
                                 </Text>
                             </Link>
                         </NextLink>
@@ -88,7 +88,7 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
                         <NextLink href={`/user/${reply?.parent ? reply?.parent?.author?.id : reply?.discussion?.author?.id}`}>
                             <Link href={`/user/${reply?.parent ? reply?.parent?.author?.id : reply?.discussion?.author?.id}`}>
                                 <Text color='' fontSize='14px' fontWeight='semibold' fontFamily={`'Montserrat', sans-serif;`}  >
-                                    {reply?.parent ? reply?.parent?.author?.name : reply?.discussion?.author?.name}
+                                    {reply?.parent ? reply?.parent?.author?.username : reply?.discussion?.author?.username}
                                 </Text>
                             </Link>
                         </NextLink>

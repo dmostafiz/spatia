@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const schema = yup.object().shape({
 
@@ -60,6 +61,9 @@ export default function UpddateProfile({ user }) {
         const user = await axios.post('/update_profile', data)
 
         if(user.data.status == 'success'){
+
+            Cookies.set('_token', user.data.token)
+
             toast({
                 title: 'Success',
                 description: "Your profile information has been updated!",

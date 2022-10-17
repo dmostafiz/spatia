@@ -10,9 +10,12 @@ import authUser from '../../Hooks/authUser';
 import initSocket from '../../Hooks/initSocket';
 import { useSelector, useDispatch } from 'react-redux'
 import { setOnline } from '../../StateManager/Reducers/UserOnlineSlice';
+import { useRouter } from 'next/router';
 
 export default function Layout({ children, title = 'Home' }) {
   initSocket()
+
+  const router = useRouter()
 
   const titleHead = `${title} | Spatial Community`
 
@@ -28,6 +31,16 @@ export default function Layout({ children, title = 'Home' }) {
       user: aUser?.data
     })
   }, [aUser, socket])
+
+
+  useEffect(() => {
+    console.log('A User ', router.pathname)
+    if(aUser.data && aUser?.data?.isNew == true && router.pathname != '/profile/settings'){
+        // router.push('/profile/settings')
+        window.location.href = '/profile/settings'
+    }
+
+  }, [aUser, router])
 
 
   useEffect(() => {

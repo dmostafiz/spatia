@@ -89,7 +89,7 @@ export default function DiscussionThread({ discussion }) {
                     <HStack justify='space-between' pt={2} pb={3}>
                         <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
                             By <NextLink href={`/user/${discussion?.author?.id}`}>
-                                <Link href={`/user/${discussion?.author?.id}`} color='blue.400'>{discussion?.author?.name}</Link>
+                                <Link href={`/user/${discussion?.author?.id}`} color='blue.400'>{discussion?.author?.username}</Link>
                             </NextLink>
                         </Text>
 
@@ -99,7 +99,7 @@ export default function DiscussionThread({ discussion }) {
                                 <Text fontSize={12} fontFamily={`'Assistant', sans-serif`}>
                                     <NextLink href={`/user/${discussion.replies[discussion.replies.length - 1].author.id}`}>
                                         <Link href={`/user/${discussion.replies[discussion.replies.length - 1].author.id}`} color='blue.400'>
-                                            {discussion.replies[discussion.replies.length - 1].author.name}
+                                            {discussion.replies[discussion.replies.length - 1].author.username}
                                         </Link>
                                     </NextLink> {moment(discussion.replies[discussion.replies.length - 1].createdAt).calendar()}
                                 </Text>

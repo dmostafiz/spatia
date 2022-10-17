@@ -78,6 +78,9 @@ exports.exampleSignup = async (request, reply) => {
                 email: requestEmail,
             }
         })
+         
+        console.log('Find User: ', user)
+
 
         const token = request.app.jwt.sign({
             id: user.id,

@@ -44,7 +44,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                 <Text
                                     fontWeight='bold'
                                     fontFamily={`'Montserrat', sans-serif;`}>
-                                    {discussion?.author?.name}
+                                    {discussion?.author?.username}
                                 </Text>
                             </Link>
                         </NextLink>
@@ -95,7 +95,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                                 return <Text key={index} as='span'>
                                                     <NextLink href={`/user/${reply.author?.id}`}>
                                                         <Link href={`/user/${reply.author?.id}`}>
-                                                            <Text as='span' fontWeight='bold'>{reply.author.name}</Text>
+                                                            <Text as='span' fontWeight='bold'>{reply.author.username}</Text>
                                                         </Link>
                                                     </NextLink> {index == discussion.replies.length - 2 && 'and '} {index < discussion.replies.length - 2 && ', '}
                                                 </Text>

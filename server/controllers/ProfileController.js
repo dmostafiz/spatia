@@ -31,7 +31,20 @@ exports.updateProfile = async (request, reply) => {
 
         console.log('Updated User ', user)
 
-        reply.send({ status: 'success', user })
+        const token = request.app.jwt.sign({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            name: user.name,
+            avatar: user.avatar,
+            isNew: false,
+            role: user.role || 'user'
+        })
+
+        console.log('Profile update token  ', token)
+
+
+        reply.send({ status: 'success',token: token, user })
 
     } catch (error) {
         console.log('TryCatch Error ##################### ', error.message)
