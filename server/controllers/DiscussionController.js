@@ -87,9 +87,9 @@ exports.updateDiscussion = async (req, reply) => {
                         return { name: tag }
                     }),
 
-                    author: {
-                        connect: { id: req.user.id }
-                    },
+                    // author: {
+                    //     connect: { id: req.user.id }
+                    // },
 
                     category: {
                         connect: { id: body.categoryId }
@@ -243,9 +243,9 @@ exports.updatePrivateDiscussion = async (req, reply) => {
                     return { name: tag }
                 }),
 
-                author: {
-                    connect: { id: req.user.id }
-                },
+                // author: {
+                //     connect: { id: req.user.id }
+                // },
 
                 isPrivate: true,
 

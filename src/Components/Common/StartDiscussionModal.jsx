@@ -46,7 +46,8 @@ export default function StartDiscussionModal({ mode }) {
         // if(){
         //     setCategory(null)
         // }
-    }, [category])
+        console.log('Uploaded files ', files)
+    }, [files])
 
     useEffect(() => {
 
@@ -260,6 +261,7 @@ export default function StartDiscussionModal({ mode }) {
                         {files.map((file, index) => {
                             return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='blue'>
                                 <TagLabel>{file.name}</TagLabel>
+                                <Icon onClick={() => setFiles(files.filter(fl => fl.url != file.url))} color={'red'} cursor='pointer' fontSize={'22px'} as={X} />
                             </Tag>
                         })}
                     </Wrap>

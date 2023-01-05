@@ -3,17 +3,19 @@ const fs = require('fs');
 const fileType = require('file-type');
 
 AWS.config.update({
-    accessKeyId: "AKIAW7OWVSOQTG45HKDA",
-    secretAccessKey: "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",
+    // accessKeyId: "AKIAW7OWVSOQTG45HKDA",
+    // secretAccessKey: "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",
+    secretAccessKey: 'vHnaYxrFNFTAJZQtXINrEi8aWmKvWfnytp1ntapw',
+    accessKeyId: 'AKIAQT2UU5ZDEZHVS7FE',
 });
 
 const s3 = new AWS.S3();
 
 const uploadFile = async (buffer, name, type) => {
     const params = {
-        ACL: 'public-read',
+        // ACL: 'public-read',
         Body: buffer,
-        Bucket: 'ipproperties',
+        Bucket: 'metanote',
         ContentType: type.mime,
         Key: `${name}.${type.ext}`,
     };

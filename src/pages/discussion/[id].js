@@ -131,7 +131,7 @@ function Discussion({ discussion }) {
 
         const data = {
             reply,
-            discussionId: discussion.id,
+            discussionId: discussion?.id,
             parentId: parentId,
             mentions: finalMentioned,
             files
@@ -186,7 +186,7 @@ function Discussion({ discussion }) {
     }
 
     return (
-        <Layout title={discussion.title} error={discussion == null && 404}>
+        <Layout title={discussion?.title} error={discussion == null && 404}>
 
             <Container maxW='container.xl'>
 
@@ -197,7 +197,7 @@ function Discussion({ discussion }) {
                             <ReactStickyBox offsetTop={110}>
 
                                 {/* Category left sidebar */}
-                                <CategoryLeftSidebar currentCategory={discussion.category} />
+                                <CategoryLeftSidebar currentCategory={discussion?.category} />
 
                             </ReactStickyBox>
                         </Box>
@@ -206,8 +206,8 @@ function Discussion({ discussion }) {
 
                     <Box flex='1' minH='calc(100vh - 300px)'>
                         {/* <Box pb={5}>
-                            <CategoryContentsTopbar />
-                        </Box> */}
+                        <CategoryContentsTopbar />
+                    </Box> */}
 
                         {/* Discussion Head / Title */}
                         <Box as='div' w='full' p={3} mb={4} bg='#f6e3d1' rounded='sm' shadow>
@@ -219,8 +219,8 @@ function Discussion({ discussion }) {
                                 <HStack pb={4} fontFamily='heading'>
 
                                     {discussion?.subCategory &&
-                                        <NextLink href={`/subcategory/${discussion.subCategory.id}`}>
-                                            <Link href={`/subcategory/${discussion.subCategory.id}`}>
+                                        <NextLink href={`/subcategory/${discussion?.subCategory.id}`}>
+                                            <Link href={`/subcategory/${discussion?.subCategory.id}`}>
                                                 <Box as='button' bg='#f4edde' px={2} py={1}>
                                                     <HStack>
                                                         <Icon as={HiOutlineLightBulb} />
@@ -233,7 +233,7 @@ function Discussion({ discussion }) {
 
                                     {discussion?.tags?.length ?
 
-                                        discussion.tags.map((tag, index) => {
+                                        discussion?.tags.map((tag, index) => {
                                             return <NextLink key={index} href={`/tag/${tag.name}`}>
                                                 <Link href={`/tag/${tag.name}`}>
                                                     <Box as='button' bg='#f4edde' px={2} py={1}>
@@ -255,7 +255,7 @@ function Discussion({ discussion }) {
                                 </Text>
 
                             </Box>
-                        </Box> 
+                        </Box>
 
                         {/* Discussion Body */}
                         {discussion && <DiscussionBody handleClickReply={handleClickReply} discussion={discussion} />}
@@ -326,13 +326,13 @@ function Discussion({ discussion }) {
                                 {user.data?.id
                                     ? <Box>
                                         {/* <Button
-                                            // onClick={() => handleClickReply(null)}
-                                            bg='#f4edde'
-                                            rounded='full'
-                                            shadow='sm'
-                                        >
-                                            Follow Respbery
-                                        </Button> */}
+                                        // onClick={() => handleClickReply(null)}
+                                        bg='#f4edde'
+                                        rounded='full'
+                                        shadow='sm'
+                                    >
+                                        Follow Respbery
+                                    </Button> */}
 
 
 

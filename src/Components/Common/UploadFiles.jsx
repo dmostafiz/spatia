@@ -28,8 +28,8 @@ export default function UploadFiles({setFiles}) {
     }, [])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        maxFiles:3,
-        acceptedFiles: "application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
+        maxFiles:20,
+        acceptedFiles: "application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf,.jpg,.jpeg,.png,.gif",
         onDrop: onDrop,
     })
 
