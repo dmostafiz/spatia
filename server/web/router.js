@@ -9,6 +9,7 @@ const { uploadFiles } = require('../controllers/S3UploadController.js')
 
 async function router(app) {
 
+    app.post('/sso_auth_test/:email', UserController.ssoAuthTest)
 
     app.post('/sso_auth', { onRequest: app.authSso }, UserController.ssoAuth)
 

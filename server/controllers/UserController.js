@@ -1,3 +1,47 @@
+exports.ssoAuthTest = async (request, reply) => {
+
+    try {
+
+        console.log('SSO User email', request.params.email)
+
+
+        const user = await request.prisma.user.findFirst({
+            where: {
+                email: request.params.email,
+            }
+        })
+
+        console.log('Redirector User ', user)
+
+        const token = request.app.jwt.sign({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            name: user.name,
+            avatar: user.avatar,
+            isNew: user.isNew,
+            role: user.role || 'user'
+        })
+
+        console.log('Token Signed ##################### ', token)
+
+        reply
+            .setCookie('_token', token, {
+                domain: process.env.DOMAIN,
+                path: '/'
+            })
+            .send({ status: 'success', token: token, isNew: user.isNew })
+
+
+    } catch (error) {
+
+        console.log('TryCatch Error ##################### ', error.message)
+        reply.send({ status: 'error' })
+
+    }
+
+}
+
 exports.ssoAuth = async (request, reply) => {
 
     try {
@@ -61,6 +105,7 @@ exports.ssoAuth = async (request, reply) => {
     }
 
 }
+
 
 
 exports.exampleSignup = async (request, reply) => {
@@ -223,7 +268,7 @@ exports.getAllMembers = async (request, reply) => {
         const users = await request.prisma.user.findMany({
             select: {
                 id: true,
-                name: true,
+                username: true,
             }
         })
 

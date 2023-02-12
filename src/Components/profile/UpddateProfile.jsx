@@ -16,7 +16,7 @@ const schema = yup.object().shape({
         .min(4, 'Username must have 4 characters.')
         .required()
         .matches(
-            /^[a-zA-Z_.]*$/u,
+            /^[a-zA-Z0-9_.]*$/u,
             'Only ( _ ) dash and ( . ) dot are allowed. White space are not allowed.'
         ),
 
