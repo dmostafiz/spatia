@@ -1,9 +1,8 @@
 exports.ssoAuthTest = async (request, reply) => {
+    
+    console.log('SSO User email', request.params.email)
 
     try {
-
-        console.log('SSO User email', request.params.email)
-
 
         const user = await request.prisma.user.findFirst({
             where: {

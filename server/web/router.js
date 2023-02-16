@@ -2,7 +2,7 @@ const UserController = require('../controllers/UserController')
 const { getCategories, getOneCategory, storeSubCategories, getOneSubCategory, getOneTag } = require('../controllers/CategoryController')
 const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions, setBestAnswer, updateDiscussion, deleteDiscussion, updatePrivateDiscussion, deleteReply, updateReply } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
-const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto, updateSetting, updateNotification } = require('../controllers/ProfileController')
+const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto, updateSetting, updateNotification, checkUsernameExists } = require('../controllers/ProfileController')
 const { uploadFiles } = require('../controllers/S3UploadController.js')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
@@ -22,6 +22,8 @@ async function router(app) {
 
     //Profile
     app.post('/update_profile', { onRequest: app.authSso }, updateProfile)
+    app.post('/check_username_exists', { onRequest: app.authSso }, checkUsernameExists)
+    
     app.post('/upload_profile_photo', { onRequest: app.authSso }, uploadProfilePhoto)
 
     //Discussion photo

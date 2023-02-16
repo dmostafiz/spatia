@@ -18,7 +18,7 @@ export default function sso_test() {
     useEffect(() => {
 
         async function verifySSOToken() {
-            const res = await axios.post(`/sso_auth_test/${router.query.email}`)
+            const res = await axios.post(`/sso_auth_test/user@gmail.com`)
 
 
             console.log('Redirector: ', res.data)
@@ -36,11 +36,11 @@ export default function sso_test() {
 
         }
 
-        if (router.query?.email) {
+        // if (router.query?.email) {
             verifySSOToken()
-        }
+        // }
 
-    }, [router])
+    }, [])
 
 
     if(user.data?.id){

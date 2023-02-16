@@ -18,6 +18,25 @@ const schema = yup.object().shape({
         .matches(
             /^[a-zA-Z0-9_.]*$/u,
             'Only ( _ ) dash and ( . ) dot are allowed. White space are not allowed.'
+        )
+        .test(
+
+            'checkUsernameUnique',
+
+            'Sorry! the username is already taken.',
+
+            async (value) => {
+
+                const res = await axios.post(`/check_username_exists`, { value })
+
+                if (res?.data.ok === true) {
+
+                    return false
+
+                }
+
+                return true
+            }
         ),
 
     fullName: yup.string()

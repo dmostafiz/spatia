@@ -52,6 +52,40 @@ exports.updateProfile = async (request, reply) => {
     }
 }
 
+exports.checkUsernameExists = async (request, reply) => {
+    try {
+
+        console.log('request.body() ', request.body)
+
+        const body = request.body
+
+        const user = await request.prisma.user.findFirst({
+            where: {
+                username: body.value,
+                id: {
+                    not: {
+                        equals: request.user.id
+                    }
+                }
+            }
+        })
+
+ 
+        console.log('Existing username user  ', user)
+
+        if(user){
+           return  reply.send({ ok: true })
+        }
+
+
+        return  reply.send({ ok: false })
+
+    } catch (error) {
+        console.log('TryCatch Error ##################### ', error.message)
+        reply.send({ status: 'error' })
+    }
+}
+
 exports.uploadProfilePhoto = async (request, reply) => {
 
     try {
