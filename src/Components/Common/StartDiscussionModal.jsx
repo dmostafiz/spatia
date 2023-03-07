@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon, TagLabel, Tag, Wrap } from '@chakra-ui/react';
+import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Icon, TagLabel, Tag, Wrap, Spinner } from '@chakra-ui/react';
 import { Button, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
 import SelectCategoryModal from './SelectCategoryModal';
 import { useToast } from '@chakra-ui/react'
@@ -35,6 +35,27 @@ export default function StartDiscussionModal({ mode }) {
     const [subCategory, setSubCategory] = useState(null)
 
     const [files, setFiles] = useState([])
+
+    const [removeLoading, setRemoveLoading] = useState(false)
+    const removeFile = async (file) => {
+        setRemoveLoading(true)
+
+        const res = await axios.post('/delete_file', { file_url: file.key })
+        if (res?.data?.status == 'success') {
+            setFiles(files.filter(fl => fl.url != file.url))
+        } else {
+            toast({
+                title: res?.data?.msg,
+                description: 'Please update you role policy in your amazon s3 bucket to active file delete permission for current user.',
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+            })
+        }
+
+        setRemoveLoading(false)
+
+    }
 
     const [loading, setLoading] = useState(false)
 
@@ -254,14 +275,16 @@ export default function StartDiscussionModal({ mode }) {
                         </>}
                     </Flex>
                 </Box>}
-                
+
                 {files.length > 0 && <Box pb={'2'}>
                     <Text>Additional uploading files</Text>
                     <Wrap>
                         {files.map((file, index) => {
                             return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='blue'>
                                 <TagLabel>{file.name}</TagLabel>
-                                <Icon onClick={() => setFiles(files.filter(fl => fl.url != file.url))} color={'red'} cursor='pointer' fontSize={'22px'} as={X} />
+                                {removeLoading ?
+                                    <Spinner zIndex={99999} size={'xs'} color='red' m='1' />
+                                    : <Icon onClick={() => removeFile(file)} color={'red'} cursor='pointer' fontSize={'22px'} as={X} />}
                             </Tag>
                         })}
                     </Wrap>

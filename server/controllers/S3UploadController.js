@@ -23,8 +23,21 @@ const uploadFile = async (buffer, name, type) => {
     return s3.upload(params).promise();
 };
 
+
+const deleteFile = async (name) => {
+    const params = {
+        Bucket: 'metanote',
+        Key: name,
+    };
+
+    console.log("file deleted Successfully")
+    return await s3.deleteObject(params).promise()
+
+
+};
+
 exports.uploadFiles = async (req, reply) => {
-    
+
     try {
 
         const dataFiles = await req.saveRequestFiles()
@@ -34,7 +47,7 @@ exports.uploadFiles = async (req, reply) => {
             const buffer = fs.readFileSync(file.filepath);
 
             const type = await fileType.fromBuffer(buffer);
-        
+
             // const type = file.mimetype
             const fileName = `community/${Date.now().toString()}`;
 
@@ -43,8 +56,9 @@ exports.uploadFiles = async (req, reply) => {
             // var myarr =  data.Key.split('/')
 
             // console.log('Uploading file: ', file)
+            console.log('Uploaded file: ', data)
 
-            return {url: data.Location, name: file.filename}
+            return { url: data.Location, name: file.filename, key: data.Key }
 
         })
 
@@ -53,10 +67,30 @@ exports.uploadFiles = async (req, reply) => {
 
         console.log('Request Files ', uploadedUrlArray)
 
-        reply.send({status: 'success', files: uploadedUrlArray})
+        reply.send({ status: 'success', files: uploadedUrlArray })
 
-        
+
     } catch (error) {
-        console.log('Try Catch Error ', error.message)
+        console.log('Try Catch Error ', error)
     }
 }
+
+exports.deleteFiles = async (req, reply) => {
+
+    try {
+
+        console.log('Delete file url: ', req.body.file_url)
+
+        const dlt = await deleteFile(req.body.file_url)
+
+        console.log('Deleted file: ', dlt)
+
+        reply.send({ status: 'success' })
+
+
+    } catch (error) {
+        console.log('Try Catch Error ', error)
+        reply.send({ status: 'error', msg: error.message })
+    }
+}
+

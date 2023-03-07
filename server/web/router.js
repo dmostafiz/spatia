@@ -3,7 +3,7 @@ const { getCategories, getOneCategory, storeSubCategories, getOneSubCategory, ge
 const { storeDiscussion, getOneDiscussion, getCategoryDiscussions, storeReply, getDiscussionReplies, increasDiscussionViews, storePrivateDiscussion, getPrivateDiscussions, storeReaction, getReaction, getReplyReaction, storeReplyReaction, getUserDiscussions, getUserPosts, getUserMentions, getsubCategoryDiscussions, getFollowingDiscussions, discussionAction, getTagDiscussions, setBestAnswer, updateDiscussion, deleteDiscussion, updatePrivateDiscussion, deleteReply, updateReply } = require('../controllers/DiscussionController')
 const { getSeachData } = require('../controllers/SystemController')
 const { updateProfile, uploadProfilePhoto, uploadDiscussionPhoto, updateSetting, updateNotification, checkUsernameExists } = require('../controllers/ProfileController')
-const { uploadFiles } = require('../controllers/S3UploadController.js')
+const { uploadFiles, deleteFiles } = require('../controllers/S3UploadController.js')
 
 // import CategoryContents from './../../src/Components/Home/Category/CategoryContents';
 
@@ -69,6 +69,7 @@ async function router(app) {
     app.get('/discussions/tag/:name', getTagDiscussions)
 
     app.post('/upload_files', { onRequest: app.authSso }, uploadFiles)
+    app.post('/delete_file', { onRequest: app.authSso }, deleteFiles)
 
     app.get('/discussions/private', { onRequest: app.auth }, getPrivateDiscussions)
     app.get('/discussion/:discussionId', { onRequest: app.auth }, getOneDiscussion)
