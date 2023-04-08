@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Avatar, Icon, Tooltip, Tag, TagLabel, Wrap } from '@chakra-ui/react';
+import { Box, Flex, HStack, Input, Spacer, useDisclosure, Text, Avatar, Icon, Tooltip, Tag, TagLabel, Wrap, Spinner } from '@chakra-ui/react';
 import { Button, SimpleGrid } from '@chakra-ui/react'
 import SelectPeopleModal from './SelectPeopleModal';
 import { useToast } from '@chakra-ui/react'
@@ -33,11 +33,32 @@ export default function StartPrivateDiscussionModal() {
 
     const [tags, setTags] = useState([]);
 
-    useEffect(() => {
+    const [removeLoading, setRemoveLoading] = useState(false)
+    const removeFile = async (file) => {
+        setRemoveLoading(true)
 
-        console.log('Selected  Members: ', members)
+        const res = await axios.post('/delete_file', { file_url: file.key })
+        if (res?.data?.status == 'success') {
+            setFiles(files.filter(fl => fl.url != file.url))
+        } else {
+            toast({
+                title: res?.data?.msg,
+                description: 'Please update you role policy in your amazon s3 bucket to active file delete permission for current user.',
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+            })
+        }
 
-    }, [members])
+        setRemoveLoading(false)
+
+    }
+
+    // useEffect(() => {
+
+    //     console.log('Selected  Members: ', members)
+
+    // }, [members])
 
 
     const handleSubmitDiscussion = async () => {
@@ -213,11 +234,13 @@ export default function StartPrivateDiscussionModal() {
                         {files.map((file, index) => {
                             return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='blue'>
                                 <TagLabel>{file.name}</TagLabel>
+                                {removeLoading ?
+                                    <Spinner zIndex={99999} size={'xs'} color='red' m='1' />
+                                    : <Icon onClick={() => removeFile(file)} color={'red'} cursor='pointer' fontSize={'22px'} as={X} />}
                             </Tag>
                         })}
                     </Wrap>
                 </Box>}
-
 
 
                 <RichTextEditor

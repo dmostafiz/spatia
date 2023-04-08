@@ -28,7 +28,7 @@ export default function useMentions(qData) {
     useMemo(() => {
 
         const mentionedUsers = members.data?.map(usr => {
-            return { id: usr.id, value: usr.name, link: `/user/${usr.id}` }
+            return { id: usr.id, value: usr.username, link: `/user/${usr.id}` }
         })
 
         // console.log('Mentioned Users: ', mentionedUsers)
@@ -52,9 +52,11 @@ export default function useMentions(qData) {
 
                 const list = mentionChar === '@' ? users : [];
 
+                // console.log('Mention list', list)
+
                 const includesSearchTerm = list.filter((item) =>
 
-                    item.value.toLowerCase().includes(searchTerm.toLowerCase())
+                    item?.value?.toLowerCase()?.includes(searchTerm?.toLowerCase())
 
                 );
 

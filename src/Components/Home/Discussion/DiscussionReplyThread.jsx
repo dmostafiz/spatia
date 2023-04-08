@@ -23,7 +23,6 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
 
 
     const user = authUser()
-    const toast = useToast()
 
     const addBestAnswer = async (replyId) => {
 
@@ -60,8 +59,8 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
     }
 
     return (
-        <Box w='full' px={8} py={4} bg='#f4edde'>
-            <HStack alignItems='flex-start' gap={2}>
+        <Box w='full' px={5} py={4} bg='#f4edde'>
+            <Flex direction={{ base: 'column', md: 'row' }} alignItems='flex-start' gap={2}>
                 <Box w={50}>
                     <Avatar src={reply?.author?.avatar} name={reply?.author?.username} />
                 </Box>
@@ -96,15 +95,17 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
 
 
                     <Box w='full'>
-                        <Text
-                            as='div'
-                            fontSize='14px'
-                            fontFamily={`'Montserrat', sans-serif;`}
-                            mb={4}
-                            dangerouslySetInnerHTML={{
-                                __html: reply.content
-                            }}
-                        />
+                        <Wrap>
+                            <Text
+                                as='div'
+                                fontSize='14px'
+                                fontFamily={`'Montserrat', sans-serif;`}
+                                mb={4}
+                                dangerouslySetInnerHTML={{
+                                    __html: reply.content
+                                }}
+                            />
+                        </Wrap>
 
                         {reply.files.length > 0 && <Box pb={'2'} fontFamily={'sans-serif'}>
                             <>
@@ -171,7 +172,7 @@ export default function DiscussionReplyThread({ setBestAnswer, discussion, handl
                         </Flex>
                     </Box>
                 </Box>
-            </HStack>
+            </Flex>
         </Box>
     )
 }

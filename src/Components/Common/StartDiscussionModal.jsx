@@ -274,7 +274,7 @@ export default function StartDiscussionModal({ mode }) {
                             <Text>{subCategory.name}</Text>
                         </>}
                     </Flex>
-                </Box>}
+                </Box>} 
 
                 {files.length > 0 && <Box pb={'2'}>
                     <Text>Additional uploading files</Text>

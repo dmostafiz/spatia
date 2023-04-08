@@ -22,7 +22,7 @@ const EditPrivateDiscussionModal = dynamic(import('../../Common/EditPrivateDiscu
 const EditDiscussionModal = dynamic(import('../../Common/EditDiscussionModal'), {
     ssr: false
 })
- 
+
 export default function DiscussionBody({ handleClickReply, discussion }) {
 
     const user = authUser()
@@ -32,8 +32,8 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
     }, [user])
 
     return (
-        <Box mb={4} px={8} py={4} bg='#f4edde'>
-            <HStack alignItems='flex-start' gap={2}>
+        <Box mb={4} px={5} py={4} bg='#f4edde'>
+            <Flex direction={{ base: 'column', md: 'row' }} alignItems='flex-start' gap={2}>
                 <Box w={50}>
                     <Avatar src='' name='Mahesh Babu' />
                 </Box>
@@ -56,17 +56,20 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                     </HStack>
 
                     <Box w='full'>
-                        <Text
-                            as='div'
-                            fontSize='14px'
-                            fontFamily={`'Montserrat', sans-serif;`}
-                            mb={4}
-                            dangerouslySetInnerHTML={{
-                                __html: discussion.content
-                            }}
-                        >
-                            {/* {discussion.content} */}
-                        </Text>
+                        <Wrap>
+                            <Text
+                                as='div'
+                                fontSize='14px'
+                                fontFamily={`'Montserrat', sans-serif;`}
+                                wordBreak='break-word'
+                                mb={4}
+                                dangerouslySetInnerHTML={{
+                                    __html: discussion.content
+                                }}
+                            >
+                                {/* {discussion.content} */}
+                            </Text>
+                        </Wrap>
 
                         {discussion.files.length > 0 && <Box pb={'2'} fontFamily={'sans-serif'}>
                             <>
@@ -86,7 +89,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
 
                         <Flex w='full' direction={{ base: 'column', md: 'row' }} alignItems={{ base: 'left', md: 'center' }} justify='space-between' gap={3}>
 
-                            <HStack maxW='350px' alignItems='flex-start'>
+                            <Wrap maxW='350px' alignItems='flex-start'>
                                 <Icon fontSize='18px' as={CgMailReply} />
                                 <Text color='#2c53a8' fontSize='12px' fontFamily={`'Montserrat', sans-serif;`} >
                                     {discussion.replies.length ?
@@ -107,7 +110,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
 
                                 </Text>
 
-                            </HStack>
+                            </Wrap>
 
 
                             {/* <HStack gap={1}>
@@ -117,7 +120,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
 
 
                             <Flex>
-                                <HStack gap={3}>
+                                <Wrap spacing={4}>
                                     <Flex alignItems='center' gap={1}>
                                         <Icon fontSize={24} as={AiOutlineEye} />
                                         <Text>{discussion.views ?? 0}</Text>
@@ -149,7 +152,7 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                                 {/* <MenuItem onClick={() => alert("Edit discussion")} icon={<Edit />}>
                                             Edit
                                         </MenuItem> */}
-                                                {discussion.isPrivate ? <EditPrivateDiscussionModal discussion={discussion}  /> : <EditDiscussionModal discussion={discussion} /> }
+                                                {discussion.isPrivate ? <EditPrivateDiscussionModal discussion={discussion} /> : <EditDiscussionModal discussion={discussion} />}
 
                                                 <DeleteConfirmation title='Delete Discussion!' deleteUrl={'/discussion/delete'} deleteId={discussion.id} />
 
@@ -158,12 +161,12 @@ export default function DiscussionBody({ handleClickReply, discussion }) {
                                     }
 
 
-                                </HStack>
+                                </Wrap>
                             </Flex>
                         </Flex>
                     </Box>
                 </Box>
-            </HStack>
+            </Flex>
         </Box>
     )
 }

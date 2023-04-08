@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback } from 'react'
-import { Avatar, Box, Button, Flex, HStack, Icon, Input, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, HStack, Icon, Input, Spinner, Tag, TagLabel, Text, useToast, Wrap } from '@chakra-ui/react'
 import { CgMailReply } from 'react-icons/cg'
 import { AiOutlineEye } from 'react-icons/ai'
 import { IoMdChatboxes } from 'react-icons/io'
@@ -11,6 +11,7 @@ import axios from 'axios'
 import UploadFiles from '../../Common/UploadFiles'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { X } from 'tabler-icons-react'
 
 // const RichTextEditor = dynamic(() => import('@mantine/rte'), {
 //     // Disable during server side rendering
@@ -31,6 +32,8 @@ const RichTextEditor = dynamic(
 )
 
 const DiscussionReplyForm = forwardRef(({ setReplyFiles, onSubmitReply, reply, setReply, data }, ref) => {
+
+    const toast = useToast()
 
     const menstions = useMentions('hello i am from mention quill')
 
@@ -68,6 +71,27 @@ const DiscussionReplyForm = forwardRef(({ setReplyFiles, onSubmitReply, reply, s
     )
 
 
+    const [removeLoading, setRemoveLoading] = useState(false)
+    const removeFile = async (file) => {
+        setRemoveLoading(true)
+
+        const res = await axios.post('/delete_file', { file_url: file.key })
+        if (res?.data?.status == 'success') {
+            setFiles(files.filter(fl => fl.url != file.url))
+        } else {
+            toast({
+                title: res?.data?.msg,
+                description: 'Please update you role policy in your amazon s3 bucket to active file delete permission for current user.',
+                status: 'error',
+                duration: 10000,
+                isClosable: true,
+            })
+        }
+
+        setRemoveLoading(false)
+
+    }
+
 
     return (
         <Box w='full'>
@@ -78,12 +102,15 @@ const DiscussionReplyForm = forwardRef(({ setReplyFiles, onSubmitReply, reply, s
                 <UploadFiles setFiles={setFiles} />
             </Box>
 
-            {files.length > 0 && <Box pb={'2'} fontFamily={'sans-serif'}>
+            {files.length > 0 && <Box pb={'2'}>
                 <Text>Additional uploading files</Text>
                 <Wrap>
                     {files.map((file, index) => {
-                        return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='yellow'>
+                        return <Tag rounded='full' size={'md'} key={index} variant='outline' colorScheme='blue'>
                             <TagLabel>{file.name}</TagLabel>
+                            {removeLoading ?
+                                <Spinner zIndex={99999} size={'xs'} color='red' m='1' />
+                                : <Icon onClick={() => removeFile(file)} color={'red'} cursor='pointer' fontSize={'22px'} as={X} />}
                         </Tag>
                     })}
                 </Wrap>
